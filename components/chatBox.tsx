@@ -24,6 +24,7 @@ import useOptionCount from "../hooks/useOptionCount"
 import useProceedPayment from "../hooks/useProceedPayment"
 import useSubcategory from "../hooks/useSubcategory"
 import BotErrorMessage from "./message/BotErrorMessage"
+import SearchBar from "./searchbar/SearchBar"
 // import SearchBar from "./SearchBar"
 // import ReceiptCarousel from "./ReceiptCarousel.tsx"
 
@@ -78,7 +79,7 @@ export default function ChatBox() {
             </View>
           
         </ScrollView>
-        {/* <SearchBar messagelist={messagelist} setMessageList={setMessageList} setOptions={setOptions} setShowOptions={setShowOptions} setLoading={setLoading} loading = {loading} showButtons={showButtons} setShowButtons={setShowButtons}/> */}
+        <SearchBar messagelist={messagelist} setMessageList={setMessageList} setOptions={setOptions} setShowOptions={setShowOptions} setLoading={setLoading} loading = {loading} showButtons={showButtons} setShowButtons={setShowButtons}/>
     </View>
     
   )
