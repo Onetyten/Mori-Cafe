@@ -27,24 +27,25 @@ export default function QuickActions(props:propType) {
 
   return (
     showButtons&&
-    <View className={`w-80 h-80 z-40 duration-250 -bottom-2 left-1/2 sm:top-1/2 -translate-x-1/2 sm:-translate-y-1/2 absolute bg-primary rounded-full flex`}>
+    <View className={`w-[450px] h-[450px] z-40 duration-250 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 absolute bg-primary rounded-full flex`}>
 
-        <View className={`w-full h-full left-1/2 top-1/2 ${showButtons?"flex flex-col gap-8 sm:gap-0":"hidden"} pt-6 sm:pt-0 sm:justify-center rounded-full -translate-x-1/2 -translate-y-1/2 absolute `}>
-
-            <TouchableOpacity onPress={()=>{fetchFoodList(`/food/list?random=true`,"Close your eyes...")}} className="flex items-center p-0 sm:p-3 sm:bg-secondary-200/40 sm:hover:bg-secondary-200/60 select-none cursor-pointer sm:h-20 gap-2 sm:w-20 justify-center rounded-full flex-col sm:absolute sm:left-1/2 sm:-translate-x-1/2 top-6">
-                <Dice6 className="size-6" />
-                <Text className="text-xs hidden sm:flex">Random</Text>
+            <TouchableOpacity onPress={()=>{fetchFoodList(`/food/list?random=true`,"Close your eyes...")}} className="flex items-center justify-center p-3 bg-secondary-200/40 h-28 gap-2 w-28 rounded-full flex-col absolute top-6 left-1/2 -translate-x-10">
+                <Dice6 className="size-10" size={35} color={"#e9d5ca"}  />
+                <Text className="text-xs text-background">Random</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={CartList} className="flex items-center p-0 sm:p-3  sm:bg-secondary-200/40 sm:hover:bg-secondary-200/60 select-none cursor-pointer sm:h-20 gap-2 sm:w-20 justify-center rounded-full flex-col sm:absolute sm:top-1/2 sm:-translate-y-15 sm:left-6 ">
-                <ShoppingCart className="size-5" />
-                <Text className="text-xs hidden sm:flex">View tab</Text>
+            <TouchableOpacity onPress={fetchReceiptList} className="flex items-center justify-center p-3 bg-secondary-200/40 h-28 gap-2 w-28 rounded-full flex-col absolute top-1/2 right-6 -translate-y-1/2">
+                <History className="size-10" size={35} color={"#e9d5ca"} />
+                <Text className="text-xs text-background">History</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={fetchReceiptList} className="flex items-center p-0 sm:p-3  sm:bg-secondary-200/40 sm:hover:bg-secondary-200/60 select-none cursor-pointer sm:h-20 gap-2 sm:w-20 justify-center rounded-full flex-col sm:absolute sm:top-1/2 sm:-translate-y-15 sm:right-6 ">
-                <History className="size-4" />
-                <Text className="text-xs hidden sm:flex">History</Text>
+
+            <TouchableOpacity onPress={CartList} className="flex items-center justify-center p-3 bg-secondary-200/40 h-28 gap-2 w-28 rounded-full flex-col absolute top-1/2 right-[55px] -translate-y-[160px]">
+                <ShoppingCart className="size-10" size={35} color={"#e9d5ca"} />
+                <Text className="text-xs text-background">View tab</Text>
             </TouchableOpacity>
-        </View>
+
+
+    
     </View>
   )
 }
