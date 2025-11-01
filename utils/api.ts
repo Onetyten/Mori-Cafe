@@ -1,10 +1,8 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-import axios from 'axios'
-import store from './store'
+import axios from 'axios';
+import store from './store';
 
 // @ts-ignore
-const baseURL =import.meta.env.MODE === "development"?"http://localhost:4500": ""; 
-
+const baseURL = "http://localhost:4500";
 const api = axios.create({
     baseURL
 })

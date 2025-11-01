@@ -49,14 +49,3 @@ export const OrderSchema = Joi.object({
       .error(() => new Error('Malformed order'))
 
 });
-
-// export interface cartListType
-// {
-//     _id:string,
-//     quantity: number,
-//     totalPrice: number,
-//     foodId: {
-//       name: string,
-//       imageUrl:string,
-//     }
-// }
