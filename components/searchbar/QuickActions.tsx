@@ -26,7 +26,8 @@ export default function QuickActions(props:propType) {
     const fetchReceiptList =  useFetchReceiptList(setMessageList)
 
   return (
-    <View className={`${showButtons?"w-10 h-60 sm:w-80 sm:h-80":"sm:w-0 h-0"} z-40 text-background duration-250 -bottom-2 left-1/2 sm:top-1/2 -translate-x-1/2 sm:-translate-y-1/2 absolute bg-primary rounded-full flex`}>
+    showButtons&&
+    <View className={`w-80 h-80 z-40 duration-250 -bottom-2 left-1/2 sm:top-1/2 -translate-x-1/2 sm:-translate-y-1/2 absolute bg-primary rounded-full flex`}>
 
         <View className={`w-full h-full left-1/2 top-1/2 ${showButtons?"flex flex-col gap-8 sm:gap-0":"hidden"} pt-6 sm:pt-0 sm:justify-center rounded-full -translate-x-1/2 -translate-y-1/2 absolute `}>
 
