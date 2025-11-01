@@ -13,15 +13,16 @@ import type { messageListType, } from "../types/type"
 // import OrderFeedback from "./OrderFeedback"
 // import OrderReceipt from "./OrderReceipt"
 // import OrderHandler from "./OrderHandler"
-import useListCart from "../hooks/useListCart"
-import useFetchFoodList from "../hooks/useFetchFoodList"
-import useConfirmToCart from "../hooks/useConfirmToCart"
-import useSubcategory from "../hooks/useSubcategory"
-import useGetElse from "../hooks/useGetElse"
-import useProceedPayment from "../hooks/useProceedPayment"
-import useOptionCount from "../hooks/useOptionCount"
+import { ScrollView, View } from "react-native"
 import useAddToCart from "../hooks/useAddToCart"
-import {useChatInit} from "../hooks/useChatInit"
+import { useChatInit } from "../hooks/useChatInit"
+import useConfirmToCart from "../hooks/useConfirmToCart"
+import useFetchFoodList from "../hooks/useFetchFoodList"
+import useGetElse from "../hooks/useGetElse"
+import useListCart from "../hooks/useListCart"
+import useOptionCount from "../hooks/useOptionCount"
+import useProceedPayment from "../hooks/useProceedPayment"
+import useSubcategory from "../hooks/useSubcategory"
 import BotErrorMessage from "./message/BotErrorMessage"
 // import SearchBar from "./SearchBar"
 // import ReceiptCarousel from "./ReceiptCarousel.tsx"
@@ -30,7 +31,7 @@ import BotErrorMessage from "./message/BotErrorMessage"
 
 
 export default function ChatBox() {
-    const scrollRef = useRef<HTMLDivElement|null>(null)
+    const scrollRef = useRef<ScrollView|null>(null)
     const [messagelist,setMessageList] = useState<messageListType[]>([])
     const [showoptions,setShowOptions] = useState(false)
     const [loading,setLoading] = useState(false)
@@ -50,9 +51,9 @@ export default function ChatBox() {
     const ProceedToPayment = useProceedPayment(setShowOptions,setMessageList)
     
   return (
-    <div className="xs:w-md sm:w-lg md:w-xl w-full max-w-full h-full p-2 flex flex-col gap-4">
-        <div className="flex w-full chat-box font-outfit text-sm pb-12 overflow-y-scroll overflow-x-hidden  scroll-hide text-secondary-100 flex-1 flex-col justify-start mt-12 items-center gap-3 h-full">
-            <div className="w-full flex flex-col gap-6 justify-start">
+    <View className="w-full h-full flex px-6 gap-4">
+        <ScrollView contentContainerStyle={{justifyContent:"flex-start",alignItems:"center"}} className="flex w-full chat-box font-outfit text-sm overflow-y-scroll overflow-x-hidden  scroll-hide text-secondary-100 flex-1 flex-col mt-6 gap-3 h-full">
+            <View className="w-full gap-6 justify-start">
                 {messagelist.map((item,index:number)=>{
                     return(
                             item.type === "message"?item.sender==="bot"?<BotMessage key={index} message={item}/>:item.sender === "bot-error"?<BotErrorMessage key={index} message={item}/>:<ChatMessage message={item} key={index}/>
@@ -70,15 +71,15 @@ export default function ChatBox() {
                             :''
                     )
                 })}
-            </div>
-              <div ref={scrollRef} className="w-2 h-2">
-
-            </div>
+            </View>
             {showoptions&& <OptionsInput options = {options}/>}
+            <View className="h-28">
+
+            </View>
           
-        </div>
+        </ScrollView>
         {/* <SearchBar messagelist={messagelist} setMessageList={setMessageList} setOptions={setOptions} setShowOptions={setShowOptions} setLoading={setLoading} loading = {loading} showButtons={showButtons} setShowButtons={setShowButtons}/> */}
-    </div>
+    </View>
     
   )
 }

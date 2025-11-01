@@ -50,25 +50,28 @@ export default function BotMessage(props:propType) {
     },[message, message.content])
     
   return (
-    <View className="max-w-8/12 flex gap-2 items-start">
-        <View className='bg-primary sm:min-w-10 min-w-8 size-8 sm:size-10 rounded-full flex justify-center items-center'>
-            <Image source={require("@/assets/images/logo.gif")} className="size-6 sm:size-8" alt="" />
-        </View>
-        <View className='flex flex-col gap-0.5 justify-start '>
-            {displayedMessage.map((item,index)=>{
-                return(
-                    <View key={index} className=" flex justify-start items-center text-primary ">
-                        <BotChatBubble message={item} index ={index}/>
+    <View className='w-full items-start'>
+        <View className="max-w-8/12 flex flex-row gap-2 items-start">
+            <View className='bg-primary rounded-full flex justify-center items-center' style={{width:45,height:45}}>
+                <Image source={require("@/assets/images/logo.gif")} style={{width:30,height:30}} alt="" />
+            </View>
+
+            <View className='flex gap-1 items-start'>
+                {displayedMessage.map((item,index)=>{
+                    return(
+                        <View key={index} className=" flex justify-start items-center text-primary ">
+                            <BotChatBubble message={item} index ={index}/>
+                        </View>
+                    )
+                })}
+                {isTyping&&(
+                    <View className="justify-start items-center text-primary ">
+                        <View className='bg-primary max-h-11 text-background p-2.5 px-6 rounded-2xl text-sm' >
+                            <BarIndicator size={15} color='#e9d5ca'/>  
+                        </View>
                     </View>
-                )
-            })}
-            {isTyping&&(
-                <View className=" flex justify-start items-center text-primary ">
-                    <View className='bg-primary text-background p-2.5 px-6 rounded-2xl text-sm' >
-                    <BarIndicator/>  
-                    </View>
-                </View>
-            )}
+                )}
+            </View>
         </View>
     </View>
   )

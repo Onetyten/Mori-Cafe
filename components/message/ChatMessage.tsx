@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react"
-import { View } from "react-native"
+import { Text, View } from "react-native"
 import { BarIndicator } from 'react-native-indicators'
 
 
@@ -50,26 +50,26 @@ export default function ChatMessage (props:propType) {
 
 
   return (
-    <View className="w-full flex gap-2 justify-end">
-        <View className='flex max-w-8/12 flex-col gap-0.5 justify-end w-full '>
-            {displayedMessage.map((item,index)=>{
-                return(
-                    <View key={index} className=" flex justify-end items-center text-primary ">
-                        <p className={`bg-secondary-200 text-white sm:text-sm text-xs p-2.5 px-4 sm:px-6 rounded-2xl ${index===0?"rounded-tr-none":""}`} >
-                            {item}
-                        </p>
+        <View className="w-full flex gap-2 items-end">
+            <View className='flex max-w-8/12 flex-col gap-1 items-end w-full '>
+                {displayedMessage.map((item,index)=>{
+                    return(
+                        <View key={index} className=" flex justify-end items-center text-primary ">
+                            <Text className={`bg-secondary-200 text-white text-xl p-2.5 px-4 sm:px-6 font-outfit-regular rounded-2xl ${index===0?"rounded-tr-none":""}`} >
+                                {item}
+                            </Text>
+                        </View>
+                    )
+                })}
+                {isTyping&&(
+                    <View className="justify-start items-center">
+                        <View className='bg-secondary-200 max-h-11 text-background p-2.5 px-6 rounded-2xl text-sm' >
+                            <BarIndicator size={15} color='#588159'/>  
+                        </View>
                     </View>
-                )
-            })}
-            {isTyping&&(
-                <View className=" flex justify-end items-center text-primary ">
-                    <View className='bg-secondary-200 text-white p-2.5 px-6 rounded-2xl text-sm' >
-                        <BarIndicator/>  
-                    </View>
-                </View>
-            )}
+                )}
+            </View>
         </View>
-    </View>
   )
 }
 
