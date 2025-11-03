@@ -1,7 +1,7 @@
+import { chatStyles } from '@/styles/chatStyle'
 import { Image } from 'expo-image'
 import { useEffect, useRef, useState } from 'react'
-import { View } from 'react-native'
-import { BarIndicator } from 'react-native-indicators'
+import { ActivityIndicator, View } from 'react-native'
 import BotChatBubble from "./chat Bubble/BotChatBubble"
 
 interface propType{
@@ -50,24 +50,24 @@ export default function BotMessage(props:propType) {
     },[message, message.content])
     
   return (
-    <View className='w-full items-start'>
-        <View className="max-w-8/12 flex flex-row gap-2 items-start">
-            <View className='bg-primary rounded-full flex justify-center items-center' style={{width:45,height:45}}>
+    <View style={{width:"100%",alignItems:"flex-start"}}>
+        <View style={{flexDirection:"row",gap:8,alignItems:"flex-start"}}>
+            <View style={chatStyles.botImageContainer}>
                 <Image source={require("@/assets/images/logo.gif")} style={{width:30,height:30}} alt="" />
             </View>
 
-            <View className='flex gap-1 items-start'>
+            <View style={chatStyles.botMessageView}>
                 {displayedMessage.map((item,index)=>{
                     return(
-                        <View key={index} className=" flex justify-start items-center text-primary ">
+                        <View key={index} style={chatStyles.botBubbleContainer}>
                             <BotChatBubble message={item} index ={index}/>
                         </View>
                     )
                 })}
                 {isTyping&&(
-                    <View className="justify-start items-center text-primary ">
-                        <View className='bg-primary max-h-11 text-background p-2.5 px-6 rounded-2xl text-sm' >
-                            <BarIndicator size={15} color='#e9d5ca'/>  
+                    <View style={chatStyles.botBubbleContainer}>
+                        <View style={chatStyles.botBubbleLoader} >
+                            <ActivityIndicator size="small" color='#e9d5ca'/>  
                         </View>
                     </View>
                 )}
@@ -76,5 +76,3 @@ export default function BotMessage(props:propType) {
     </View>
   )
 }
-
-

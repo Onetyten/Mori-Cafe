@@ -1,7 +1,7 @@
+import { chatStyles } from '@/styles/chatStyle'
 import { Image } from 'expo-image'
 import { useEffect, useRef, useState } from 'react'
-import { View } from 'react-native'
-import { BarIndicator } from 'react-native-indicators'
+import { ActivityIndicator, View } from 'react-native'
 import ErrorBubble from './chat Bubble/ErrorBubble'
 
 
@@ -52,22 +52,22 @@ export default function BotErrorMessage(props:propType) {
     },[message, message.content])
     
   return (
-    <View className="max-w-8/12 flex gap-2 items-start">
-        <View className='bg-primary0 min-w-10 size-10 rounded-full flex justify-center items-center'>
-            <Image source={require("@/assets/images/logo.gif")} className="size-6 sm:size-8" alt="" />
+    <View style={{width:"100%",alignItems:"flex-start"}}>
+        <View style={chatStyles.botImageContainer}>
+            <Image source={require("@/assets/images/logo.gif")} style={{width:30,height:30}} alt="" />
         </View>
-        <View className='flex flex-col gap-0.5 justify-start '>
+        <View style={chatStyles.botMessageView}>
             {displayedMessage.map((item,index)=>{
                 return(
-                    <View key={index} className=" flex justify-start items-center text-primary ">
+                    <View key={index} style={chatStyles.botBubbleContainer}>
                         <ErrorBubble message={item}/>
                     </View>
                 )
             })}
             {isTyping&&(
-                <View className=" flex justify-start items-center text-primary ">
-                    <View className='bg-secondary-100 p-2.5 px-6 rounded-2xl text-sm' >
-                    <BarIndicator/>  
+                <View style={chatStyles.botBubbleContainer}>
+                    <View style={chatStyles.botBubbleLoader}>
+                    <ActivityIndicator size="small" color='#e9d5ca'/>  
                     </View>
                 </View>
             )}

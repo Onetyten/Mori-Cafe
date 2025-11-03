@@ -1,5 +1,6 @@
+import { colors, GlobalStyle } from '@/styles/global'
 import api from '@/utils/api'
-import { Text, TouchableOpacity, View } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { clearDeleteCartItem } from '../store/cartDeleteSlice'
 import { deleteOrder } from '../store/OrderCartList'
@@ -20,21 +21,70 @@ export default function Comfirmation() {
 
   return (
     deletedItem&&
-    <View className='absolute w-full h-screen justify-center items-center z-70 bg-secondary-300/20'>
-        <View className='bg-white gap-4 justify-center items-center rounded-md' style={{width:"80%",padding:28}}>
-            <Text className='text-center text-secondary-100 font-outfit-regular mb-12 w-full text-3xl'>
+    <View style={styles.overlay}>
+        <View style={styles.modal}>
+            <Text style={[styles.text,GlobalStyle.Outfit_Regular_body]}>
                 Are you sure you want to remove {deletedItem.foodId.name} from your tab
             </Text>
             
-            <TouchableOpacity onPress={()=>{dispatch(clearDeleteCartItem())}}
-                className="rounded-sm w-full border-2 border-secondary-100 flex justify-center p-4 items-center">
-                <Text className='text-2xl text-secondary-100'>No</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={handleDelete}
-                className="rounded-sm w-full bg-red-500 border-2 border-red-500 flex justify-center p-4 items-center">
-                <Text className='text-2xl text-white'>Yes</Text>
-            </TouchableOpacity>
+            <View style={{flexDirection:"row",gap:4,width:"100%"}}>
+                <TouchableOpacity style={[styles.button,styles.noButton]} onPress={()=>{dispatch(clearDeleteCartItem())}}>
+                    <Text style={[styles.noText,GlobalStyle.Outfit_Regular_body]} >No</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={[styles.button,styles.yesButton]} onPress={handleDelete}>
+                    <Text style={[styles.yesText,GlobalStyle.Outfit_Regular_body]}>Yes</Text>
+                </TouchableOpacity>
+            </View>
         </View>
     </View>
   )
 }
+
+const styles = StyleSheet.create({
+  overlay: {
+    position: "absolute",
+    width: "100%",
+    height: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+    zIndex: 70,
+    backgroundColor:"#592c0d40"
+  },
+  modal: {
+    backgroundColor: "#ffffff",
+    borderRadius: 8,
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 28,
+    gap: 16,
+    width: "80%",
+  },
+  text: {
+    textAlign: "center",
+    color: colors.secondary,
+    fontFamily: "Outfit_Regular",
+    width: "100%",
+    fontSize: 24,
+  },
+  button: {
+    borderRadius: 4,
+    width: "50%",
+    padding: 8,
+    justifyContent: "center",
+    alignItems: "center",
+    borderWidth: 2,
+  },
+  noButton: {
+    borderColor: colors.secondary,
+  },
+  noText: {
+    color: colors.secondary,
+  },
+  yesButton: {
+    backgroundColor: colors.danger,
+    borderColor: colors.danger,
+  },
+  yesText: {
+    color: "#ffffff",
+  },
+});

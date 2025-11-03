@@ -1,3 +1,5 @@
+import { chatStyles } from '@/styles/chatStyle'
+import { GlobalStyle } from '@/styles/global'
 import { Text } from 'react-native'
 
 
@@ -9,7 +11,7 @@ interface propTypes{
 export default function BotChatBubble(props:propTypes) {
     const {message,index} = props
   return (
-        <Text className={`bg-primary text-background text-xl p-2.5 px-6 font-outfit-regular rounded-2xl ${index===0?"rounded-tl-none":""}`} >
+        <Text style={[GlobalStyle.Outfit_Regular_body,chatStyles.botchatBubble,index === 0&&chatStyles.firstBotBubble]} >
             {message}
         </Text>
   )

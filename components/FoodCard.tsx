@@ -1,0 +1,94 @@
+import { colors, GlobalStyle } from "@/styles/global"
+import { Image, ImageBackground } from "expo-image"
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native"
+import type { FoodType } from "../types/type"
+
+
+
+interface propType{
+    food:FoodType
+    onClick:(food:FoodType)=>void
+}
+
+export default function FoodCard(props:propType) {
+    const {food,onClick} = props
+  return (
+    <View style={{width:"100%",alignItems:"center"}}>
+        <TouchableOpacity style={Styles.parent} onPress={()=>{onClick(food)}}>
+            <ImageBackground source={require("@/assets/images/patterns/pattern.webp")} imageStyle={Styles.ImageBackground}>
+                <View style={Styles.priceView}>
+                    <Text style={[Styles.priceText,GlobalStyle.Outfit_Bold_body]}>&#8358;{food.price}</Text>
+                </View>
+                <View style={{width:"100%", height:"100%",padding:16,justifyContent:"space-between",alignItems:"center"}}>
+                    <View style={Styles.foodImageView}>
+                        <Image source={{uri:food.imageUrl}} style={{objectFit:"contain",width:160,height:160}} className="size-32 flex-1 object-contain rounded-full" />
+                    </View>
+                    <View style={{gap:2,width:"100%"}}>
+                        <View>
+                            <Text style={[GlobalStyle.Outfit_Bold_button,Styles.nameText]}>{food.name}</Text>
+                        </View>
+                        <View className=" text-primary flex justify-center items-center">
+                            <Text style={[GlobalStyle.Outfit_Bold_small,Styles.calText]}>{food.calories} cal</Text>
+                        </View>
+                    </View>
+                </View>
+            </ImageBackground>
+        </TouchableOpacity>
+    </View>
+
+  )
+}
+
+const Styles = StyleSheet.create({
+    nameText:{
+        color:colors.secondary,
+        textAlign:"center",
+        textTransform:"capitalize"
+    },
+    calText:{
+        color:colors.muted,
+        textAlign:"center",
+        textTransform:"capitalize"
+    },
+    foodImageView:{
+        justifyContent:"center",
+        alignItems:"center",
+        width:128,
+        height:128,
+        borderRadius:"100%"
+    },
+    ImageBackground:{
+        height:240,
+        padding:12,
+        width:"100%",
+        gap:4,
+        justifyContent:"center",
+        alignItems:"center",
+    },
+    parent:{
+        overflow:"hidden",
+        borderRadius:10,
+        width:"98%",
+        height:240,
+    },
+    priceView:{
+        width:64,
+        height:40,
+        zIndex:30,
+        right:0,
+        justifyContent:"center",
+        alignItems:"center",
+        top:0,
+        borderBottomLeftRadius:16,
+        position:"absolute",
+        backgroundColor:"#395a3f"
+    },
+    priceText:{
+        fontSize:20,
+        lineHeight:28,
+        fontFamily:"Outfit_Bold",
+        color:"#e9d5ca"
+
+    },
+
+})

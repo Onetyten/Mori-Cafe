@@ -1,4 +1,5 @@
-import { Text, TouchableOpacity, View } from 'react-native'
+import { colors, GlobalStyle } from '@/styles/global'
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 interface optionType{
   name:string,
   onClick:()=>void
@@ -12,12 +13,12 @@ interface propType{
 export default function OptionsInput(props:propType) {
   const {options} = props
   return (
-    <View className="w-full justify-end flex mt-6">
-      <View className="flex gap-2 max-w-8/12 flex-row justify-end">
+    <View style={styles.container}>
+      <View style={styles.optionRow}>
         {options.map((item,index)=>{
           return(
-            <TouchableOpacity onPress={item.onClick} key={index} className="p-2 border-2 border-primary rounded-md">
-              <Text className='font-outfit-regular text-nowrap text-2xl text-primary'>{item.name}</Text>
+            <TouchableOpacity onPress={item.onClick} key={index} style={styles.button} >
+              <Text numberOfLines={1} ellipsizeMode='tail' style={[GlobalStyle.Outfit_Regular_body,styles.text]}>{item.name}</Text>
             </TouchableOpacity>
           )
         })}
@@ -25,3 +26,27 @@ export default function OptionsInput(props:propType) {
     </View>
   )
 }
+
+const styles = StyleSheet.create({
+  container: {
+    width: '100%',
+    alignItems:"flex-end",
+    marginTop: 16,
+  },
+  optionRow: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    gap: 8,
+    maxWidth: '80%',
+  },
+  button: {
+    padding: 8,
+    borderWidth: 1,
+    borderColor: colors.primary,
+    borderRadius: 6,
+  },
+  text: {
+    color: colors.primary,
+  
+  },
+})

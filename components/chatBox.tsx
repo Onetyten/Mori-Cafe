@@ -1,11 +1,8 @@
 import { useRef, useState } from "react"
+import type { messageListType, } from "../types/type"
 import BotMessage from "./message/BotMessage"
 import ChatMessage from "./message/ChatMessage"
 import OptionsInput from "./OptionsInput"
-// import SubCarousel from "./SubCarousel"
-import type { messageListType, } from "../types/type"
-// import FoodCarousel from "./FoodCarousel"
-// import NumberInput from "./NumberInput"
 // import CustomisationList from "./customisationList"
 // import CartFeedBack from "./CartFeedBack"
 // import CheckoutList from "./CheckoutList"
@@ -13,7 +10,7 @@ import type { messageListType, } from "../types/type"
 // import OrderFeedback from "./OrderFeedback"
 // import OrderReceipt from "./OrderReceipt"
 // import OrderHandler from "./OrderHandler"
-import { ScrollView, View } from "react-native"
+import { ScrollView, StyleSheet, View } from "react-native"
 import useAddToCart from "../hooks/useAddToCart"
 import { useChatInit } from "../hooks/useChatInit"
 import useConfirmToCart from "../hooks/useConfirmToCart"
@@ -24,8 +21,10 @@ import useOptionCount from "../hooks/useOptionCount"
 import useProceedPayment from "../hooks/useProceedPayment"
 import useSubcategory from "../hooks/useSubcategory"
 import BotErrorMessage from "./message/BotErrorMessage"
+import FoodCarousel from "./message/FoodCarousel"
+import SubCarousel from "./message/SubCarousel"
 import SearchBar from "./searchbar/SearchBar"
-// import SearchBar from "./SearchBar"
+import NumberInput from "./message/NumberInput"
 // import ReceiptCarousel from "./ReceiptCarousel.tsx"
 
 
@@ -52,14 +51,14 @@ export default function ChatBox() {
     const ProceedToPayment = useProceedPayment(setShowOptions,setMessageList)
     
   return (
-    <View className="w-full h-full flex px-6 gap-4">
-        <ScrollView contentContainerStyle={{justifyContent:"flex-start",alignItems:"center"}} className="flex w-full chat-box font-outfit text-sm overflow-y-scroll overflow-x-hidden  scroll-hide text-secondary-100 flex-1 flex-col mt-6 gap-3 h-full">
-            <View className="w-full gap-6 justify-start">
+    <View style={chatStyle.container}>
+        <ScrollView showsVerticalScrollIndicator={false} style={chatStyle.scrollView} contentContainerStyle={chatStyle.scrollViewStyle} >
+            <View style={chatStyle.messageView}>
                 {messagelist.map((item,index:number)=>{
                     return(
                             item.type === "message"?item.sender==="bot"?<BotMessage key={index} message={item}/>:item.sender === "bot-error"?<BotErrorMessage key={index} message={item}/>:<ChatMessage message={item} key={index}/>
-                            // :item.type === "subcarousel"?<SubCarousel message={item} key={index} fetchFoodList={fetchFoodList}  />
-                            // :item.type === "number-input"?<NumberInput message={item} key={index} confirm={comfirmToCart} />
+                            :item.type === "subcarousel"?<SubCarousel message={item} key={index} fetchFoodList={fetchFoodList}  />
+                            :item.type === "number-input"?<NumberInput message={item} key={index} confirm={comfirmToCart} />
                             // :item.type === "cart-feedback"?<CartFeedBack message={item} key={index} isAdding={isAdding}/>
                             // :item.type === "order-handle"?<OrderHandler message={item} key={index}/>
                             // :item.type === "order-feedback"?<OrderFeedback key={index}/>
@@ -67,16 +66,15 @@ export default function ChatBox() {
                             // :item.type === "cart-list-feedback"?<CheckoutList key={index} message={item} setShowOptions={setShowOptions} setOptions={setOptions} getSomethingElseMessage = {getSomethingElseMessage} setMessageList={setMessageList}/>
                             // :item.type === "edit-list"?<CustomisationList key={index} message={item} addToCart = {addToCart} />
                             // :item.type === "enter-info"?<UserInfoInput key={index} setMessageList={setMessageList} setOptions={setOptions} setShowOptions={setShowOptions} getSomethingElseMessage={getSomethingElseMessage} ProceedToPayment={ProceedToPayment} />
-                            // :item.type === "food-list"?<FoodCarousel key={index} setShowOptions={setShowOptions} setMessageList={setMessageList} setLoading={setLoading} message={item} onClick={optionCount}/>
+                            :item.type === "food-list"?<FoodCarousel key={index} setShowOptions={setShowOptions} setMessageList={setMessageList} setLoading={setLoading} message={item} onClick={optionCount}/>
                             // :item.type === "receipt-list"?<ReceiptCarousel key={index} setShowOptions={setShowOptions} setMessageList={setMessageList} setLoading={setLoading} message={item}/>
-                            :''
+                            :null
                     )
                 })}
             </View>
             {showoptions&& <OptionsInput options = {options}/>}
-            <View className="h-28">
 
-            </View>
+            <View style={{height:64}}/>
           
         </ScrollView>
         <SearchBar messagelist={messagelist} setMessageList={setMessageList} setOptions={setOptions} setShowOptions={setShowOptions} setLoading={setLoading} loading = {loading} showButtons={showButtons} setShowButtons={setShowButtons}/>
@@ -84,3 +82,29 @@ export default function ChatBox() {
     
   )
 }
+
+const chatStyle = StyleSheet.create({
+    container:{
+        width:"100%",
+        height:"100%",
+        gap:16,
+        paddingHorizontal:24
+    },
+    messageView:{
+        width:"100%",
+        gap: 16,
+        justifyContent:"flex-start"
+    },
+    scrollView: {
+        flex: 1,          
+        width: "100%",
+    },
+    scrollViewStyle:{
+        width:"100%",
+        display:"flex",
+        marginTop:8,
+        gap:2,
+        justifyContent:"flex-start",
+        alignItems:"center",
+    }
+})

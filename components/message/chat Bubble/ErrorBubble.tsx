@@ -1,3 +1,5 @@
+import { chatStyles } from '@/styles/chatStyle';
+import { colors, GlobalStyle } from '@/styles/global';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { Text, View } from 'react-native';
 
@@ -8,9 +10,10 @@ interface propTypes{
 export default function ErrorBubble(props:propTypes) {
     const {message} = props
   return (
-        <View className='bg-primary text-background flex gap-1 rounded-2xl text-xs p-2.5 px-4 rounded-tl-none' >
-            <MaterialIcons name='error' size={24} className='text-red-500 text-xl'/>
-            <Text>{message}</Text>
+        <View style={[chatStyles.botchatBubble,chatStyles.firstBotBubble]} >
+            <MaterialIcons name='error' size={24} style={{color:colors.danger}}/>
+            <Text style={GlobalStyle.Outfit_Regular_body}>{message}</Text>
         </View>
   )
 }
+

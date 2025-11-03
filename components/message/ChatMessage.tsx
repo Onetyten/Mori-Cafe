@@ -1,7 +1,7 @@
+import { chatStyles } from "@/styles/chatStyle"
+import { GlobalStyle } from "@/styles/global"
 import { useEffect, useRef, useState } from "react"
-import { Text, View } from "react-native"
-import { BarIndicator } from 'react-native-indicators'
-
+import { ActivityIndicator, Text, View } from "react-native"
 
 interface propType{
     message:{
@@ -50,21 +50,21 @@ export default function ChatMessage (props:propType) {
 
 
   return (
-        <View className="w-full flex gap-2 items-end">
-            <View className='flex max-w-8/12 flex-col gap-1 items-end w-full '>
+        <View style={{width:"100%",alignItems:"flex-end",gap:8}}>
+            <View style={chatStyles.chatMessageView}>
                 {displayedMessage.map((item,index)=>{
                     return(
-                        <View key={index} className=" flex justify-end items-center text-primary ">
-                            <Text className={`bg-secondary-200 text-white text-xl p-2.5 px-4 sm:px-6 font-outfit-regular rounded-2xl ${index===0?"rounded-tr-none":""}`} >
+                        <View key={index} style={chatStyles.chatBubbleContainer}>
+                            <Text style={[GlobalStyle.Outfit_Regular_body,chatStyles.chatBubble,index === 0&&chatStyles.firstChatBubble]} >
                                 {item}
                             </Text>
                         </View>
                     )
                 })}
                 {isTyping&&(
-                    <View className="justify-start items-center">
-                        <View className='bg-secondary-200 max-h-11 text-background p-2.5 px-6 rounded-2xl text-sm' >
-                            <BarIndicator size={15} color='#588159'/>  
+                    <View style={chatStyles.chatBubbleLoaderContainer}>
+                        <View style={chatStyles.chatBubbleLoader} >
+                            <ActivityIndicator size="small" color='#e9d5ca'/>   
                         </View>
                     </View>
                 )}

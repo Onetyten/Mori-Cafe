@@ -1,19 +1,19 @@
-import storage from 'redux-persist/lib/storage'
-import {combineReducers, configureStore} from '@reduxjs/toolkit'
-import {persistReducer, persistStore} from 'redux-persist'
-import userReducer from '../store/userSlice'
-import currentFoodReducer from '../store/currentFoodSlice'
+import AsyncStorage from "@react-native-async-storage/async-storage"
+import { combineReducers, configureStore } from '@reduxjs/toolkit'
+import { persistReducer, persistStore } from 'redux-persist'
+import cartDelReducer from "../store/cartDeleteSlice"
 import currentCartReducer from "../store/currentCartItem"
-import cartDelReducer from "../store/cartDeleteSlice";
-import orderCartListReducer from "../store/OrderCartList"
+import currentFoodReducer from '../store/currentFoodSlice'
 import newOrderReducer from "../store/newOrderSlice"
+import orderCartListReducer from "../store/OrderCartList"
 import pendingOrderReducer from "../store/pendingOrderSlice"
+import userReducer from '../store/userSlice'
 
 
 const persistConfig = {
     key:'root',
     version:1,
-    storage,
+    storage:AsyncStorage,
     whitelist:['user','pendingOrders']
 }
 
