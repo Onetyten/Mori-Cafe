@@ -26,6 +26,7 @@ import FoodCarousel from "./message/FoodCarousel"
 import NumberInput from "./message/NumberInput"
 import SubCarousel from "./message/SubCarousel"
 import SearchBar from "./searchbar/SearchBar"
+import CheckoutList from "./message/CheckoutList"
 // import ReceiptCarousel from "./ReceiptCarousel.tsx"
 
 
@@ -64,7 +65,7 @@ export default function ChatBox() {
                             // :item.type === "order-handle"?<OrderHandler message={item} key={index}/>
                             // :item.type === "order-feedback"?<OrderFeedback key={index}/>
                             // :item.type === "order-receipt"?<OrderReceipt key={index} setMessageList={setMessageList} message={item}/>
-                            // :item.type === "cart-list-feedback"?<CheckoutList key={index} message={item} setShowOptions={setShowOptions} setOptions={setOptions} getSomethingElseMessage = {getSomethingElseMessage} setMessageList={setMessageList}/>
+                            :item.type === "cart-list-feedback"?<CheckoutList key={index} message={item} setShowOptions={setShowOptions} setOptions={setOptions} getSomethingElseMessage = {getSomethingElseMessage} setMessageList={setMessageList}/>
                             :item.type === "edit-list"?<CustomisationList key={index} message={item} addToCart = {addToCart} />
                             // :item.type === "enter-info"?<UserInfoInput key={index} setMessageList={setMessageList} setOptions={setOptions} setShowOptions={setShowOptions} getSomethingElseMessage={getSomethingElseMessage} ProceedToPayment={ProceedToPayment} />
                             :item.type === "food-list"?<FoodCarousel key={index} setShowOptions={setShowOptions} setMessageList={setMessageList} setLoading={setLoading} message={item} onClick={optionCount}/>
