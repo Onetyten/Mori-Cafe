@@ -14,6 +14,9 @@ export const chatStyles = StyleSheet.create({
         padding:8,
         borderRadius:8,
     },
+    chatBubbleText:{
+        color:"#fff",
+    },
     firstBotBubble: {
         borderTopLeftRadius: 0,
     },
@@ -47,6 +50,10 @@ export const chatStyles = StyleSheet.create({
         padding:10,
         paddingHorizontal:24,
         borderRadius:8,
+    },
+    oneWord:{
+        textTransform:"capitalize",
+        paddingHorizontal:30
     },
     botImageContainer:{
         width:45,

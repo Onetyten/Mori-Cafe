@@ -43,6 +43,7 @@ const styles = StyleSheet.create({
     padding: 8,
     borderWidth: 1,
     borderColor: colors.primary,
+    backgroundColor:colors.background,
     borderRadius: 6,
   },
   text: {

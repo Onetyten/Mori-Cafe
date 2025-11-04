@@ -1,8 +1,9 @@
 
 import { chatStyles } from '@/styles/chatStyle'
+import { colors, GlobalStyle } from '@/styles/global'
 import { toWords } from 'number-to-words'
 import { useEffect, useState } from 'react'
-import { ActivityIndicator, TextInput, TouchableOpacity, View } from 'react-native'
+import { ActivityIndicator, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import type { FoodType } from '../../types/type'
 
 
@@ -21,14 +22,19 @@ export default function NumberInput(props:propType) {
   const [value,setValue] = useState(1)
   const [confirmed,setConfirmed] = useState(false)
   const [isTyping,setIsTyping] = useState(true)
+  const [errorMessage,setErrorMessage] = useState("")
 
-const handleChange = (text: string) => {
-    const val = parseInt(text);
-    if (isNaN(val)) setValue(1);
-    else if (val > 10) setValue(10);
-    else if (val < 1) setValue(1);
-    else setValue(val);
-  };
+  const handleConfirm = ()=>{
+    if (value < 1) {
+      return setErrorMessage("Minimum 1 item required.");
+    }
+    if (value > 10) {
+      return setErrorMessage("Maximum 10 items allowed.");
+    }
+    setErrorMessage("")
+    confirm(value,message.content[0])
+    setConfirmed(true)
+  }
 
   useEffect(()=>{
     setIsTyping(true)
@@ -37,42 +43,37 @@ const handleChange = (text: string) => {
     },1000)
   },[confirmed])
 
+
   if (!confirmed){
     return(
-        <View className="w-full justify-end flex">
-          <View  className="flex gap-2 max-w-8/12 justify-end">
-        <TextInput
-            value={value}
-            onChangeText={handleChange}
-            keyboardType="numeric"
-            style={{
-                padding: 8,
-                borderWidth: 1,
-                width: 40,
-                borderRadius: 4,
-                textAlign: "center",
-            }}
-            />
-            <TouchableOpacity onPress={()=>{
-                confirm(value,message.content[0])
-                setConfirmed(true)
-              }}
-              className="p-2 border rounded-sm cursor-pointer hover:bg-secondary-300/10">
-                  Confirm
+        <View style={styles.inputParent}>
+          <View style={styles.inputContainer}>
+          
+            <TextInput 
+              value={value>0?String(value):""}
+              onChangeText={text=>setValue(Number(text) || 0)}
+              keyboardType="numeric"
+              style={[{ padding: 8, borderWidth: 1, width: 40, borderRadius: 4, textAlign: "center"},GlobalStyle.Outfit_Regular_body]} />
+
+            <TouchableOpacity onPress={handleConfirm} style={styles.confirmText} >
+                <Text style={GlobalStyle.Outfit_Regular_body} >Confirm</Text>
             </TouchableOpacity>
+            
           </View>
+          {errorMessage.length>0 && <Text style={[styles.errorText,GlobalStyle.Outfit_Regular_small]}>{errorMessage}</Text> }
+          
         </View>
     )
   }
 
 
   return (
-      <View className='flex w-full flex-col gap-0.5 justify-end'>
+      <View style={{width:"100%",alignItems:"flex-end",gap:8}}>
           {!isTyping?
-          (<View className=" flex justify-end items-center text-primary ">
-              <p className='bg-secondary-200 text-white rounded-tr-none sm:text-sm text-xs p-2.5 px-4 sm:px-6 rounded-2xl capitalize' >
+          (<View style={chatStyles.chatBubbleContainer}>
+              <Text style={[GlobalStyle.Outfit_Regular_body,chatStyles.chatBubble,chatStyles.firstChatBubble,chatStyles.oneWord ]} >
                   {toWords(value)}
-              </p>
+              </Text>
           </View>):(
             <View style={chatStyles.chatBubbleLoaderContainer}>
                 <View style={chatStyles.chatBubbleLoader} >
@@ -83,3 +84,27 @@ const handleChange = (text: string) => {
       </View>
   )
 }
+
+
+const styles = StyleSheet.create({
+  inputParent:{
+    width:"100%",
+    gap:4,
+    alignItems:"flex-end",
+  },
+  inputContainer:{
+    maxWidth:"80%",
+    gap:4,
+    flexDirection:"row",
+    justifyContent:"flex-end"
+  },
+  confirmText:{
+    padding:8,
+    borderWidth:1,
+    borderRadius:4,
+  },
+  errorText:{
+    color:colors.danger
+  },
+
+})

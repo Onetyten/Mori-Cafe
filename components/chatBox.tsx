@@ -3,7 +3,6 @@ import type { messageListType, } from "../types/type"
 import BotMessage from "./message/BotMessage"
 import ChatMessage from "./message/ChatMessage"
 import OptionsInput from "./OptionsInput"
-// import CustomisationList from "./customisationList"
 // import CartFeedBack from "./CartFeedBack"
 // import CheckoutList from "./CheckoutList"
 // import UserInfoInput from "./UserInfoInput"
@@ -21,10 +20,12 @@ import useOptionCount from "../hooks/useOptionCount"
 import useProceedPayment from "../hooks/useProceedPayment"
 import useSubcategory from "../hooks/useSubcategory"
 import BotErrorMessage from "./message/BotErrorMessage"
+import CartFeedBack from "./message/CartFeedBack"
+import CustomisationList from "./message/CustomisationList"
 import FoodCarousel from "./message/FoodCarousel"
+import NumberInput from "./message/NumberInput"
 import SubCarousel from "./message/SubCarousel"
 import SearchBar from "./searchbar/SearchBar"
-import NumberInput from "./message/NumberInput"
 // import ReceiptCarousel from "./ReceiptCarousel.tsx"
 
 
@@ -59,12 +60,12 @@ export default function ChatBox() {
                             item.type === "message"?item.sender==="bot"?<BotMessage key={index} message={item}/>:item.sender === "bot-error"?<BotErrorMessage key={index} message={item}/>:<ChatMessage message={item} key={index}/>
                             :item.type === "subcarousel"?<SubCarousel message={item} key={index} fetchFoodList={fetchFoodList}  />
                             :item.type === "number-input"?<NumberInput message={item} key={index} confirm={comfirmToCart} />
-                            // :item.type === "cart-feedback"?<CartFeedBack message={item} key={index} isAdding={isAdding}/>
+                            :item.type === "cart-feedback"?<CartFeedBack message={item} key={index} isAdding={isAdding}/>
                             // :item.type === "order-handle"?<OrderHandler message={item} key={index}/>
                             // :item.type === "order-feedback"?<OrderFeedback key={index}/>
                             // :item.type === "order-receipt"?<OrderReceipt key={index} setMessageList={setMessageList} message={item}/>
                             // :item.type === "cart-list-feedback"?<CheckoutList key={index} message={item} setShowOptions={setShowOptions} setOptions={setOptions} getSomethingElseMessage = {getSomethingElseMessage} setMessageList={setMessageList}/>
-                            // :item.type === "edit-list"?<CustomisationList key={index} message={item} addToCart = {addToCart} />
+                            :item.type === "edit-list"?<CustomisationList key={index} message={item} addToCart = {addToCart} />
                             // :item.type === "enter-info"?<UserInfoInput key={index} setMessageList={setMessageList} setOptions={setOptions} setShowOptions={setShowOptions} getSomethingElseMessage={getSomethingElseMessage} ProceedToPayment={ProceedToPayment} />
                             :item.type === "food-list"?<FoodCarousel key={index} setShowOptions={setShowOptions} setMessageList={setMessageList} setLoading={setLoading} message={item} onClick={optionCount}/>
                             // :item.type === "receipt-list"?<ReceiptCarousel key={index} setShowOptions={setShowOptions} setMessageList={setMessageList} setLoading={setLoading} message={item}/>

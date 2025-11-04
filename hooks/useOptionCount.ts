@@ -1,7 +1,7 @@
 import React from 'react'
-import type { FoodType, messageListType } from '../types/type'
 import { useDispatch } from 'react-redux'
 import { setFood } from '../store/currentFoodSlice'
+import type { FoodType, messageListType } from '../types/type'
 
 
 
@@ -22,7 +22,7 @@ export default function useOptionCount(setShowOptions:React.Dispatch<React.SetSt
         setTimeout(()=>{
             const newInput = {type:"number-input",next:()=>{}, sender:"user",content:[food]}
             setMessageList((prev)=>[...prev, newInput ])
-        },1000)
+        },2000)
     }
 
     return optionCount

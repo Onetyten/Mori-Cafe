@@ -58,7 +58,7 @@ export default function SubCarousel(props:propType) {
                 <TouchableOpacity onPress={()=>{fetchFoodList(`/food/list?sub_id=${item._id}`,"Which one")}} key={item._id} className="w-[49%]">
                     <ImageBackground imageStyle={{overflow:"hidden",borderRadius:10}} source={require("../../assets/images/patterns/pattern.webp")}  className="hover:bg-secondary-200/20 hover:shadow-xl shadow-secondary-100/10 cursor-pointer h-52 flex justify-center items-center flex-col overflow-hidden rounded-3xl bg-auto relative bg-center" style={{height:200}}>
                         <View className="flex-1 z-20 flex justify-center items-center text-center h-full w-full">
-                            <Image source={{uri:item.imageUrl}} style={{objectFit:"contain",width:128,height:128}} className="size-32 object-contain rounded-full" />
+                            <Image source={{uri:item.imageUrl}} style={{objectFit:"contain",width:128,height:128,borderRadius:9999}} className="size-32 object-contain rounded-full" />
                         </View>
                         <View className="capitalize text-center ">
                             <Text className="text-center text-secondary-100 text-2xl capitalize font-outfit-bold mb-3">{item.name}</Text>

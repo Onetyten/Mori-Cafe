@@ -69,7 +69,7 @@ export default function FoodCarousel(props:propType) {
       }
 
     return (
-        <Swiper autoplay horizontal autoplayTimeout={2} activeDot={<View style={[Styles.dot,Styles.activeDot]} />} dot={<View style={[Styles.dot,Styles.passiveDot]} />} loop showsPagination={true} height={290}>
+        <Swiper autoplay horizontal autoplayTimeout={5} activeDot={<View style={[Styles.dot,Styles.activeDot]} />} dot={<View style={[Styles.dot,Styles.passiveDot]} />} loop showsPagination={true} height={290}>
             {foodList.map((item) => (
                 <View key={item._id}>
                     <FoodCard food={item} onClick={onClick}/>
