@@ -1,5 +1,4 @@
 import { colors } from '@/styles/global';
-import { ImageBackground } from 'expo-image';
 import { ChevronDown } from 'lucide-react-native';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
@@ -45,9 +44,9 @@ export default function OptionSelect(props: propType) {
           if (option) setSelectedOption(option);
         }}
         renderRightIcon={() => (
-          <ImageBackground source={require("../../../assets/images/patterns/pattern.webp")} style={styles.iconContainer}>
+          <View style={styles.iconContainer}>
             <ChevronDown color={colors.primary} size={20} />
-          </ImageBackground>
+          </View>
         )}
         style={styles.dropdown}
         placeholderStyle={styles.placeholder}

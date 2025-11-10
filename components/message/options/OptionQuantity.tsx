@@ -1,6 +1,5 @@
 import { colors, GlobalStyle } from '@/styles/global';
 import type { customisationType, tweakType } from '@/types/type';
-import { ImageBackground } from 'expo-image';
 import { Minus, Plus } from 'lucide-react-native';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
@@ -53,9 +52,9 @@ export default function OptionQuantity(props:propType) {
     <View style={styles.parent}>
 
         <TouchableOpacity style={styles.button} onPress={()=>handleSetSize(-1)}>
-            <ImageBackground style={styles.imageBackground} source={require("../../../assets/images/patterns/pattern.webp")} >
+             <View style={styles.imageBackground}>
                  <Minus color={colors.primary} size={20} />
-            </ImageBackground>
+            </View>
         </TouchableOpacity>
 
         <View style={styles.textContainer}>
@@ -66,9 +65,9 @@ export default function OptionQuantity(props:propType) {
         </View>
 
         <TouchableOpacity style={styles.button} onPress={()=>handleSetSize(1)}>
-            <ImageBackground source={require("../../../assets/images/patterns/pattern.webp")} style={styles.imageBackground}>
+            <View style={styles.imageBackground}>
                 <Plus color={colors.primary} size={20} />
-            </ImageBackground>
+            </View>
         </TouchableOpacity>
  
     </View>
@@ -96,6 +95,7 @@ const styles = StyleSheet.create({
     flex: 1,
     // alignSelf: "stretch",
     justifyContent: "center",
+    backgroundColor:"#a2b18a30",
     alignItems: "center",
   },
   textContainer: {

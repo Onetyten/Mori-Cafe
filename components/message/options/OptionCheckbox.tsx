@@ -1,6 +1,5 @@
 import { colors, GlobalStyle } from '@/styles/global';
 import { Checkbox } from "expo-checkbox";
-import { ImageBackground } from 'expo-image';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import type { customisationType, tweakType } from '../../../types/type';
@@ -35,9 +34,9 @@ export default function OptionCheckbox(props:propType) {
     <View style={styles.parent}>
             <Text style={[GlobalStyle.Outfit_Regular_body,{textTransform:"capitalize",textAlign:"center",paddingHorizontal:8,color:colors.primary}]}>{edit.name}</Text>
 
-            <ImageBackground style={styles.imageBackground} source={require("../../../assets/images/patterns/pattern.webp")} >
+            <View style={styles.imageBackground} >
                 <Checkbox color={colors.primary} value={isChecked} onValueChange={setIsChecked}/>
-            </ImageBackground>
+            </View>
     </View>
   )
 }

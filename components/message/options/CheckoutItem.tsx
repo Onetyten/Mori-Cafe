@@ -1,5 +1,4 @@
 import { colors, GlobalStyle } from '@/styles/global';
-import { ImageBackground } from 'expo-image';
 import { Minus, Plus } from 'lucide-react-native';
 import { useEffect, useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
@@ -33,57 +32,34 @@ export default function CheckoutItem(props:propType) {
   return (
     <View style={styles.parent}>
         <TouchableOpacity style={styles.button} onPress={()=>handleChange(-1)}>
-             <ImageBackground style={styles.imageBackground} source={require("../../../assets/images/patterns/pattern.webp")} >
+             <View style={styles.imageBackground} >
                   <Minus color={colors.primary} size={20} />
-             </ImageBackground>
+             </View>
         </TouchableOpacity>
 
         <View style={styles.textContainer}>
-            <Text style={[GlobalStyle.Outfit_Regular_body,{textTransform:"capitalize",textAlign:"center",color:colors.primary}]}>
+            <Text style={[GlobalStyle.Outfit_Semibold_body,{textTransform:"capitalize",textAlign:"center",color:colors.primary}]}>
                 {food.foodId.name}
             </Text>
-            <View style={{width:"100%",flexDirection:"row",justifyContent:"space-between",paddingHorizontal:10}}>
-                <Text style={[GlobalStyle.Outfit_Regular_body,{color:colors.primary}]}>
+            <View style={{width:"100%",flexDirection:"row",justifyContent:"center",paddingHorizontal:10, gap:6}}>
+                <Text style={[GlobalStyle.Outfit_Regular_small,{color:colors.primary}]}>
                     &#8358; {food.totalPrice}
                 </Text>
-                <Text style={[GlobalStyle.Outfit_Regular_body,{color:colors.primary}]}>
+                <Text style={[GlobalStyle.Outfit_Regular_small,{color:colors.primary}]}>
                    x {quantity}
                 </Text>
             </View>
          </View>
 
         <TouchableOpacity style={styles.button} onPress={()=>handleChange(1)}>
-            <ImageBackground source={require("../../../assets/images/patterns/pattern.webp")} style={styles.imageBackground}>
+            <View style={styles.imageBackground}>
                 <Plus color={colors.primary} size={20} />
-            </ImageBackground>
+            </View>
         </TouchableOpacity>
 
     </View>
   )
 }
-
-
-
-//   return (
-//     <View style={styles.parent}>
-
-//         <TouchableOpacity style={styles.button} onPress={()=>handleSetSize(-1)}>
-//             <ImageBackground style={styles.imageBackground} source={require("../../../assets/images/patterns/pattern.webp")} >
-//                  <Minus color={colors.primary} size={20} />
-//             </ImageBackground>
-//         </TouchableOpacity>
-
-
-
-//         <TouchableOpacity style={styles.button} onPress={()=>handleSetSize(1)}>
-//             <ImageBackground source={require("../../../assets/images/patterns/pattern.webp")} style={styles.imageBackground}>
-//                 <Plus color={colors.primary} size={20} />
-//             </ImageBackground>
-//         </TouchableOpacity>
- 
-//     </View>
-//   )
-// }
 
 const styles = StyleSheet.create({
   parent: {
@@ -105,6 +81,7 @@ const styles = StyleSheet.create({
   imageBackground: {
     flex: 1,
     // alignSelf: "stretch",
+    backgroundColor:"#a2b18a30",
     justifyContent: "center",
     alignItems: "center",
   },
@@ -112,7 +89,7 @@ const styles = StyleSheet.create({
     flexShrink: 1,
     paddingHorizontal: 4,
     padding:2,
-    gap:20,
+    gap:8,
     alignItems:"center"
   },
 });
