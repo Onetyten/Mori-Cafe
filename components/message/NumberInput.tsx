@@ -34,6 +34,7 @@ export default function NumberInput(props:propType) {
     setErrorMessage("")
     confirm(value,message.content[0])
     setConfirmed(true)
+    
   }
 
   useEffect(()=>{
@@ -48,15 +49,14 @@ export default function NumberInput(props:propType) {
     return(
         <View style={styles.inputParent}>
           <View style={styles.inputContainer}>
-          
             <TextInput 
               value={value>0?String(value):""}
               onChangeText={text=>setValue(Number(text) || 0)}
               keyboardType="numeric"
-              style={[{ padding: 8, borderWidth: 1, width: 40, borderRadius: 4, textAlign: "center"},GlobalStyle.Outfit_Regular_body]} />
+              style={[{ width: 40},styles.button,styles.text,GlobalStyle.Outfit_Regular_body]} />
 
-            <TouchableOpacity onPress={handleConfirm} style={styles.confirmText} >
-                <Text style={GlobalStyle.Outfit_Regular_body} >Confirm</Text>
+            <TouchableOpacity onPress={handleConfirm} style={styles.button} >
+                <Text style={[GlobalStyle.Outfit_Regular_body,styles.text]} >Confirm</Text>
             </TouchableOpacity>
             
           </View>
@@ -105,6 +105,18 @@ const styles = StyleSheet.create({
   },
   errorText:{
     color:colors.danger
+  },
+  button: {
+    padding: 8,
+    borderWidth: 1,
+    textAlign:"center",
+    borderColor: colors.primary,
+    backgroundColor:colors.background,
+    borderRadius: 6,
+  },
+  text: {
+    color: colors.primary,
+  
   },
 
 })

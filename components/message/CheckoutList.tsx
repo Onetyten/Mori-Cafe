@@ -16,8 +16,6 @@ import type { RootState } from "../../utils/store"
 import CheckoutItem from "./options/CheckoutItem"
 
 
-
-
 interface propType{
     message:{
         type:string,

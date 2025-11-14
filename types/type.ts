@@ -7,10 +7,9 @@ export interface subCategoryType {
 }
 
 export interface messageListType{
-     type:string,
+    type:string,
     sender:string,
     next:()=>void,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     content:any[]
 }
 

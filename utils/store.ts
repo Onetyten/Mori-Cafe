@@ -1,3 +1,4 @@
+import messageListReducer from '@/store/messageListSlice'
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { combineReducers, configureStore } from '@reduxjs/toolkit'
 import { persistReducer, persistStore } from 'redux-persist'
@@ -9,7 +10,6 @@ import orderCartListReducer from "../store/OrderCartList"
 import pendingOrderReducer from "../store/pendingOrderSlice"
 import userReducer from '../store/userSlice'
 
-
 const persistConfig = {
     key:'root',
     version:1,
@@ -18,6 +18,7 @@ const persistConfig = {
 }
 
 const reducer = combineReducers({
+    messageList:messageListReducer,
     user:userReducer,
     food:currentFoodReducer,
     cart: currentCartReducer,
