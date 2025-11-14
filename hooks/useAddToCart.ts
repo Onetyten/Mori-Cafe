@@ -1,8 +1,10 @@
-import type { messageListType } from "../types/type"
+import { AddMessage } from "@/store/messageListSlice";
+import { useDispatch } from "react-redux";
 
 
 
-export default function useAddToCart(setShowOptions:React.Dispatch<React.SetStateAction<boolean>>,setMessageList:React.Dispatch<React.SetStateAction<messageListType[]>>,CartList: () => void,getSomethingElseMessage:(message: string) => void,setLoading:React.Dispatch<React.SetStateAction<boolean>>,setOptions: React.Dispatch<React.SetStateAction<{name: string; onClick: () => void}[]>>,isAdding: React.RefObject<boolean>) {
+export default function useAddToCart(setShowOptions:React.Dispatch<React.SetStateAction<boolean>>,CartList: () => void,getSomethingElseMessage:(message: string) => void,setLoading:React.Dispatch<React.SetStateAction<boolean>>,setOptions: React.Dispatch<React.SetStateAction<{name: string; onClick: () => void}[]>>,isAdding: React.RefObject<boolean>) {
+    const dispatch = useDispatch()
     function addToCart(foodName:string){
         if (isAdding.current) return
         isAdding.current = true
@@ -10,7 +12,7 @@ export default function useAddToCart(setShowOptions:React.Dispatch<React.SetStat
         setTimeout(()=>{
             setShowOptions(false)
             const CartfeedBack = {type:"cart-feedback",next:addToCartCleanup, sender:"bot",content:[foodName]}
-            setMessageList((prev)=>[...prev, CartfeedBack ])
+            dispatch(AddMessage(CartfeedBack))
         },500)
     }
 

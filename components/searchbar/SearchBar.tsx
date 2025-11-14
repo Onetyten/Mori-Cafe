@@ -5,12 +5,9 @@ import { TextInput, TouchableOpacity, View } from "react-native";
 import useFetchFoodList from "../../hooks/useFetchFoodList";
 import useGetElse from "../../hooks/useGetElse";
 import useSubcategory from "../../hooks/useSubcategory";
-import type { messageListType } from "../../types/type";
 import QuickActions from './QuickActions';
 
 interface propType{
-    messagelist:messageListType[];
-    setMessageList:React.Dispatch<React.SetStateAction<messageListType[]>>;
     setShowOptions: React.Dispatch<React.SetStateAction<boolean>>;
     setOptions: React.Dispatch<React.SetStateAction<{name: string; onClick: () => void;}[]>>;
     setLoading: React.Dispatch<React.SetStateAction<boolean>>;
@@ -20,11 +17,11 @@ interface propType{
 }
 
 export default function SearchBar(props:propType) {
-  const {messagelist,setMessageList,setLoading,setOptions,setShowOptions,loading,showButtons,setShowButtons} = props
+  const {setLoading,setOptions,setShowOptions,loading,showButtons,setShowButtons} = props
   const [query,setQuery] = useState("")
-  const {getCategory} = useSubcategory(setOptions,setMessageList,setShowOptions)
-  const getSomethingElseMessage = useGetElse(setShowOptions,setMessageList,setOptions,getCategory)
-  const fetchFoodList = useFetchFoodList(loading,setLoading,setMessageList,setShowOptions,setOptions,getSomethingElseMessage)
+  const {getCategory} = useSubcategory(setOptions,setShowOptions)
+  const getSomethingElseMessage = useGetElse(setShowOptions,setOptions,getCategory)
+  const fetchFoodList = useFetchFoodList(loading,setLoading,setShowOptions,setOptions,getSomethingElseMessage)
   
 
   function HandleSubmit(){
@@ -41,7 +38,7 @@ export default function SearchBar(props:propType) {
                 <TouchableOpacity className='w-full h-full justify-center items-center z-50 relative' onPress={()=>setShowButtons(!showButtons)}>
                   <Fontisto name="coffeescript" size={24} color="#e9d5ca"/>
                 </TouchableOpacity>
-                <QuickActions showButtons={showButtons} messagelist={messagelist} setMessageList={setMessageList} setShowOptions={setShowOptions} setLoading={setLoading} setOptions={setOptions} loading={loading} />
+                <QuickActions showButtons={showButtons} setShowOptions={setShowOptions} setLoading={setLoading} setOptions={setOptions} loading={loading} />
           </View>
 
           <TextInput value={query} onChangeText={setQuery} placeholder="Search order" className="w-full text-xl pl-16 font-outfit-light placeholder:text-muted h-full focus:outline-0 focus:bg-secondary-300/15 bg-secondary-300/20 rounded-full px-2" />

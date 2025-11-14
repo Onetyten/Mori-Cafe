@@ -1,25 +1,25 @@
+import { AddMessage } from "@/store/messageListSlice";
 import { useEffect } from "react";
 import { ScrollView } from "react-native";
-import { useSelector } from "react-redux";
-import type { messageListType } from "../types/type";
+import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "../utils/store";
 
 interface UseChatInitProps {
     scrollRef: React.RefObject<ScrollView | null>;
-    messagelist: messageListType[];
     initiatedRef: React.RefObject<boolean>;
-    setMessageList: React.Dispatch<React.SetStateAction<messageListType[]>>;
     setShowOptions:React.Dispatch<React.SetStateAction<boolean>>;
     setShowButtons: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-export function useChatInit({scrollRef,messagelist,initiatedRef,setMessageList,setShowOptions,setShowButtons}: UseChatInitProps) {
+export function useChatInit({scrollRef,initiatedRef,setShowOptions,setShowButtons}: UseChatInitProps) {
+    const dispatch = useDispatch()
+    const messageList = useSelector((state:RootState)=>state.messageList.messageList)
     const pendingOrders = useSelector((state:RootState)=>state.pendingOrders.pendingOrders)
     const user = useSelector((state:RootState)=>state.user.user)
 
     function introMessage(){
         const newMessage = {type:"message", sender:"bot", next:()=>{setShowOptions(true)}, content:['Hey there! I’m Mori','your digital barista','What are you craving today?']}
-        setMessageList((prev)=>[...prev,newMessage])
+        dispatch(AddMessage(newMessage))
     }
 
     useEffect(() => {
@@ -30,7 +30,7 @@ export function useChatInit({scrollRef,messagelist,initiatedRef,setMessageList,s
 
         return () => clearTimeout(timer);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [messagelist, scrollRef]);
+    }, [messageList, scrollRef]);
 
 
     useEffect(()=>{
@@ -38,10 +38,10 @@ export function useChatInit({scrollRef,messagelist,initiatedRef,setMessageList,s
         initiatedRef.current = true
         if (pendingOrders.length>0 && user ){
             const newMessage = {type:"message", sender:"bot", next:()=>{}, content:['Please wait while I confirm your payment…']}
-            setMessageList((prev)=>[...prev,newMessage])
+            dispatch(AddMessage(newMessage))
 
             setTimeout(()=>{const newMessage = {type:"order-receipt", sender:"bot", next:()=>introMessage(), content:[]}
-                setMessageList((prev)=>[...prev,newMessage]) 
+                dispatch(AddMessage(newMessage))
             },1500)
         }
         else{

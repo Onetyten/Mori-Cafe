@@ -1,8 +1,9 @@
 import { chatStyles } from '@/styles/chatStyle'
-import { Image } from 'expo-image'
 import { useEffect, useRef, useState } from 'react'
-import { ActivityIndicator, View } from 'react-native'
+import { View } from 'react-native'
 import BotChatBubble from "./chat Bubble/BotChatBubble"
+import BotImage from './chat Bubble/BotImage'
+import BotLoader from './chat Bubble/BotLoader'
 
 interface propType{
     message:{
@@ -52,10 +53,7 @@ export default function BotMessage(props:propType) {
   return (
     <View style={{width:"100%",alignItems:"flex-start"}}>
         <View style={{flexDirection:"row",gap:8,alignItems:"flex-start"}}>
-            <View style={chatStyles.botImageContainer}>
-                <Image source={require("@/assets/images/logo.gif")} style={{width:30,height:30}} alt="" />
-            </View>
-
+            <BotImage/>
             <View style={chatStyles.botMessageView}>
                 {displayedMessage.map((item,index)=>{
                     return(
@@ -65,11 +63,7 @@ export default function BotMessage(props:propType) {
                     )
                 })}
                 {isTyping&&(
-                    <View style={chatStyles.botBubbleContainer}>
-                        <View style={chatStyles.botBubbleLoader} >
-                            <ActivityIndicator size="small" color='#e9d5ca'/>  
-                        </View>
-                    </View>
+                    <BotLoader />
                 )}
             </View>
         </View>

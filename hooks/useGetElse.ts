@@ -1,15 +1,17 @@
 import React from 'react'
-import type {messageListType} from "../types/type"
+import { useDispatch } from 'react-redux';
+import { AddMessage } from '@/store/messageListSlice';
 
-export default function useGetElse(setShowOptions:React.Dispatch<React.SetStateAction<boolean>>,setMessageList:React.Dispatch<React.SetStateAction<messageListType[]>>,setOptions: React.Dispatch<React.SetStateAction<{name: string; onClick: () => void}[]>>,getCategory: (food: string) => void) {
-
+export default function useGetElse(setShowOptions:React.Dispatch<React.SetStateAction<boolean>>,setOptions: React.Dispatch<React.SetStateAction<{name: string; onClick: () => void}[]>>,getCategory: (food: string) => void) {
+    const dispatch = useDispatch()
     const getSomethingElseMessage = (message:string)=>{
+        
         setShowOptions(false)
         const  newMessage = {type:"message",next:()=>{}, sender:"user",content:[message]}
-        setMessageList((prev)=>[...prev, newMessage])
+        dispatch(AddMessage(newMessage))
         const newQuestion = {type:"message",next:()=>{}, sender:"bot",content:[`What would you like`]}
         setTimeout(()=>{
-            setMessageList((prev)=>[...prev, newQuestion])
+            dispatch(AddMessage(newQuestion))
         },500)
         setOptions([{name:'Coffee', onClick:()=>getCategory('coffee')},{name:'Drink',onClick:()=>getCategory('drink')},{name:'Snacks',onClick:()=>getCategory('snack')}])
         setTimeout(()=>{

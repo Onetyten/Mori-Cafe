@@ -1,18 +1,18 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+import { AddMessage } from "@/store/messageListSlice"
 import { chatStyles } from "@/styles/chatStyle"
-import { GlobalStyle } from "@/styles/global"
 import { isAxiosError } from "axios"
-import { Image } from "expo-image"
 import { useEffect, useState } from "react"
-import { ActivityIndicator, Text, View } from "react-native"
+import { View } from "react-native"
 import { useDispatch, useSelector } from "react-redux"
 import useCalculatePrice from "../../hooks/useCalculatePrice"
 import useGetElse from "../../hooks/useGetElse"
 import useSubcategory from "../../hooks/useSubcategory"
 import { setOrderList } from "../../store/OrderCartList"
-import type { messageListType } from "../../types/type"
 import api from "../../utils/api"
 import type { RootState } from "../../utils/store"
+import BotImage from "./chat Bubble/BotImage"
+import BotLoader from "./chat Bubble/BotLoader"
 import CheckoutItem from "./options/CheckoutItem"
 
 
@@ -29,14 +29,13 @@ interface propType{
     }[]>>,
     getSomethingElseMessage: (message: string) => void,
     setShowOptions: React.Dispatch<React.SetStateAction<boolean>>,
-    setMessageList: React.Dispatch<React.SetStateAction<messageListType[]>>
 }
 
 export default function CheckoutList(props:propType) {
-    const {message,setShowOptions,setOptions,setMessageList} = props
-    const {getCategory} = useSubcategory(setOptions,setMessageList,setShowOptions)
-    const getSomethingElseMessage = useGetElse(setShowOptions,setMessageList,setOptions,getCategory)
-    const calculateSelectedPrice = useCalculatePrice(getSomethingElseMessage,setShowOptions,setOptions,setMessageList)
+    const {message,setShowOptions,setOptions} = props
+    const {getCategory} = useSubcategory(setOptions,setShowOptions)
+    const getSomethingElseMessage = useGetElse(setShowOptions,setOptions,getCategory)
+    const calculateSelectedPrice = useCalculatePrice(getSomethingElseMessage,setShowOptions,setOptions)
     const [added,setAdded] = useState(false)
     const [checkedOut,setCheckedOut] = useState(false)
     const [feedBack,setFeedback] = useState(`Select item to order`)
@@ -52,7 +51,7 @@ export default function CheckoutList(props:propType) {
             { name: 'Continue shopping', onClick: () => getSomethingElseMessage("Let's continue") }
             ]]);
             setShowOptions(true);
-        }, 100);
+        }, 1000);
     }
     
     function checkOutListCleared(){
@@ -94,7 +93,7 @@ export default function CheckoutList(props:propType) {
         if (added && cartList.length === 0 && !checkedOut) {
             setCheckedOut(true)
             const newMessage = {type:"message",next:()=>{}, sender:"bot",content:["Your tab is empty."]}
-            setMessageList((prev)=>[...prev, newMessage ])
+            dispatch(AddMessage(newMessage))
             setFeedback("Your tab is empty.")
             checkOutListCleared()
         }
@@ -104,80 +103,35 @@ export default function CheckoutList(props:propType) {
         if (added && !checkedOut && newOrder !== null) {
             setCheckedOut(true)
             setFeedback(`Ordering ${newOrder.items.map(item=>`${item.quantity} ${item.foodId.name}`).join(', ')}.`)
+            const newMessage = {type:"message",next:()=>{}, sender:"user",content:[feedBack]}
+            dispatch(AddMessage(newMessage))
             checkOutListCleared()
         }
     }, [newOrder])
 
-    if (checkedOut && newOrder === null){
+    if ((checkedOut && newOrder === null) || cartList.length===0){
         return null
     }
     
   return (
     <View style={{width:"100%"}}>
-        {!checkedOut?(
-                <View style={{width:"100%"}}>
-                    {added?(
-                    <View style={{width:"100%"}}>
-                        {cartList.length>0?(
-                            <View style={{width:"100%",gap:24}}>
-                                <View style={{flexDirection:"row",gap:8,justifyContent:"flex-start"}}>
-                                    <View style={chatStyles.botImageContainer}>
-                                        <Image source={require("@/assets/images/logo.gif")} style={{width:30,height:30}} alt="" />
-                                    </View>
-
-                                    <View style={[chatStyles.botBubbleContainer,{maxWidth:"80%"}]}>
-                                        <Text style={[GlobalStyle.Outfit_Regular_body,chatStyles.botchatBubble,chatStyles.firstBotBubble]} >
-                                            {feedBack}
-                                        </Text>
-                                    </View>
-                                </View>
-                                <View className="w-full flex gap-2 items-start justify-end">     
-                                    <View className="flex w-full justify-end items-end text-sm text-secondary-100 flex-col gap-2 ">
-                                        {cartList
-                                        .filter((item) => item && item.foodId)
-                                        .map((item, index) => (
-                                            <CheckoutItem food={item} key={index} />
-                                        ))}
-                                    </View>
-                                </View>
-                            </View>
-                        ):(
-                            <View style={{flexDirection:"row",gap:8,justifyContent:"flex-start"}}>
-                                <View style={chatStyles.botImageContainer}>
-                                    <Image source={require("@/assets/images/logo.gif")} style={{width:30,height:30}} alt="" />
-                                </View>
-
-                                <View style={[chatStyles.botBubbleContainer,{maxWidth:"80%"}]}>
-                                    <Text style={[GlobalStyle.Outfit_Regular_body,chatStyles.botchatBubble,chatStyles.firstBotBubble]} >
-                                        {feedBack}
-                                    </Text>
-                                </View>
-                            </View>
-                        )}
+        {added?(
+            <View style={{width:"100%",gap:24}}>
+                <View className="w-full flex gap-2 items-start justify-end">     
+                    <View className="flex w-full justify-end items-end text-sm text-secondary-100 flex-col gap-2 ">
+                        {cartList.filter((item) => item && item.foodId).map((item, index) => (
+                            <CheckoutItem food={item} key={index} />
+                        ))}
                     </View>
-                ):
-                (
-                    <View className="w-full max-w-8/12 flex gap-2 items-start">
-                        <View style={chatStyles.botImageContainer}>
-                            <Image source={require("@/assets/images/logo.gif")} style={{width:30,height:30}} alt="" />
-                        </View>
-
-                        <View style={chatStyles.botBubbleContainer}>
-                            <View style={chatStyles.botBubbleLoader} >
-                                <ActivityIndicator size="small" color='#e9d5ca'/>  
-                            </View>
-                        </View>
-                    </View>)}
+                </View>
             </View>
-        ):(
-        <View style={{width:"100%",alignItems:"flex-end",gap:8}}>
-            <View style={chatStyles.chatBubbleContainer}>
-                <Text style={[GlobalStyle.Outfit_Regular_body,chatStyles.chatBubble,chatStyles.firstChatBubble]} >
-                    {feedBack}
-                </Text>
+        ):
+        (
+            <View style={chatStyles.botMessageView}>
+                <BotImage/>
+                <BotLoader/>
             </View>
-        </View>
-        )}
+        )}   
     </View>
   )
 }

@@ -1,21 +1,22 @@
-import React from 'react'
-import type {messageListType} from "../types/type"
+import { useDispatch } from 'react-redux'
+import { AddMessage } from '@/store/messageListSlice'
 
-export default function useFetchReceiptList(setMessageList:React.Dispatch<React.SetStateAction<messageListType[]>>)
+export default function useFetchReceiptList()
 {
+    const dispatch =useDispatch()
     function fetchReceiptList(){
         try
         {   
             const newCommand = {type:"message",next:()=>{}, sender:"user",content:['Fetch my order history']}
-            setMessageList((prev)=>[...prev, newCommand ])
+            dispatch(AddMessage(newCommand))            
 
             setTimeout(()=>{
                 const newMessage = {type:"message",next:()=>{}, sender:"bot",content:['Fetching History...']}
-                setMessageList((prev)=>[...prev, newMessage ])
+                dispatch(AddMessage(newMessage))
             },1000)
             setTimeout(()=>{
-                const newReceipt:messageListType = {type:"receipt-list",next:()=>{}, sender:"bot",content:[]}
-                setMessageList((prev)=>[...prev, newReceipt])
+                const newReceipt = {type:"receipt-list",next:()=>{}, sender:"bot",content:[]}
+                dispatch(AddMessage(newReceipt))
             },2000)
         }
         catch (error) {

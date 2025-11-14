@@ -4,14 +4,11 @@ import useGetElse from "@/hooks/useGetElse";
 import useListCart from "@/hooks/useListCart";
 import useSubcategory from "@/hooks/useSubcategory";
 import { colors, GlobalStyle } from "@/styles/global";
-import type { messageListType } from "@/types/type";
 import { Dice6, History, ShoppingCart } from "lucide-react-native";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 interface propType{
     showButtons:boolean;
-    messagelist:messageListType[];
-    setMessageList:React.Dispatch<React.SetStateAction<messageListType[]>>;
     setShowOptions: React.Dispatch<React.SetStateAction<boolean>>;
     setOptions: React.Dispatch<React.SetStateAction<{name: string; onClick: () => void;}[]>>;
     setLoading: React.Dispatch<React.SetStateAction<boolean>>
@@ -19,12 +16,12 @@ interface propType{
 }
 
 export default function QuickActions(props:propType) {
-    const {showButtons,setMessageList,setShowOptions,setOptions,setLoading,loading} = props
-    const {getCategory} = useSubcategory(setOptions,setMessageList,setShowOptions)
-    const getSomethingElseMessage = useGetElse(setShowOptions,setMessageList,setOptions,getCategory)
-    const CartList = useListCart(setMessageList,setShowOptions,setLoading,setOptions,getSomethingElseMessage)
-    const fetchFoodList = useFetchFoodList(loading,setLoading,setMessageList,setShowOptions,setOptions,getSomethingElseMessage)
-    const fetchReceiptList =  useFetchReceiptList(setMessageList)
+    const {showButtons,setShowOptions,setOptions,setLoading,loading} = props
+    const {getCategory} = useSubcategory(setOptions,setShowOptions)
+    const getSomethingElseMessage = useGetElse(setShowOptions,setOptions,getCategory)
+    const CartList = useListCart(setShowOptions,setLoading,setOptions,getSomethingElseMessage)
+    const fetchFoodList = useFetchFoodList(loading,setLoading,setShowOptions,setOptions,getSomethingElseMessage)
+    const fetchReceiptList =  useFetchReceiptList()
 
   return (
     showButtons&&

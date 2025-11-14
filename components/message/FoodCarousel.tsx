@@ -6,17 +6,19 @@ import Swiper from "react-native-swiper";
 import type { FoodType, messageListType } from '../../types/type';
 import api from "../../utils/api";
 import FoodCard from "../FoodCard";
+import { useDispatch } from "react-redux";
+import { AddMessage } from "@/store/messageListSlice";
 
 interface propType{
     message:messageListType
     setLoading:React.Dispatch<React.SetStateAction<boolean>>,
     onClick:(food:FoodType)=>void,
     setShowOptions:React.Dispatch<React.SetStateAction<boolean>>,
-    setMessageList:React.Dispatch<React.SetStateAction<messageListType[]>>;
 }
 
 export default function FoodCarousel(props:propType) {
-    const {message,setLoading,onClick,setShowOptions,setMessageList} = props
+    const dispatch = useDispatch()
+    const {message,setLoading,onClick,setShowOptions} = props
     const [foodList,setFoodList] = useState<FoodType[]>([])
     const [fetched,setFetched] = useState(false)
 
@@ -33,7 +35,7 @@ export default function FoodCarousel(props:propType) {
            catch (error) {
             if (isAxiosError(error)){
                 const newMessage = {type:"message",next:()=>{}, sender:"bot",content:[error.response?.data.message||"No food found"]}
-                setMessageList((prev)=>[...prev, newMessage ])
+                dispatch(AddMessage(newMessage))
                 message.next()
             }
            }
