@@ -9,7 +9,7 @@ import OptionsInput from "./OptionsInput"
 // import OrderReceipt from "./OrderReceipt"
 // import OrderHandler from "./OrderHandler"
 import { RootState } from "@/utils/store"
-import { ScrollView, StyleSheet, View } from "react-native"
+import { FlatList, ScrollView, StyleSheet, View } from "react-native"
 import { useSelector } from "react-redux"
 import useAddToCart from "../hooks/useAddToCart"
 import { useChatInit } from "../hooks/useChatInit"
@@ -54,31 +54,31 @@ export default function ChatBox() {
     
   return (
     <View style={chatStyle.container}>
-        <ScrollView showsVerticalScrollIndicator={false} style={chatStyle.scrollView} contentContainerStyle={chatStyle.scrollViewStyle} >
-            <View style={chatStyle.messageView}>
-                {messageList.map((item,index:number)=>{
-                    return(
-                            item.type === "message"?item.sender==="bot"?<BotMessage key={index} message={item}/>:item.sender === "bot-error"?<BotErrorMessage key={index} message={item}/>:<ChatMessage message={item} key={index}/>
-                            :item.type === "subcarousel"?<SubCarousel message={item} key={index} fetchFoodList={fetchFoodList}  />
-                            :item.type === "number-input"?<NumberInput message={item} key={index} confirm={comfirmToCart} />
-                            :item.type === "cart-feedback"?<CartFeedBack message={item} key={index} isAdding={isAdding}/>
-                            // :item.type === "order-handle"?<OrderHandler message={item} key={index}/>
-                            // :item.type === "order-feedback"?<OrderFeedback key={index}/>
-                            // :item.type === "order-receipt"?<OrderReceipt key={index} setMessageList={setMessageList} message={item}/>
-                            :item.type === "cart-list-feedback"?<CheckoutList key={index} message={item} setShowOptions={setShowOptions} setOptions={setOptions} getSomethingElseMessage = {getSomethingElseMessage}/>
-                            :item.type === "edit-list"?<CustomisationList key={index} message={item} addToCart = {addToCart} />
-                            // :item.type === "enter-info"?<UserInfoInput key={index} setMessageList={setMessageList} setOptions={setOptions} setShowOptions={setShowOptions} getSomethingElseMessage={getSomethingElseMessage} ProceedToPayment={ProceedToPayment} />
-                            :item.type === "food-list"?<FoodCarousel key={index} setShowOptions={setShowOptions} setLoading={setLoading} message={item} onClick={optionCount}/>
-                            // :item.type === "receipt-list"?<ReceiptCarousel key={index} setShowOptions={setShowOptions} setMessageList={setMessageList} setLoading={setLoading} message={item}/>
-                            :null
-                    )
-                })}
-            </View>
-            {showoptions&& <OptionsInput options = {options}/>}
-
-            <View style={{height:64}}/>
-          
-        </ScrollView>
+        <View style={chatStyle.scrollView} >
+                <FlatList 
+                    contentContainerStyle={chatStyle.messageView}
+                    data={messageList}
+                    showsVerticalScrollIndicator={false}
+                    keyExtractor={(_item,index)=>index.toString()}
+                    ListFooterComponentStyle={{marginBottom:128}}
+                    ItemSeparatorComponent={()=><View style={{height:16}} />}
+                    ListFooterComponent={()=>showoptions&& <OptionsInput options = {options}/>}
+                    renderItem={({item}) => 
+                        item.type === "message"?item.sender==="bot"?<BotMessage message={item}/>:item.sender === "bot-error"?<BotErrorMessage message={item}/>:<ChatMessage message={item}/>
+                        :item.type === "subcarousel"?<SubCarousel message={item} fetchFoodList={fetchFoodList}  />
+                        :item.type === "number-input"?<NumberInput message={item} confirm={comfirmToCart} />
+                        :item.type === "cart-feedback"?<CartFeedBack message={item} isAdding={isAdding}/>
+                        // :item.type === "order-handle"?<OrderHandler message={item} key={index}/>
+                        // :item.type === "order-feedback"?<OrderFeedback key={index}/>
+                        // :item.type === "order-receipt"?<OrderReceipt key={index} setMessageList={setMessageList} message={item}/>
+                        :item.type === "cart-list-feedback"?<CheckoutList message={item} setShowOptions={setShowOptions} setOptions={setOptions} getSomethingElseMessage = {getSomethingElseMessage}/>
+                        :item.type === "edit-list"?<CustomisationList message={item} addToCart = {addToCart} />
+                        // :item.type === "enter-info"?<UserInfoInput key={index} setMessageList={setMessageList} setOptions={setOptions} setShowOptions={setShowOptions} getSomethingElseMessage={getSomethingElseMessage} ProceedToPayment={ProceedToPayment} />
+                        :item.type === "food-list"?<FoodCarousel setShowOptions={setShowOptions} setLoading={setLoading} message={item} onClick={optionCount}/>
+                        // :item.type === "receipt-list"?<ReceiptCarousel key={index} setShowOptions={setShowOptions} setMessageList={setMessageList} setLoading={setLoading} message={item}/>
+                        :null 
+                } />
+        </View>
         <SearchBar setOptions={setOptions} setShowOptions={setShowOptions} setLoading={setLoading} loading = {loading} showButtons={showButtons} setShowButtons={setShowButtons}/>
     </View>
     
@@ -94,7 +94,6 @@ const chatStyle = StyleSheet.create({
     },
     messageView:{
         width:"100%",
-        gap: 16,
         justifyContent:"flex-start"
     },
     scrollView: {
