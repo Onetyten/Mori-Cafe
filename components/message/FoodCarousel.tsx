@@ -1,13 +1,13 @@
+import { AddMessage } from "@/store/messageListSlice";
 import { colors } from "@/styles/global";
 import { isAxiosError } from "axios";
 import React, { useEffect, useState } from "react";
 import { ActivityIndicator, StyleSheet, View } from "react-native";
 import Swiper from "react-native-swiper";
+import { useDispatch } from "react-redux";
 import type { FoodType, messageListType } from '../../types/type';
 import api from "../../utils/api";
 import FoodCard from "../FoodCard";
-import { useDispatch } from "react-redux";
-import { AddMessage } from "@/store/messageListSlice";
 
 interface propType{
     message:messageListType
@@ -55,10 +55,7 @@ export default function FoodCarousel(props:propType) {
             return(
             <View className="flex flex-col justify-center items-center gap-2">
                 <View className="w-full gap-2 flex-row flex-wrap">
-                    <View className="bg-muted/40 flex justify-center items-center w-[48%] h-60 rounded-md">
-                        <ActivityIndicator size="large" color={colors.muted}/> 
-                    </View>
-                    <View className="bg-muted/40 flex justify-center items-center w-[48%] h-60 rounded-md">
+                    <View style={{height:240}} className="bg-muted/40 flex justify-center items-center w-full rounded-md">
                         <ActivityIndicator size="large" color={colors.muted}/> 
                     </View>
                 </View>

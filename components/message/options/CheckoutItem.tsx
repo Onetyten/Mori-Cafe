@@ -1,4 +1,5 @@
 import { colors, GlobalStyle } from '@/styles/global';
+import { Image } from 'expo-image';
 import { Minus, Plus } from 'lucide-react-native';
 import { useEffect, useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
@@ -14,6 +15,7 @@ interface propType{
 export default function CheckoutItem(props:propType) {
     const {food} = props
     const [quantity,setQuantity] = useState(food.quantity)
+    const [parentHeight,setParentHeight] = useState(80)
     const dispatch = useDispatch()
 
     useEffect(()=>{
@@ -30,32 +32,38 @@ export default function CheckoutItem(props:propType) {
     }
 
   return (
-    <View style={styles.parent}>
-        <TouchableOpacity style={styles.button} onPress={()=>handleChange(-1)}>
-             <View style={styles.imageBackground} >
-                  <Minus color={colors.primary} size={20} />
-             </View>
-        </TouchableOpacity>
+    <View style={styles.parent} onLayout={(e)=>setParentHeight(e.nativeEvent.layout.height)}>
 
-        <View style={styles.textContainer}>
-            <Text style={[GlobalStyle.Outfit_Semibold_body,{textTransform:"capitalize",textAlign:"center",color:colors.primary}]}>
+        <Image source={{uri:food.foodId.imageUrl}} style={styles.foodImage} />
+        <View style={styles.viewContainer}>
+            <Text style={[GlobalStyle.Outfit_Semibold_body,{textTransform:"capitalize",textAlign:"left",color:"#fff"}]}>
                 {food.foodId.name}
             </Text>
-            <View style={{width:"100%",flexDirection:"row",justifyContent:"center",paddingHorizontal:10, gap:6}}>
-                <Text style={[GlobalStyle.Outfit_Regular_small,{color:colors.primary}]}>
+            <View style={{flexDirection:"row",justifyContent:"center", gap:8}}>
+                <Text style={[GlobalStyle.Outfit_Regular_small,{color:"#fff"}]}>
                     &#8358; {food.totalPrice}
                 </Text>
-                <Text style={[GlobalStyle.Outfit_Regular_small,{color:colors.primary}]}>
+                <Text style={[GlobalStyle.Outfit_Regular_small,{color:"#fff"}]}>
                    x {quantity}
                 </Text>
             </View>
-         </View>
+        </View>
 
-        <TouchableOpacity style={styles.button} onPress={()=>handleChange(1)}>
-            <View style={styles.imageBackground}>
-                <Plus color={colors.primary} size={20} />
-            </View>
-        </TouchableOpacity>
+        <View style={{justifyContent:"space-between",height:(parentHeight/2)-10}}>
+              <TouchableOpacity style={styles.button} onPress={()=>handleChange(1)}>
+                <View style={styles.iconBackground}>
+                    <Plus color={"#fff"} size={20} />
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.button} onPress={()=>handleChange(-1)}>
+                  <View style={styles.iconBackground} >
+                        <Minus color={"#fff"} size={20} />
+                  </View>
+              </TouchableOpacity>
+            
+        </View>
+
+        
 
     </View>
   )
@@ -64,32 +72,38 @@ export default function CheckoutItem(props:propType) {
 const styles = StyleSheet.create({
   parent: {
     width: 270,
-    minHeight: 48,
-    borderRadius: 2,
-    borderWidth: 1,
-    borderColor: colors.primary,
-    backgroundColor: colors.background,
+    minHeight:80,
+    borderRadius: 8,
+    borderTopRightRadius:0,
+    gap:8,
+    padding:8,
+    borderWidth: 0,
+    backgroundColor: colors.light,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
     overflow: "hidden",
   },
+  foodImage:{
+    objectFit:"contain",
+    borderRadius:9999,
+    width:60,
+    height:60
+  },
   button: {
     flex: 0,
-    width: 40,
+    width: 40
   },
-  imageBackground: {
+  iconBackground: {
     flex: 1,
-    // alignSelf: "stretch",
-    backgroundColor:"#a2b18a30",
     justifyContent: "center",
     alignItems: "center",
   },
-  textContainer: {
+  viewContainer: {
     flexShrink: 1,
-    paddingHorizontal: 4,
-    padding:2,
-    gap:8,
-    alignItems:"center"
+    width:"100%",
+    justifyContent:"space-between",
+    alignItems:"flex-start",
+    gap:10,
   },
 });

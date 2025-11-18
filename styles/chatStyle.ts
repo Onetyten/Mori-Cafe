@@ -66,7 +66,7 @@ export const chatStyles = StyleSheet.create({
     botMessageView:{
         gap:4,
         alignItems:"flex-start",
-        maxWidth:"75%"
+        maxWidth:"75%",
     },
     chatMessageView:{
         gap:4,

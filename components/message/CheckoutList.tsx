@@ -1,6 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { AddMessage } from "@/store/messageListSlice"
-import { chatStyles } from "@/styles/chatStyle"
 import { isAxiosError } from "axios"
 import { useEffect, useState } from "react"
 import { View } from "react-native"
@@ -38,6 +37,7 @@ export default function CheckoutList(props:propType) {
     const calculateSelectedPrice = useCalculatePrice(getSomethingElseMessage,setShowOptions,setOptions)
     const [added,setAdded] = useState(false)
     const [checkedOut,setCheckedOut] = useState(false)
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [feedBack,setFeedback] = useState(`Select item to order`)
     const cartList = useSelector((state:RootState)=>state.orderList.orderList)
     const newOrder = useSelector((state:RootState)=>state.newOrder.newOrder)
@@ -100,16 +100,17 @@ export default function CheckoutList(props:propType) {
         }, [cartList, checkedOut, added])
 
     useEffect(() => {
-        if (added && !checkedOut && newOrder !== null) {
+        if (checkedOut) return
+        if (added && newOrder !== null) {
             setCheckedOut(true)
             setFeedback(`Ordering ${newOrder.items.map(item=>`${item.quantity} ${item.foodId.name}`).join(', ')}.`)
-            const newMessage = {type:"message",next:()=>{}, sender:"user",content:[feedBack]}
+            const newMessage = {type:"message",next:()=>{}, sender:"user",content:[`Ordering ${newOrder.items.map(item=>`${item.quantity} ${item.foodId.name}`).join(', ')}.`]}
             dispatch(AddMessage(newMessage))
             checkOutListCleared()
         }
     }, [newOrder])
 
-    if ((checkedOut && newOrder === null) || cartList.length===0){
+    if (checkedOut || cartList.length===0){
         return null
     }
     
@@ -127,7 +128,7 @@ export default function CheckoutList(props:propType) {
             </View>
         ):
         (
-            <View style={chatStyles.botMessageView}>
+            <View style={{gap:4, alignItems:"flex-start",maxWidth:"75%",flexDirection:"row"}}>
                 <BotImage/>
                 <BotLoader/>
             </View>
