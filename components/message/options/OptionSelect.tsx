@@ -1,6 +1,6 @@
 import { colors } from '@/styles/global';
 import { ChevronDown } from 'lucide-react-native';
-import React, { useEffect, useState } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
 import type { customisationType, optionType, tweakType } from '../../../types/type';
@@ -11,7 +11,7 @@ interface propType {
   setTweakList: React.Dispatch<React.SetStateAction<tweakType[]>>;
 }
 
-export default function OptionSelect(props: propType) {
+const OptionSelect = memo(function OptionSelect(props: propType) {
   const { edit, setTweakList } = props;
   const [selectedOption, setSelectedOption] = useState<optionType | null>(null);
 
@@ -55,7 +55,9 @@ export default function OptionSelect(props: propType) {
       />
     </View>
   );
-}
+})
+
+export default OptionSelect
 
 const styles = StyleSheet.create({
   container: {

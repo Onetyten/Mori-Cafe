@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { AddMessage } from "@/store/messageListSlice"
 import { isAxiosError } from "axios"
-import { useEffect, useState } from "react"
+import { memo, useEffect, useRef, useState } from "react"
 import { View } from "react-native"
 import { useDispatch, useSelector } from "react-redux"
 import useCalculatePrice from "../../hooks/useCalculatePrice"
@@ -29,8 +29,7 @@ interface propType{
     getSomethingElseMessage: (message: string) => void,
     setShowOptions: React.Dispatch<React.SetStateAction<boolean>>,
 }
-
-export default function CheckoutList(props:propType) {
+const CheckoutList = memo(function CheckoutList(props:propType) {
     const {message,setShowOptions,setOptions} = props
     const {getCategory} = useSubcategory(setOptions,setShowOptions)
     const getSomethingElseMessage = useGetElse(setShowOptions,setOptions,getCategory)
@@ -42,16 +41,22 @@ export default function CheckoutList(props:propType) {
     const cartList = useSelector((state:RootState)=>state.orderList.orderList)
     const newOrder = useSelector((state:RootState)=>state.newOrder.newOrder)
     const dispatch = useDispatch()
-
+    const timers = useRef<ReturnType<typeof setTimeout>[]>([])
+    useEffect(() => {
+        return () => {
+            timers.current.forEach(clearTimeout);
+            timers.current = [];
+        };
+    }, []);
     
     const checkOutListSuccess=() => {
-        setTimeout(() => {
+        timers.current.push(setTimeout(() => {
             setOptions([...[
             { name: 'Checkout', onClick: ()=>calculateSelectedPrice() },
             { name: 'Continue shopping', onClick: () => getSomethingElseMessage("Let's continue") }
             ]]);
             setShowOptions(true);
-        }, 1000);
+        }, 1000));
     }
     
     function checkOutListCleared(){
@@ -61,7 +66,9 @@ export default function CheckoutList(props:propType) {
 
 
     useEffect(()=>{
+        let cancelled  = false
         async function fetchCart() {
+            if (cancelled) return
             try {
                 setShowOptions(false)
                 if (!message.next) return
@@ -87,6 +94,10 @@ export default function CheckoutList(props:propType) {
             }
         }
         fetchCart()
+
+        return()=>{
+            cancelled = true
+        }
     },[])
 
     useEffect(() => {
@@ -97,7 +108,7 @@ export default function CheckoutList(props:propType) {
             setFeedback("Your tab is empty.")
             checkOutListCleared()
         }
-        }, [cartList, checkedOut, added])
+    }, [cartList, checkedOut, added])
 
     useEffect(() => {
         if (checkedOut) return
@@ -129,10 +140,12 @@ export default function CheckoutList(props:propType) {
         ):
         (
             <View style={{gap:4, alignItems:"flex-start",maxWidth:"75%",flexDirection:"row"}}>
-                <BotImage/>
+                <BotImage sender="user"/>
                 <BotLoader/>
             </View>
         )}   
     </View>
   )
-}
+})
+
+export default CheckoutList

@@ -1,7 +1,7 @@
 import { AddMessage } from "@/store/messageListSlice";
 import { colors } from "@/styles/global";
 import { isAxiosError } from "axios";
-import React, { useEffect, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import { ActivityIndicator, StyleSheet, View } from "react-native";
 import Swiper from "react-native-swiper";
 import { useDispatch } from "react-redux";
@@ -16,7 +16,7 @@ interface propType{
     setShowOptions:React.Dispatch<React.SetStateAction<boolean>>,
 }
 
-export default function FoodCarousel(props:propType) {
+const FoodCarousel = memo(function FoodCarousel(props:propType) {
     const dispatch = useDispatch()
     const {message,setLoading,onClick,setShowOptions} = props
     const [foodList,setFoodList] = useState<FoodType[]>([])
@@ -77,7 +77,7 @@ export default function FoodCarousel(props:propType) {
         </Swiper>
         
   )
-}
+})
 
 const Styles = StyleSheet.create({
     passiveDot:{
@@ -97,3 +97,4 @@ const Styles = StyleSheet.create({
     }
 })
 
+export default FoodCarousel

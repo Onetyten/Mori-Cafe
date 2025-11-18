@@ -1,6 +1,6 @@
 import { colors, GlobalStyle } from '@/styles/global';
 import { Checkbox } from "expo-checkbox";
-import React, { useEffect, useState } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import type { customisationType, tweakType } from '../../../types/type';
 
@@ -12,7 +12,7 @@ interface propType{
     setTweakList:React.Dispatch<React.SetStateAction<tweakType[]>>
 }
 
-export default function OptionCheckbox(props:propType) {
+const OptionCheckbox = memo (function OptionCheckbox(props:propType) {
     const {edit,tweakList,setTweakList} = props
     const [isChecked,setIsChecked] = useState(false)
 
@@ -39,7 +39,9 @@ export default function OptionCheckbox(props:propType) {
             </View>
     </View>
   )
-}
+})
+
+export default OptionCheckbox
  
 const styles = StyleSheet.create({
   parent: {

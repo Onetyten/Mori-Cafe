@@ -2,7 +2,7 @@
 import { chatStyles } from '@/styles/chatStyle'
 import { colors, GlobalStyle } from '@/styles/global'
 import { toWords } from 'number-to-words'
-import { useEffect, useState } from 'react'
+import { memo, useEffect, useState } from 'react'
 import { ActivityIndicator, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import type { FoodType } from '../../types/type'
 
@@ -17,7 +17,7 @@ interface propType{
     confirm:(value:number,food:FoodType)=>void
 }
 
-export default function NumberInput(props:propType) {
+const NumberInput = memo( function NumberInput(props:propType) {
   const {confirm,message} = props 
   const [value,setValue] = useState(1)
   const [confirmed,setConfirmed] = useState(false)
@@ -39,9 +39,12 @@ export default function NumberInput(props:propType) {
 
   useEffect(()=>{
     setIsTyping(true)
-    setTimeout(()=>{
+    const timer = setTimeout(()=>{
       setIsTyping(false)
     },1000)
+    return ()=>{
+      clearTimeout(timer)
+    }
   },[confirmed])
 
 
@@ -51,7 +54,11 @@ export default function NumberInput(props:propType) {
           <View style={styles.inputContainer}>
             <TextInput 
               value={value>0?String(value):""}
-              onChangeText={text=>setValue(Number(text) || 0)}
+              onChangeText={(text) => {
+                const n = parseInt(text, 10);
+                setValue(Number.isNaN(n) ? 0 : n);
+                setErrorMessage("");
+              }}
               keyboardType="numeric"
               style={[{ width: 40},styles.button,styles.text,GlobalStyle.Outfit_Regular_body]} />
 
@@ -83,7 +90,7 @@ export default function NumberInput(props:propType) {
           )}
       </View>
   )
-}
+})
 
 
 const styles = StyleSheet.create({
@@ -120,3 +127,5 @@ const styles = StyleSheet.create({
   },
 
 })
+
+export default NumberInput

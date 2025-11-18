@@ -1,5 +1,5 @@
 import { AddMessage } from "@/store/messageListSlice"
-import { useEffect, useState } from "react"
+import { memo, useEffect, useState } from "react"
 import { View } from "react-native"
 import { useDispatch, useSelector } from "react-redux"
 import api from "../../utils/api"
@@ -17,7 +17,7 @@ interface propType{
     isAdding: React.RefObject<boolean>
 }
 
-export default function CartFeedBack(props:propType) {
+const CartFeedBack = memo(function CartFeedBack (props:propType) {
     const dispatch = useDispatch()
     const {message,isAdding} = props
     const [added,setAdded] = useState(false)
@@ -26,7 +26,7 @@ export default function CartFeedBack(props:propType) {
 
     useEffect(()=>{
         if (!food) return
-        
+        let isCancelled = false;
         async function addToCart() {
             try {
                 if (!message.next) return
@@ -40,6 +40,7 @@ export default function CartFeedBack(props:propType) {
                 setFeedack(`Couldn't add ${message.content[0]} to cart, please try again`)
             }
             finally{
+                if (isCancelled) return
                 isAdding.current = false
                 message.next()
                 const newMessage = {type:"message",next:()=>{}, sender:"bot",content:[feedBack]}
@@ -58,9 +59,11 @@ export default function CartFeedBack(props:propType) {
   return (
     <View style={{width:"100%"}}>
         <View style={{gap:4, alignItems:"flex-start",maxWidth:"75%",flexDirection:"row"}}>
-            <BotImage/>
+            <BotImage sender={message.sender}/>
             <BotLoader/>
         </View>
     </View>
   )
-}
+})
+
+export default CartFeedBack

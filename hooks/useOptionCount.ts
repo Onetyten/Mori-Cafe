@@ -32,7 +32,7 @@ export default function useOptionCount(setShowOptions:React.Dispatch<React.SetSt
             const newInput = {type:"number-input",next:()=>{}, sender:"user",content:[food]}
             dispatch(AddMessage(newInput))
         },2000))
-    },[])
+    },[dispatch, loading, setLoading, setShowOptions])
 
     return optionCount
 }

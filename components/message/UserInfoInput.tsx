@@ -1,6 +1,6 @@
 import useProceedPayment from '@/hooks/useProceedPayment'
 import { AddMessage } from '@/store/messageListSlice'
-import { colors } from '@/styles/global'
+import { colors, GlobalStyle } from '@/styles/global'
 import { ChevronDown } from 'lucide-react-native'
 import { useState } from 'react'
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
@@ -64,13 +64,13 @@ export default function UserInfoInput(props:propType) {
   }
 
   return (
-    <View className="w-full justify-end flex">
-      <View className="flex gap-2 max-w-8/12 justify-end text-xs sm:text-sm flex-col">
-        <TextInput keyboardType="default" placeholder='Full name' value={name} onChangeText={setName} className="p-2 border w-full rounded-sm cursor-pointer focus:bg-secondary-300/10 focus:outline-0" />
-        <TextInput keyboardType="email-address" placeholder='Email' value={email} onChangeText={setEmail} className="p-2 border w-full rounded-sm cursor-pointer focus:bg-secondary-300/10 focus:outline-0" />
-        <TextInput keyboardType="default" placeholder='Address' value={address} onChangeText={setAddress} className="p-2 border w-full rounded-sm cursor-pointer focus:bg-secondary-300/10 focus:outline-0" />
-        <View className='w-full flex gap-2'>
-            <Dropdown data={countryCodes.map((item) => ({label: item.val, value: item.val }))} labelField="label" valueField="value" placeholder={selectedCode.val}
+    <View style={styles.container}>
+      <View style={{maxWidth:"70%",width:"100%",gap:4}}>
+        <TextInput keyboardType="default" placeholder='Full name' placeholderTextColor={colors.light} value={name} onChangeText={setName} style={[GlobalStyle.Outfit_Regular_body,styles.textInput]} />
+        <TextInput keyboardType="email-address" placeholder='Email' value={email} onChangeText={setEmail} placeholderTextColor={colors.light} style={[GlobalStyle.Outfit_Regular_body,styles.textInput]} />
+        
+        <View style={{flexDirection:"row",width:"100%",gap:4}}>
+            <Dropdown data={countryCodes.map((item) => ({label: item.val, value: item.val }))} labelField="label" valueField="value" placeholder={`${selectedCode.flag} ${selectedCode.val}`}
                 value={selectedCode.val ?? null}
                 onChange={(item) => {
                   const option = countryCodes.find((opt) => opt.val === item.value);
@@ -87,9 +87,10 @@ export default function UserInfoInput(props:propType) {
                 iconStyle={{ display: 'none' }}
             />
 
-          <TextInput keyboardType="number-pad" value={phoneNum} onChangeText={setPhoneNum} placeholder='Phone number' className="p-2 border w-full rounded-sm cursor-pointer focus:bg-secondary-300/10 focus:outline-0" />
+          <TextInput keyboardType="number-pad" value={phoneNum} onChangeText={setPhoneNum} placeholder='Phone number' placeholderTextColor={colors.light} style={[GlobalStyle.Outfit_Regular_body,styles.textInput]} />
 
         </View>
+        <TextInput keyboardType="default" placeholder='Address' value={address} onChangeText={setAddress} placeholderTextColor={colors.light} style={[GlobalStyle.Outfit_Regular_body,styles.textInput]} />
         <TouchableOpacity onPress={SubmitInfo} className="p-2 border select-none rounded-sm cursor-pointer hover:bg-secondary-300/10">
               <Text>Confirm</Text>
         </TouchableOpacity>
@@ -99,11 +100,24 @@ export default function UserInfoInput(props:propType) {
 }
 
 const styles = StyleSheet.create({
+  container:{
+    width:"100%",
+    alignItems:"flex-end"
+  },
+  textInput:{
+    padding:10,
+    borderWidth:1,
+    borderColor: colors.primary,
+    color:colors.primary,
+    backgroundColor:colors.background,
+    borderRadius:6,
+    flex:1
+  },
   dropdown: {
-    minHeight: 48,
+    width:80,
     borderWidth: 1,
     borderColor: colors.primary,
-    borderRadius: 2,
+    borderRadius: 6,
     backgroundColor: colors.background,
     paddingVertical:0
   },
@@ -122,8 +136,7 @@ const styles = StyleSheet.create({
     textTransform: 'capitalize',
   },
   iconContainer: {
-    width: 40,
-    height: 48,
+    marginHorizontal:2,
     justifyContent: 'center',
     alignItems: 'center',
   },

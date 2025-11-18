@@ -1,11 +1,8 @@
 import { colors, GlobalStyle } from '@/styles/global';
 import type { customisationType, tweakType } from '@/types/type';
 import { Minus, Plus } from 'lucide-react-native';
-import React, { useEffect, useState } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-;
-
-
 
 
 interface propType{
@@ -14,7 +11,7 @@ interface propType{
     setTweakList:React.Dispatch<React.SetStateAction<tweakType[]>>
 }
 
-export default function OptionQuantity(props:propType) {
+const OptionQuantity = memo(function OptionQuantity(props:propType) {
     const {edit,setTweakList} = props
     const [quantity,setQuantity] = useState(edit.quantity.size)
     const [touched, setTouched] = useState(false);
@@ -72,7 +69,9 @@ export default function OptionQuantity(props:propType) {
  
     </View>
   )
-}
+})
+
+export default OptionQuantity
 
 const styles = StyleSheet.create({
   parent: {

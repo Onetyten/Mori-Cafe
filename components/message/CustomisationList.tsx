@@ -1,7 +1,7 @@
 import { chatStyles } from "@/styles/chatStyle"
 import { colors, GlobalStyle } from "@/styles/global"
 import { toWords } from "number-to-words"
-import { useEffect, useRef, useState } from "react"
+import { memo, useEffect, useRef, useState } from "react"
 import { ActivityIndicator, StyleSheet, Text, TouchableOpacity, View } from "react-native"
 import { useDispatch, useSelector } from "react-redux"
 import { setCurrentCart } from "../../store/currentCartItem"
@@ -18,7 +18,7 @@ interface propType{
     addToCart:(foodName:string)=>void
 }
 
-export default function CustomisationList(props:propType) {
+const CustomisationList = memo(function CustomisationList(props:propType) {
     const {message,addToCart} = props
     const dispatch = useDispatch()
     const currentCartFood = useSelector((state:RootState)=>state.cart.cart)
@@ -127,8 +127,10 @@ export default function CustomisationList(props:propType) {
         )}
     </View>
   )
-}
+})
 
+
+export default CustomisationList
 
 const styles = StyleSheet.create({
     loaderParent:{
