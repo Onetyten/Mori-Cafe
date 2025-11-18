@@ -4,8 +4,10 @@ import useFetchFoodList from '@/hooks/useFetchFoodList'
 import useGetElse from '@/hooks/useGetElse'
 import useListCart from '@/hooks/useListCart'
 import useOptionCount from '@/hooks/useOptionCount'
+import useSubcategory from '@/hooks/useSubcategory'
 import { messageListType } from '@/types/type'
-import React, { useRef } from 'react'
+import React, { memo, useRef } from 'react'
+import BotErrorMessage from './message/BotErrorMessage'
 import BotMessage from './message/BotMessage'
 import CartFeedBack from './message/CartFeedBack'
 import ChatMessage from './message/ChatMessage'
@@ -15,8 +17,6 @@ import FoodCarousel from './message/FoodCarousel'
 import NumberInput from './message/NumberInput'
 import SubCarousel from './message/SubCarousel'
 import UserInfoInput from './message/UserInfoInput'
-import BotErrorMessage from './message/BotErrorMessage'
-import useSubcategory from '@/hooks/useSubcategory'
 
 interface propType{
     chatItem:messageListType;
@@ -27,30 +27,35 @@ interface propType{
 
 }
 
-export default function MessageRenderer(props:propType) {
-    const {chatItem,setOptions,setShowOptions,setLoading,loading} = props
-    const isAdding = useRef(false)
-    const {getCategory} = useSubcategory(setOptions,setShowOptions)
-    const getSomethingElseMessage = useGetElse(setShowOptions,setOptions,getCategory)
-    const CartList = useListCart(setShowOptions,setLoading,setOptions,getSomethingElseMessage)
-    const {addToCart} = useAddToCart(setShowOptions,CartList,getSomethingElseMessage,setLoading,setOptions,isAdding)
-    const comfirmToCart = useConfirmToCart(setLoading,setShowOptions,addToCart,setOptions)
-    const optionCount = useOptionCount(setShowOptions,setLoading,loading)
-    const fetchFoodList = useFetchFoodList(loading,setLoading,setShowOptions,setOptions,getSomethingElseMessage)
+ const MessageRenderer = memo(
+    function MessageRenderer(props:propType) {
+        const {chatItem,setOptions,setShowOptions,setLoading,loading} = props
+        const isAdding = useRef(false)
+        const {getCategory} = useSubcategory(setOptions,setShowOptions)
+        const getSomethingElseMessage = useGetElse(setShowOptions,setOptions,getCategory)
+        const CartList = useListCart(setShowOptions,setLoading,setOptions,getSomethingElseMessage)
+        const {addToCart} = useAddToCart(setShowOptions,CartList,getSomethingElseMessage,setLoading,setOptions,isAdding)
+        const comfirmToCart = useConfirmToCart(setLoading,setShowOptions,addToCart,setOptions)
+        const optionCount = useOptionCount(setShowOptions,setLoading,loading)
+        const fetchFoodList = useFetchFoodList(loading,setLoading,setShowOptions,setOptions,getSomethingElseMessage)
 
-  return (
-    chatItem.type === "message"?chatItem.sender==="bot"?<BotMessage message={chatItem}/>:chatItem.sender === "bot-error"?<BotErrorMessage message={chatItem}/>:<ChatMessage message={chatItem}/>
-    :chatItem.type === "subcarousel"?<SubCarousel message={chatItem} fetchFoodList={fetchFoodList}  />
-    :chatItem.type === "number-input"?<NumberInput message={chatItem} confirm={comfirmToCart} />
-    :chatItem.type === "cart-feedback"?<CartFeedBack message={chatItem} isAdding={isAdding}/>
-    // :chatItem.type === "order-handle"?<OrderHandler message={chatItem} key={index}/>
-    // :chatItem.type === "order-feedback"?<OrderFeedback key={index}/>
-    // :chatItem.type === "order-receipt"?<OrderReceipt key={index} setMessageList={setMessageList} message={chatItem}/>
-    :chatItem.type === "cart-list-feedback"?<CheckoutList message={chatItem} setShowOptions={setShowOptions} setOptions={setOptions} getSomethingElseMessage = {getSomethingElseMessage}/>
-    :chatItem.type === "edit-list"?<CustomisationList message={chatItem} addToCart = {addToCart} />
-    :chatItem.type === "enter-info"?<UserInfoInput setOptions={setOptions} setShowOptions={setShowOptions} getSomethingElseMessage={getSomethingElseMessage} />
-    :chatItem.type === "food-list"?<FoodCarousel setShowOptions={setShowOptions} setLoading={setLoading} message={chatItem} onClick={optionCount}/>
-    // :chatItem.type === "receipt-list"?<ReceiptCarousel key={index} setShowOptions={setShowOptions} setMessageList={setMessageList} setLoading={setLoading} message={chatItem}/>
-    :null
-  )
+        return (
+            chatItem.type === "message"?chatItem.sender==="bot"?<BotMessage message={chatItem}/>:chatItem.sender === "bot-error"?<BotErrorMessage message={chatItem}/>:<ChatMessage message={chatItem}/>
+            :chatItem.type === "subcarousel"?<SubCarousel message={chatItem} fetchFoodList={fetchFoodList}  />
+            :chatItem.type === "number-input"?<NumberInput message={chatItem} confirm={comfirmToCart} />
+            :chatItem.type === "cart-feedback"?<CartFeedBack message={chatItem} isAdding={isAdding}/>
+            // :chatItem.type === "order-handle"?<OrderHandler message={chatItem} key={index}/>
+            // :chatItem.type === "order-feedback"?<OrderFeedback key={index}/>
+            // :chatItem.type === "order-receipt"?<OrderReceipt key={index} setMessageList={setMessageList} message={chatItem}/>
+            :chatItem.type === "cart-list-feedback"?<CheckoutList message={chatItem} setShowOptions={setShowOptions} setOptions={setOptions} getSomethingElseMessage = {getSomethingElseMessage}/>
+            :chatItem.type === "edit-list"?<CustomisationList message={chatItem} addToCart = {addToCart} />
+            :chatItem.type === "enter-info"?<UserInfoInput setOptions={setOptions} setShowOptions={setShowOptions} getSomethingElseMessage={getSomethingElseMessage} />
+            :chatItem.type === "food-list"?<FoodCarousel setShowOptions={setShowOptions} setLoading={setLoading} message={chatItem} onClick={optionCount}/>
+            // :chatItem.type === "receipt-list"?<ReceiptCarousel key={index} setShowOptions={setShowOptions} setMessageList={setMessageList} setLoading={setLoading} message={chatItem}/>
+            :null
+        )
 }
+ ) 
+
+
+export default MessageRenderer

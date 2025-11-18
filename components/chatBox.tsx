@@ -7,13 +7,14 @@ import { useChatInit } from "../hooks/useChatInit"
 import useSubcategory from "../hooks/useSubcategory"
 import SearchBar from "./searchbar/SearchBar"
 import MessageRenderer from "./messageRenderer"
+import { messageListType } from "@/types/type"
 
 
 
 
 export default function ChatBox() {
     const messageList = useSelector((state:RootState)=>state.messageList.messageList)
-    const scrollRef = useRef<ScrollView|null>(null)
+    const scrollRef = useRef<FlatList<messageListType>|null>(null)
     const [showoptions,setShowOptions] = useState(false)
     const [loading,setLoading] = useState(false)
     const initiatedRef = useRef<boolean>(false)
@@ -30,6 +31,7 @@ export default function ChatBox() {
     <View style={chatStyle.container}>
         <View style={chatStyle.scrollView} >
                 <FlatList 
+                    ref={scrollRef}
                     contentContainerStyle={chatStyle.messageView}
                     data={messageList}
                     showsVerticalScrollIndicator={false}
