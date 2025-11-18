@@ -7,7 +7,7 @@ export const colors = {
   brown: "#592c0d",
   muted: "#4f4849",
   background: "#e9d5ca",
-  danger: "#ef4444",
+  danger: "#FA4032",
   warning:"#f59e0b",
   success: "#22c55e",
 };

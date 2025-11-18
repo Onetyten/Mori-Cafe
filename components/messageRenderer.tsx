@@ -7,7 +7,6 @@ import useOptionCount from '@/hooks/useOptionCount'
 import useSubcategory from '@/hooks/useSubcategory'
 import { messageListType } from '@/types/type'
 import React, { memo, useRef } from 'react'
-import BotErrorMessage from './message/BotErrorMessage'
 import BotMessage from './message/BotMessage'
 import CartFeedBack from './message/CartFeedBack'
 import ChatMessage from './message/ChatMessage'
@@ -40,7 +39,7 @@ interface propType{
         const fetchFoodList = useFetchFoodList(loading,setLoading,setShowOptions,setOptions,getSomethingElseMessage)
 
         return (
-            chatItem.type === "message"?chatItem.sender==="bot"?<BotMessage message={chatItem}/>:chatItem.sender === "bot-error"?<BotErrorMessage message={chatItem}/>:<ChatMessage message={chatItem}/>
+            chatItem.type === "message"?chatItem.sender==="user"?<ChatMessage message={chatItem}/>:<BotMessage message={chatItem}/>
             :chatItem.type === "subcarousel"?<SubCarousel message={chatItem} fetchFoodList={fetchFoodList}  />
             :chatItem.type === "number-input"?<NumberInput message={chatItem} confirm={comfirmToCart} />
             :chatItem.type === "cart-feedback"?<CartFeedBack message={chatItem} isAdding={isAdding}/>

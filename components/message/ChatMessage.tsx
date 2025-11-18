@@ -1,6 +1,6 @@
 import { chatStyles } from "@/styles/chatStyle"
 import { GlobalStyle } from "@/styles/global"
-import { useEffect, useRef, useState } from "react"
+import { memo, useEffect, useRef, useState } from "react"
 import { ActivityIndicator, Text, View } from "react-native"
 
 interface propType{
@@ -12,7 +12,8 @@ interface propType{
     }
 }
 
-export default function ChatMessage (props:propType) {
+const ChatMessage = memo(
+ function ChatMessage (props:propType) {
     const {message} = props
     const [displayedMessage,setDisplayedMessage] = useState<string[]>([])
     const [isTyping,setIsTyping] = useState(true)
@@ -72,5 +73,6 @@ export default function ChatMessage (props:propType) {
         </View>
   )
 }
+)
 
-
+export default ChatMessage

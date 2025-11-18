@@ -14,6 +14,12 @@ export const chatStyles = StyleSheet.create({
         padding:8,
         borderRadius:8,
     },
+    errorChatBubble:{
+        backgroundColor:colors.danger,
+        color:"#000",
+        padding:8,
+        borderRadius:8,
+    },
     chatBubbleText:{
         color:"#fff",
     },
