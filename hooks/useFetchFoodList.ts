@@ -1,12 +1,12 @@
-import React from 'react'
-import type {messageListType} from "../types/type"
-import { useDispatch } from 'react-redux';
 import { AddMessage } from '@/store/messageListSlice';
+import React, { useCallback } from 'react';
+import { useDispatch } from 'react-redux';
+import type { messageListType } from "../types/type";
 
 export default function useFetchFoodList(loading:boolean,setLoading:React.Dispatch<React.SetStateAction<boolean>>,setShowOptions:React.Dispatch<React.SetStateAction<boolean>>,setOptions: React.Dispatch<React.SetStateAction<{name: string; onClick: () => void}[]>>,getSomethingElseMessage:(message: string) => void)
 {
     const dispatch = useDispatch()
-    function fetchFoodList(endpoint:string,expression:string){
+    const fetchFoodList = useCallback(async(endpoint:string,expression:string)=>{
         if (loading) return
         setLoading(true)
         try
@@ -22,7 +22,7 @@ export default function useFetchFoodList(loading:boolean,setLoading:React.Dispat
         catch (error) {
             console.error(error)
         }
-    }
+    },[dispatch, getSomethingElseMessage, loading, setLoading, setOptions, setShowOptions])
 
     return fetchFoodList
 }

@@ -1,13 +1,13 @@
-import { useRef, useState } from "react"
-import OptionsInput from "./OptionsInput"
+import { messageListType } from "@/types/type"
 import { RootState } from "@/utils/store"
-import { FlatList, ScrollView, StyleSheet, View } from "react-native"
+import { useRef, useState } from "react"
+import { FlatList, StyleSheet, View } from "react-native"
 import { useSelector } from "react-redux"
 import { useChatInit } from "../hooks/useChatInit"
 import useSubcategory from "../hooks/useSubcategory"
-import SearchBar from "./searchbar/SearchBar"
 import MessageRenderer from "./messageRenderer"
-import { messageListType } from "@/types/type"
+import OptionsInput from "./OptionsInput"
+import SearchBar from "./searchbar/SearchBar"
 
 
 
@@ -20,9 +20,7 @@ export default function ChatBox() {
     const initiatedRef = useRef<boolean>(false)
     const [options,setOptions] = useState([{name:'Coffee', onClick:()=>getCategory('coffee')},{name:'Drink',onClick:()=>getCategory('drink')},{name:'Snacks',onClick:()=>getCategory('snack')}])
     const [showButtons,setShowButtons] = useState(false)
-    
-
-    useChatInit({scrollRef,initiatedRef,setShowOptions,setShowButtons})
+    useChatInit({initiatedRef,setShowOptions})
     const {getCategory} = useSubcategory(setOptions,setShowOptions)
 
 
@@ -37,6 +35,11 @@ export default function ChatBox() {
                     showsVerticalScrollIndicator={false}
                     keyExtractor={(_item,index)=>index.toString()}
                     ListFooterComponentStyle={{marginBottom:128}}
+                    onContentSizeChange={()=>{
+                       requestAnimationFrame(()=>{
+                        scrollRef.current?.scrollToEnd({animated:true})
+                       })
+                    }}
                     ItemSeparatorComponent={()=><View style={{height:16}} />}
                     ListFooterComponent={()=>showoptions&& <OptionsInput options = {options}/>}
                     renderItem={({item}) => <MessageRenderer chatItem={item} setOptions={setOptions} setShowOptions={setShowOptions} setLoading={setLoading} loading={loading} />

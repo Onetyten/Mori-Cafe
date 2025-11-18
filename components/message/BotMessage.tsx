@@ -1,5 +1,5 @@
 import { chatStyles } from '@/styles/chatStyle'
-import { useEffect, useRef, useState } from 'react'
+import { memo, useEffect, useRef, useState } from 'react'
 import { View } from 'react-native'
 import BotChatBubble from "./chat Bubble/BotChatBubble"
 import BotImage from './chat Bubble/BotImage'
@@ -14,7 +14,8 @@ interface propType{
     }
 }
 
-export default function BotMessage(props:propType) {
+const BotMessage = memo(
+    function BotMessage(props:propType) {
     const {message} = props
     const [displayedMessage,setDisplayedMessage] = useState<string[]>([])
     const [isTyping,setIsTyping] = useState(true)
@@ -33,40 +34,39 @@ export default function BotMessage(props:propType) {
                     setDisplayedMessage((prev) => [...prev, message.content[indexRef.current]]);
                     indexRef.current++;
                     if (indexRef.current<message.content.length-1){
-                        setTimeout(loadNextMessage,500)
+                        setTimeout(loadNextMessage,200)
                     }
                     else{
                         if (message.next) message.next()
-                        
                     }
-                },800)
+                },200)
             }
         }
         loadNextMessage()
-        
-
         return ()=>{
             isCancelled = true
         }
     },[message, message.content])
     
-  return (
-    <View style={{width:"100%",alignItems:"flex-start"}}>
-        <View style={{flexDirection:"row",gap:8,alignItems:"flex-start"}}>
-            <BotImage/>
-            <View style={chatStyles.botMessageView}>
-                {displayedMessage.map((item,index)=>{
-                    return(
-                        <View key={index} style={chatStyles.botBubbleContainer}>
-                            <BotChatBubble message={item} index ={index}/>
-                        </View>
-                    )
-                })}
-                {isTyping&&(
-                    <BotLoader />
-                )}
+    return (
+        <View style={{width:"100%",alignItems:"flex-start"}}>
+            <View style={{flexDirection:"row",gap:8,alignItems:"flex-start"}}>
+                <BotImage/>
+                <View style={chatStyles.botMessageView}>
+                    {displayedMessage.map((item,index)=>{
+                        return(
+                            <View key={index} style={chatStyles.botBubbleContainer}>
+                                <BotChatBubble message={item} index ={index}/>
+                            </View>
+                        )
+                    })}
+                    {isTyping&&(
+                        <BotLoader />
+                    )}
+                </View>
             </View>
         </View>
-    </View>
-  )
-}
+    )
+}) 
+
+export default BotMessage

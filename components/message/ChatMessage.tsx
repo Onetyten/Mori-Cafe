@@ -31,13 +31,13 @@ export default function ChatMessage (props:propType) {
                     setDisplayedMessage((prev) => [...prev, message.content[indexRef.current]]);
                     indexRef.current++;
                     if (indexRef.current<message.content.length-1){
-                        setTimeout(loadNextMessage,500)
+                        setTimeout(loadNextMessage,200)
                     }
                     else{
                         if (message.next) message.next()
                         
                     }
-                },800)
+                },300)
             }
         }
         loadNextMessage()
