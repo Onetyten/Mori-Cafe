@@ -4,7 +4,7 @@ import { colors } from "./global";
 export const chatStyles = StyleSheet.create({
     botchatBubble:{
         backgroundColor:colors.primary,
-        color:colors.background,
+        color:"#fff",
         padding:8,
         borderRadius:8,
     },
@@ -13,6 +13,7 @@ export const chatStyles = StyleSheet.create({
         color:"#fff",
         padding:8,
         borderRadius:8,
+        textAlign:"left"
     },
     errorChatBubble:{
         backgroundColor:colors.danger,

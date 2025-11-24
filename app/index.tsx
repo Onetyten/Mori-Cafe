@@ -4,7 +4,7 @@ import Comfirmation from "@/components/confirmation";
 import UserCheck from "@/components/script/userCheck";
 import { colors, GlobalStyle } from "@/styles/global";
 import Fontisto from '@expo/vector-icons/Fontisto';
-import { Image } from 'expo-image';
+import { Image } from "expo-image";
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";

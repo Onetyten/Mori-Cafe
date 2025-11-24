@@ -3,14 +3,26 @@ import { StyleSheet } from "react-native";
 export const colors = {
   primary: "#588159",
   secondary: "#395a3f",
-  light: "#a2b18a",
+  light: "#a78d78",
   brown: "#592c0d",
-  muted: "#4f4849",
-  background: "#e9d5ca",
+  muted: "#b0a59eff",
+  background: "#d4c8c3",
   danger: "#FA4032",
   warning:"#f59e0b",
   success: "#22c55e",
 };
+
+// export const colors = {
+//   primary: "#588159",
+//   secondary: "#395a3f",
+//   light: "#a78d78",
+//   brown: "#592c0d",
+//   muted: "#b0a59eff",
+//   background: "#e9d5ca",
+//   danger: "#FA4032",
+//   warning:"#f59e0b",
+//   success: "#22c55e",
+// };
 
 
 export const fontFamily = {
@@ -43,7 +55,7 @@ export const GlobalStyle = StyleSheet.create({
   Outfit_Regular_h1: { fontFamily: fontFamily.outfitRegular, fontSize: 36, lineHeight: 44 },
   Outfit_Regular_h2: { fontFamily: fontFamily.outfitRegular, fontSize: 28, lineHeight: 36 },
   Outfit_Regular_button: { fontFamily: fontFamily.outfitRegular, fontSize: 24, lineHeight: 30 },
-  Outfit_Regular_body: { fontFamily: fontFamily.outfitRegular, fontSize: 18, lineHeight: 22 },
+  Outfit_Regular_body: { fontFamily: fontFamily.outfitRegular, fontSize: 18, lineHeight: 30 },
   Outfit_Regular_small: { fontFamily: fontFamily.outfitRegular, fontSize: 16, lineHeight: 20 },
   
   Outfit_Bold_h1: { fontFamily: fontFamily.outfitBold, fontSize: 36, lineHeight: 44 },

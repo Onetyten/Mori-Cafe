@@ -19,8 +19,6 @@ interface propType{
 }
 
 
-
-
 export default function UserInfoInput(props:propType) {
   const {setOptions,setShowOptions,getSomethingElseMessage} = props
   const dispatch = useDispatch()
@@ -91,8 +89,9 @@ export default function UserInfoInput(props:propType) {
 
         </View>
         <TextInput keyboardType="default" placeholder='Address' value={address} onChangeText={setAddress} placeholderTextColor={colors.light} style={[GlobalStyle.Outfit_Regular_body,styles.textInput]} />
-        <TouchableOpacity onPress={SubmitInfo} className="p-2 border select-none rounded-sm cursor-pointer hover:bg-secondary-300/10">
-              <Text>Confirm</Text>
+        
+        <TouchableOpacity onPress={SubmitInfo} style={styles.button} >
+              <Text numberOfLines={1} ellipsizeMode='tail' style={[GlobalStyle.Outfit_Regular_body,{color: colors.primary,}]}>Confirm</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -120,6 +119,13 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     backgroundColor: colors.background,
     paddingVertical:0
+  },
+  button: {
+    padding: 10,
+    borderWidth: 1,
+    borderColor: colors.primary,
+    backgroundColor:colors.background,
+    borderRadius: 6,
   },
   input: {
     fontSize: 18,

@@ -1,7 +1,7 @@
 import { colors } from "@/styles/global"
-import { Image, ImageBackground } from "expo-image"
+import { Image } from "expo-image"
 import { memo, useEffect, useState } from "react"
-import { ActivityIndicator, Text, TouchableOpacity, View } from "react-native"
+import { ActivityIndicator, StyleSheet, Text, TouchableOpacity, View } from "react-native"
 import type { subCategoryType } from '../../types/type'
 import api from "../../utils/api"
 
@@ -56,15 +56,13 @@ interface propType{
     <View className="w-full flex-row justify-between gap-2 flex-wrap">
         {subcategoryList.map((item)=>{
             return(
-                <TouchableOpacity onPress={()=>{fetchFoodList(`/food/list?sub_id=${item._id}`,`Select your ${item.name}`)}} key={item._id} className="w-[49%]">
-                    <ImageBackground imageStyle={{overflow:"hidden",borderRadius:10}} source={require("../../assets/images/patterns/pattern.webp")}  className="hover:bg-secondary-200/20 hover:shadow-xl shadow-secondary-100/10 cursor-pointer h-52 flex justify-center items-center flex-col overflow-hidden rounded-3xl bg-auto relative bg-center" style={{height:200}}>
+                <TouchableOpacity onPress={()=>{fetchFoodList(`/food/list?sub_id=${item._id}`,`Select your ${item.name}`)}} key={item._id} style={styles.Button}>
                         <View className="flex-1 z-20 flex justify-center items-center text-center h-full w-full">
                             <Image source={{uri:item.imageUrl}} style={{objectFit:"contain",width:128,height:128,borderRadius:9999}} className="size-32 object-contain rounded-full" />
                         </View>
                         <View className="capitalize text-center ">
-                            <Text className="text-center text-secondary-100 text-2xl capitalize font-outfit-bold mb-3">{item.name}</Text>
+                            <Text style={{color:"#fff"}} className="text-center text-white text-2xl capitalize font-outfit-bold mb-3">{item.name}</Text>
                         </View>
-                    </ImageBackground>
                 </TouchableOpacity>
             )
         })}
@@ -73,3 +71,15 @@ interface propType{
 })
 
 export default SubCarousel
+
+const styles = StyleSheet.create({
+    Button:{
+        overflow:"hidden",
+        borderRadius:10,
+        height:208,
+        justifyContent:"center",
+        alignItems:"center",
+        backgroundColor:colors.light,
+        width:"49%",
+    }
+})

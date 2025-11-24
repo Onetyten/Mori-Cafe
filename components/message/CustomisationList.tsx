@@ -1,3 +1,4 @@
+import { AddMessage } from "@/store/messageListSlice"
 import { chatStyles } from "@/styles/chatStyle"
 import { colors, GlobalStyle } from "@/styles/global"
 import { toWords } from "number-to-words"
@@ -64,6 +65,14 @@ const CustomisationList = memo(function CustomisationList(props:propType) {
         dispatch(setCurrentCart(updatedCart))
         addToCart(foodRedux.name)
         setAddedToCart(true)
+        const orderContent = `I want my ${foodRedux?.name || "food"} to be made with:${tweakList.map((item)=>
+                item.type==="option"? `\n${item.name} : ${item.value} ` 
+                : item.type === "quantity" ? `\n${toWords(parseInt(item.value))} ${ parseInt(item.value) === 1 && item.name.endsWith("s") ? item.name.slice(0, -1) : item.name}` :
+                `\n${item.name}`
+            )} `
+        const newMessage = {type:"message",next:()=>{}, sender:"user",content:[orderContent]}
+        dispatch(AddMessage(newMessage))
+
     }
 
     if (options.length===0){
@@ -79,6 +88,8 @@ const CustomisationList = memo(function CustomisationList(props:propType) {
             </View>
         )
     }
+
+    if (addedToCart) return null
 
   return (
     <View className="w-full flex justify-end items-end  flex-col gap-2">

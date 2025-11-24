@@ -8,17 +8,19 @@ import { useDispatch } from "react-redux";
 import type { FoodType, messageListType } from '../../types/type';
 import api from "../../utils/api";
 import FoodCard from "../FoodCard";
+import useOptionCount from "@/hooks/useOptionCount";
 
 interface propType{
     message:messageListType
     setLoading:React.Dispatch<React.SetStateAction<boolean>>,
-    onClick:(food:FoodType)=>void,
     setShowOptions:React.Dispatch<React.SetStateAction<boolean>>,
+    loading:boolean
 }
 
 const FoodCarousel = memo(function FoodCarousel(props:propType) {
     const dispatch = useDispatch()
-    const {message,setLoading,onClick,setShowOptions} = props
+    const {message,setLoading,setShowOptions,loading} = props
+    const optionCount = useOptionCount(setShowOptions,setLoading,loading)
     const [foodList,setFoodList] = useState<FoodType[]>([])
     const [fetched,setFetched] = useState(false)
 
@@ -71,7 +73,7 @@ const FoodCarousel = memo(function FoodCarousel(props:propType) {
         <Swiper autoplay horizontal autoplayTimeout={5} activeDot={<View style={[Styles.dot,Styles.activeDot]} />} dot={<View style={[Styles.dot,Styles.passiveDot]} />} loop showsPagination={true} height={290}>
             {foodList.map((item) => (
                 <View key={item._id}>
-                    <FoodCard food={item} onClick={onClick}/>
+                    <FoodCard food={item} onClick={optionCount}/>
                 </View>
             ))}
         </Swiper>

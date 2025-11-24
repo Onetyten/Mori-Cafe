@@ -3,7 +3,6 @@ import useConfirmToCart from '@/hooks/useConfirmToCart'
 import useFetchFoodList from '@/hooks/useFetchFoodList'
 import useGetElse from '@/hooks/useGetElse'
 import useListCart from '@/hooks/useListCart'
-import useOptionCount from '@/hooks/useOptionCount'
 import useSubcategory from '@/hooks/useSubcategory'
 import { messageListType } from '@/types/type'
 import React, { memo, useRef } from 'react'
@@ -35,7 +34,6 @@ interface propType{
         const CartList = useListCart(setShowOptions,setLoading,setOptions,getSomethingElseMessage)
         const {addToCart} = useAddToCart(setShowOptions,CartList,getSomethingElseMessage,setLoading,setOptions,isAdding)
         const comfirmToCart = useConfirmToCart(setLoading,setShowOptions,addToCart,setOptions)
-        const optionCount = useOptionCount(setShowOptions,setLoading,loading)
         const fetchFoodList = useFetchFoodList(loading,setLoading,setShowOptions,setOptions,getSomethingElseMessage)
 
         return (
@@ -49,7 +47,7 @@ interface propType{
             :chatItem.type === "cart-list-feedback"?<CheckoutList message={chatItem} setShowOptions={setShowOptions} setOptions={setOptions} getSomethingElseMessage = {getSomethingElseMessage}/>
             :chatItem.type === "edit-list"?<CustomisationList message={chatItem} addToCart = {addToCart} />
             :chatItem.type === "enter-info"?<UserInfoInput setOptions={setOptions} setShowOptions={setShowOptions} getSomethingElseMessage={getSomethingElseMessage} />
-            :chatItem.type === "food-list"?<FoodCarousel setShowOptions={setShowOptions} setLoading={setLoading} message={chatItem} onClick={optionCount}/>
+            :chatItem.type === "food-list"?<FoodCarousel setShowOptions={setShowOptions} setLoading={setLoading} message={chatItem} loading={loading} />
             // :chatItem.type === "receipt-list"?<ReceiptCarousel key={index} setShowOptions={setShowOptions} setMessageList={setMessageList} setLoading={setLoading} message={chatItem}/>
             :null
         )
