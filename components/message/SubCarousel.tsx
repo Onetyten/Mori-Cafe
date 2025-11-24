@@ -1,7 +1,6 @@
 import { colors } from "@/styles/global"
-import { Image } from "expo-image"
 import { memo, useEffect, useState } from "react"
-import { ActivityIndicator, StyleSheet, Text, TouchableOpacity, View } from "react-native"
+import { ActivityIndicator, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native"
 import type { subCategoryType } from '../../types/type'
 import api from "../../utils/api"
 
@@ -44,8 +43,8 @@ interface propType{
         return(
             <View className="w-full gap-2 flex-wrap flex-row justify-center">
                 {Array.from({length:2}).map((_,i)=>(
-                    <View key={i} className="bg-muted/40 flex justify-center items-center w-[48%] h-52 rounded-md">
-                        <ActivityIndicator size="large" color={colors.muted}/> 
+                    <View key={i} style={{backgroundColor:colors.muted}} className="flex justify-center items-center w-[48%] h-52 rounded-md">
+                        <ActivityIndicator size="large" color={colors.brown}/> 
                     </View>
                 ))}
             </View>
@@ -57,6 +56,7 @@ interface propType{
         {subcategoryList.map((item)=>{
             return(
                 <TouchableOpacity onPress={()=>{fetchFoodList(`/food/list?sub_id=${item._id}`,`Select your ${item.name}`)}} key={item._id} style={styles.Button}>
+                        <Image source={require("../../assets/images/patterns/grid.webp")} resizeMode="repeat" style={[StyleSheet.absoluteFill,{width:"100%",height:"100%",opacity:0.1}]}/>
                         <View className="flex-1 z-20 flex justify-center items-center text-center h-full w-full">
                             <Image source={{uri:item.imageUrl}} style={{objectFit:"contain",width:128,height:128,borderRadius:9999}} className="size-32 object-contain rounded-full" />
                         </View>
@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
     Button:{
         overflow:"hidden",
         borderRadius:10,
-        height:208,
+        height:180,
         justifyContent:"center",
         alignItems:"center",
         backgroundColor:colors.light,

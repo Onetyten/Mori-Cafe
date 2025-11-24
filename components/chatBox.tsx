@@ -34,9 +34,11 @@ export default function ChatBox() {
                     data={messageList}
                     showsVerticalScrollIndicator={false}
                     keyExtractor={(_item,index)=>index.toString()}
-                    initialNumToRender={10}
+                    initialNumToRender={4}
                     removeClippedSubviews={true}
                     maxToRenderPerBatch={5}
+                    windowSize={7}
+                    updateCellsBatchingPeriod={30}
                     ListFooterComponentStyle={{marginBottom:128}}
                     onContentSizeChange={()=>{
                        requestAnimationFrame(()=>{

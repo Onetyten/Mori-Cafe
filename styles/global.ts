@@ -3,26 +3,14 @@ import { StyleSheet } from "react-native";
 export const colors = {
   primary: "#588159",
   secondary: "#395a3f",
-  light: "#a78d78",
-  brown: "#592c0d",
-  muted: "#b0a59eff",
-  background: "#d4c8c3",
+  light: "#a2b18a",
+  brown: "#6f4e37",
+  muted: "#a89487",
+  background: "#e9d5ca",
   danger: "#FA4032",
   warning:"#f59e0b",
   success: "#22c55e",
 };
-
-// export const colors = {
-//   primary: "#588159",
-//   secondary: "#395a3f",
-//   light: "#a78d78",
-//   brown: "#592c0d",
-//   muted: "#b0a59eff",
-//   background: "#e9d5ca",
-//   danger: "#FA4032",
-//   warning:"#f59e0b",
-//   success: "#22c55e",
-// };
 
 
 export const fontFamily = {

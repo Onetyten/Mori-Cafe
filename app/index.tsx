@@ -14,7 +14,7 @@ export default function Index() {
     <SafeAreaView style={Styles.container}>
           <UserCheck/>
           <View style={Styles.headerView}>
-            <Fontisto name="coffeescript" size={25} color={"#588159"} />
+            <Fontisto name="coffeescript" size={25} color={colors.primary} />
             <Text style={[GlobalStyle.squada_h1,Styles.headerText]}>Mori cafe</Text>
           </View>
 

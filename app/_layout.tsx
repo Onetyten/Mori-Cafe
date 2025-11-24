@@ -1,3 +1,4 @@
+import { colors } from "@/styles/global";
 import store, { persistor } from "@/utils/store";
 import { useFonts } from "expo-font";
 import { SplashScreen, Stack } from "expo-router";
@@ -38,7 +39,7 @@ export default function RootLayout() {
         <SafeAreaProvider>
           <Stack screenOptions={{
             headerShown:false,
-            contentStyle:{backgroundColor:"#e9d5ca"}
+            contentStyle:{backgroundColor:colors.background}
             }} />
         </SafeAreaProvider>  
       </PersistGate>

@@ -1,7 +1,7 @@
 import { chatStyles } from "@/styles/chatStyle"
 import { GlobalStyle } from "@/styles/global"
 import { memo, useEffect, useRef, useState } from "react"
-import { ActivityIndicator, Text, View } from "react-native"
+import { ActivityIndicator, Image, StyleSheet, Text, View } from "react-native"
 
 interface propType{
     message:{
@@ -62,6 +62,7 @@ const ChatMessage = memo(
                 {displayedMessage.map((item,index)=>{
                     return(
                         <View key={index} style={chatStyles.chatBubbleContainer}>
+                            <Image source={require("../../assets/images/patterns/grid.webp")} resizeMode="repeat" style={[StyleSheet.absoluteFill,{width:"100%",height:"100%",opacity:0.1}]}/>
                             <Text style={[GlobalStyle.Outfit_Regular_body,chatStyles.chatBubble,index === 0&&chatStyles.firstChatBubble]} >
                                 {item}
                             </Text>

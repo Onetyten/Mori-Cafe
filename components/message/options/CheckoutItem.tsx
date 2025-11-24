@@ -1,8 +1,7 @@
 import { colors, GlobalStyle } from '@/styles/global';
-import { Image } from 'expo-image';
 import { Minus, Plus } from 'lucide-react-native';
 import { useEffect, useState } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { setDeleteCartItem } from '../../../store/cartDeleteSlice';
 import type { cartListType } from '../../../types/type';
@@ -33,7 +32,7 @@ export default function CheckoutItem(props:propType) {
 
   return (
     <View style={styles.parent} onLayout={(e)=>setParentHeight(e.nativeEvent.layout.height)}>
-
+        <Image source={require("../../../assets/images/patterns/grid.webp")} resizeMode="repeat" style={[StyleSheet.absoluteFill,{width:"100%",height:"100%",opacity:0.1}]}/>
         <Image source={{uri:food.foodId.imageUrl}} style={styles.foodImage} />
         <View style={styles.viewContainer}>
             <Text style={[GlobalStyle.Outfit_Semibold_body,{textTransform:"capitalize",textAlign:"left",color:"#fff"}]}>
@@ -76,7 +75,6 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     borderTopRightRadius:0,
     gap:8,
-    padding:8,
     borderWidth: 0,
     backgroundColor: colors.light,
     flexDirection: "row",

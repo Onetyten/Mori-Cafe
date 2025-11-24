@@ -9,7 +9,7 @@ export const chatStyles = StyleSheet.create({
         borderRadius:8,
     },
     chatBubble:{
-        backgroundColor:colors.light,
+        
         color:"#fff",
         padding:8,
         borderRadius:8,
@@ -33,11 +33,12 @@ export const chatStyles = StyleSheet.create({
     botBubbleContainer:{
         justifyContent:"flex-start",
         alignItems:"center",
-        color:colors.primary,
     },
     chatBubbleContainer:{
         alignItems:"flex-end",
-        color:colors.primary,
+        borderRadius:8,
+        backgroundColor:colors.light,
+        overflow:"hidden",
     },
     chatBubbleLoaderContainer:{
         justifyContent:"flex-start",
