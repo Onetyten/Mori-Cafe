@@ -20,7 +20,6 @@ export default function useOptionCount(setShowOptions:React.Dispatch<React.SetSt
         if (loading) return console.log("something is loading")
         setLoading(true)
         setShowOptions(false)
-        console.log("option count called")
         const newPick = {type:"message",next:()=>{}, sender:"user",content:[`I’ll have the ${food.name}`]}
         dispatch(setFood(food))
         dispatch(AddMessage(newPick))

@@ -2,8 +2,6 @@ import { colors, GlobalStyle } from "@/styles/global"
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native"
 import type { FoodType } from "../types/type"
 
-
-
 interface propType{
     food:FoodType
     onClick:(food:FoodType)=>void

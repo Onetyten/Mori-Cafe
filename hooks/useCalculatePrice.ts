@@ -3,6 +3,7 @@ import React, { useCallback, useEffect, useRef } from 'react';
 import { useDispatch, useStore } from 'react-redux';
 import { setOrder } from '../store/newOrderSlice';
 import type { RootState } from '../utils/store';
+import useSubmitDetails from './useSubmitDetails';
 
 export default function useCalculatePrice(
     getSomethingElseMessage:(message: string) => void,
@@ -12,6 +13,7 @@ export default function useCalculatePrice(
         const dispatch = useDispatch();
         const store = useStore<RootState>();
         const timers = useRef<ReturnType<typeof setTimeout>[]>([])
+        const {SubmitInfo} = useSubmitDetails(getSomethingElseMessage,setShowOptions,setOptions);
 
         const selectInfo= useCallback(()=>{
             const newMessage = {type:"message",next:()=>{}, sender:"bot",content:[`Enter your delivery information`]};
@@ -19,13 +21,13 @@ export default function useCalculatePrice(
             
             timers.current.push(
                 setTimeout(()=>{
-                    setOptions([{name:'Continue shopping', onClick:()=>getSomethingElseMessage("Let's continue")}]);
+                    setOptions([{name:'Confirm', onClick:()=>SubmitInfo()},{name:'Continue shopping', onClick:()=>getSomethingElseMessage("Let's continue")}]);
                     const newInput = {type:"enter-info",next:()=>{}, sender:"bot",content:[]};
                     dispatch(AddMessage(newInput));
                 },1000)
             );
             
-        },[dispatch, getSomethingElseMessage, setOptions]);
+        },[SubmitInfo, dispatch, getSomethingElseMessage, setOptions]);
 
         const calculateSelectedPrice= useCallback(()=>
             {

@@ -8,13 +8,14 @@ import currentFoodReducer from '../store/currentFoodSlice'
 import newOrderReducer from "../store/newOrderSlice"
 import orderCartListReducer from "../store/OrderCartList"
 import pendingOrderReducer from "../store/pendingOrderSlice"
+import userInfoReducer from '../store/userInfoSlice'
 import userReducer from '../store/userSlice'
 
 const persistConfig = {
     key:'root',
     version:1,
     storage:AsyncStorage,
-    whitelist:['user','pendingOrders']
+    whitelist:['user','pendingOrders','userInfo']
 }
 
 const reducer = combineReducers({
@@ -25,7 +26,8 @@ const reducer = combineReducers({
     cartDel:cartDelReducer,
     orderList:orderCartListReducer,
     newOrder:newOrderReducer,
-    pendingOrders:pendingOrderReducer
+    pendingOrders:pendingOrderReducer,
+    userInfo:userInfoReducer
 })
 
 const persistedReducer = persistReducer(persistConfig,reducer)
