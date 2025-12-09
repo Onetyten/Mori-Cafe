@@ -45,7 +45,7 @@ export default function SearchBar(props:propType) {
           <TextInput value={query} onChangeText={setQuery} placeholder="Search order" className="w-full text-xl pl-16 font-outfit-light placeholder:text-muted h-full focus:outline-0 focus:bg-secondary-300/15 bg-secondary-300/20 rounded-full px-2" />
           
           <TouchableOpacity onPress={HandleSubmit} style={{backgroundColor:colors.primary}} className="bg-primary absolute items-center justify-center right-0 hover:text-white w-14 h-14 rounded-full text-background">
-            <Ionicons name="send" color={colors.background} />
+            <Ionicons name="send" size={24} color={colors.background} />
           </TouchableOpacity>
         </View>
     </View>

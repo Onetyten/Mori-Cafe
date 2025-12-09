@@ -15,6 +15,7 @@ import FoodCarousel from './message/FoodCarousel'
 import NumberInput from './message/NumberInput'
 import SubCarousel from './message/SubCarousel'
 import UserInfoInput from './message/UserInfoInput'
+import OrderFeedback from './message/orderFeedback'
 
 interface propType{
     chatItem:messageListType;
@@ -41,14 +42,14 @@ interface propType{
             :chatItem.type === "subcarousel"?<SubCarousel message={chatItem} fetchFoodList={fetchFoodList}  />
             :chatItem.type === "number-input"?<NumberInput message={chatItem} confirm={comfirmToCart} />
             :chatItem.type === "cart-feedback"?<CartFeedBack message={chatItem} isAdding={isAdding}/>
-            // :chatItem.type === "order-handle"?<OrderHandler message={chatItem} key={index}/>
-            // :chatItem.type === "order-feedback"?<OrderFeedback key={index}/>
-            // :chatItem.type === "order-receipt"?<OrderReceipt key={index} setMessageList={setMessageList} message={chatItem}/>
+            // :chatItem.type === "order-handle"?<OrderHandler message={chatItem}/>
+            :chatItem.type === "order-feedback"?<OrderFeedback />
+            // :chatItem.type === "order-receipt"?<OrderReceipt setMessageList={setMessageList} message={chatItem}/>
             :chatItem.type === "cart-list-feedback"?<CheckoutList message={chatItem} setShowOptions={setShowOptions} setOptions={setOptions} getSomethingElseMessage = {getSomethingElseMessage}/>
             :chatItem.type === "edit-list"?<CustomisationList message={chatItem} addToCart = {addToCart} />
             :chatItem.type === "enter-info"?<UserInfoInput setOptions={setOptions} setShowOptions={setShowOptions} getSomethingElseMessage={getSomethingElseMessage} />
             :chatItem.type === "food-list"?<FoodCarousel setShowOptions={setShowOptions} setLoading={setLoading} message={chatItem} loading={loading} />
-            // :chatItem.type === "receipt-list"?<ReceiptCarousel key={index} setShowOptions={setShowOptions} setMessageList={setMessageList} setLoading={setLoading} message={chatItem}/>
+            // :chatItem.type === "receipt-list"?<ReceiptCarousel key={index} setShowOptions={setShowOptions} setMessageList={setMessageList} setLoading={setLoading} />
             :null
         )
 }

@@ -7,24 +7,30 @@ import Fontisto from '@expo/vector-icons/Fontisto';
 import { Image } from "expo-image";
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
+import { PaystackProvider } from "react-native-paystack-webview";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Index() {
+  const key = process.env.EXPO_PUBLIC_PAYSTACK_KEY
+  if (!key) return console.log(`no "PAYSTACK_PUBLIC_KEY" found in the .env`)
+    
   return (
-    <SafeAreaView style={Styles.container}>
-          <UserCheck/>
-          <View style={Styles.headerView}>
-            <Fontisto name="coffeescript" size={25} color={colors.primary} />
-            <Text style={[GlobalStyle.squada_h1,Styles.headerText]}>Mori cafe</Text>
-          </View>
+    <PaystackProvider publicKey={key} currency="NGN" defaultChannels={["card","mobile_money"]}>
+      <SafeAreaView style={Styles.container}>
+            <UserCheck/>
+            <View style={Styles.headerView}>
+              <Fontisto name="coffeescript" size={25} color={colors.primary} />
+              <Text style={[GlobalStyle.squada_h1,Styles.headerText]}>Mori cafe</Text>
+            </View>
 
-          <ChatBox/>      
-          <Comfirmation/>          
+            <ChatBox/>      
+            <Comfirmation/>          
 
-          <Image source={require('../assets/images/floral/flora.webp')} contentFit="contain" transition={1000} style={{position: 'absolute',right: '-10%',bottom: 0,opacity: 0.4,width: '60%',height: '30%',zIndex: -10}} />
+            <Image source={require('../assets/images/floral/flora.webp')} contentFit="contain" transition={1000} style={{position: 'absolute',right: '-10%',bottom: 0,opacity: 0.4,width: '60%',height: '30%',zIndex: -10}} />
 
-      <StatusBar hidden={true}/>
-    </SafeAreaView>
+        <StatusBar hidden={true}/>
+      </SafeAreaView>
+    </PaystackProvider>
   );
 }
 

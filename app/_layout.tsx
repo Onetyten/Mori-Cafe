@@ -7,6 +7,7 @@ import { ActivityIndicator } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
+import {PaystackProvider} from "react-native-paystack-webview";
 import "../global.css";
 
 export default function RootLayout() {
@@ -36,12 +37,14 @@ export default function RootLayout() {
   return (
     <Provider store={store}>
       <PersistGate loading={<ActivityIndicator size="large" color="#588159"/>} persistor={persistor}>
-        <SafeAreaProvider>
-          <Stack screenOptions={{
-            headerShown:false,
-            contentStyle:{backgroundColor:colors.background}
-            }} />
-        </SafeAreaProvider>  
+        <PaystackProvider debug publicKey="sk_test_6f0d2b7509f6c563144110055836c4833760114b">
+          <SafeAreaProvider>
+            <Stack screenOptions={{
+              headerShown:false,
+              contentStyle:{backgroundColor:colors.background}
+              }} />
+          </SafeAreaProvider>  
+        </PaystackProvider>
       </PersistGate>
     </Provider>  
   );

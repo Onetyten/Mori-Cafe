@@ -5,8 +5,10 @@ interface userDetailsType {
     name:string;
     address:string;
     email:string;
-    phone_number:string;
-    items:string;
+    phone_number:{
+        code:string;
+        number:string
+    };
 }
 
 const initialState:{userInfo:userDetailsType} = {
@@ -14,8 +16,10 @@ const initialState:{userInfo:userDetailsType} = {
         name:"",
         address:"",
         email:"",
-        phone_number:"",
-        items:""
+        phone_number:{
+            code:"",
+            number:""
+        },
     }
 }
 
@@ -35,9 +39,6 @@ const userInfoSlice = createSlice({
         setPhoneNumber:(state,action)=>{
             state.userInfo.phone_number = action.payload
         },
-        setItems:(state,action)=>{
-            state.userInfo.items = action.payload
-        },
         setInfo:(state,action)=>{
             state.userInfo = action.payload
         },
@@ -47,5 +48,5 @@ const userInfoSlice = createSlice({
     }
 })
 
-export const {setDeliveryName,setDeliveryAddress,setEmail,setPhoneNumber,setItems,setInfo,resetUserInfo} = userInfoSlice.actions
+export const {setDeliveryName,setDeliveryAddress,setEmail,setPhoneNumber,setInfo,resetUserInfo} = userInfoSlice.actions
 export default userInfoSlice.reducer
