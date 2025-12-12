@@ -28,27 +28,27 @@ export default function ChatBox() {
   return (
     <View style={chatStyle.container}>
         <View style={chatStyle.scrollView} >
-                <FlatList 
-                    ref={scrollRef}
-                    contentContainerStyle={chatStyle.messageView}
-                    data={messageList}
-                    showsVerticalScrollIndicator={false}
-                    keyExtractor={(_item,index)=>index.toString()}
-                    initialNumToRender={4}
-                    removeClippedSubviews={true}
-                    maxToRenderPerBatch={5}
-                    windowSize={7}
-                    updateCellsBatchingPeriod={30}
-                    ListFooterComponentStyle={{marginBottom:128}}
-                    onContentSizeChange={()=>{
-                       requestAnimationFrame(()=>{
-                        scrollRef.current?.scrollToEnd({animated:true})
-                       })
-                    }}
-                    ItemSeparatorComponent={()=><View style={{height:16}} />}
-                    ListFooterComponent={()=>showoptions&& <OptionsInput options = {options}/>}
-                    renderItem={({item}) => <MessageRenderer chatItem={item} setOptions={setOptions} setShowOptions={setShowOptions} setLoading={setLoading} loading={loading} />
-                } />
+            <FlatList 
+                ref={scrollRef}
+                contentContainerStyle={chatStyle.messageView}
+                data={messageList}
+                showsVerticalScrollIndicator={false}
+                keyExtractor={(_item,index)=>index.toString()}
+                initialNumToRender={4}
+                removeClippedSubviews={true}
+                maxToRenderPerBatch={5}
+                windowSize={7}
+                updateCellsBatchingPeriod={30}
+                ListFooterComponentStyle={{marginBottom:128}}
+                onContentSizeChange={()=>{
+                    requestAnimationFrame(()=>{
+                    scrollRef.current?.scrollToEnd({animated:true})
+                    })
+                }}
+                ItemSeparatorComponent={()=><View style={{height:16}} />}
+                ListFooterComponent={()=>showoptions&& <OptionsInput options = {options}/>}
+                renderItem={({item}) => <MessageRenderer chatItem={item} setOptions={setOptions} setShowOptions={setShowOptions} setLoading={setLoading} loading={loading} />
+            } />
         </View>
         <SearchBar setOptions={setOptions} setShowOptions={setShowOptions} setLoading={setLoading} loading = {loading} showButtons={showButtons} setShowButtons={setShowButtons}/>
     </View>

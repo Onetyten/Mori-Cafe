@@ -39,7 +39,7 @@ export default function useCalculatePrice(
                 dispatch(setOrder(OrderPayload))
                 setShowOptions(false)
                 const orderPrice = cart.reduce((sum,delta)=>sum+(delta.totalPrice*delta.quantity),0)
-                const newMessage = {type:"message",next:()=>{}, sender:"bot",content:[`Your total is ${orderPrice}`]}
+                const newMessage = {type:"message",next:()=>{}, sender:"bot",content:[`Your total is ₦${orderPrice}`]}
                 timers.current.push(setTimeout(()=>{
                     dispatch(AddMessage(newMessage))  
                 },1500))

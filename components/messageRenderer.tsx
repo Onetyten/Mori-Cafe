@@ -43,13 +43,13 @@ interface propType{
             :chatItem.type === "number-input"?<NumberInput message={chatItem} confirm={comfirmToCart} />
             :chatItem.type === "cart-feedback"?<CartFeedBack message={chatItem} isAdding={isAdding}/>
             // :chatItem.type === "order-handle"?<OrderHandler message={chatItem}/>
-            :chatItem.type === "order-feedback"?<OrderFeedback />
+            :chatItem.type === "order-feedback"?<OrderFeedback setShowOptions={setShowOptions} setOptions={setOptions}  getSomethingElseMessage = {getSomethingElseMessage}/>
             // :chatItem.type === "order-receipt"?<OrderReceipt setMessageList={setMessageList} message={chatItem}/>
             :chatItem.type === "cart-list-feedback"?<CheckoutList message={chatItem} setShowOptions={setShowOptions} setOptions={setOptions} getSomethingElseMessage = {getSomethingElseMessage}/>
             :chatItem.type === "edit-list"?<CustomisationList message={chatItem} addToCart = {addToCart} />
             :chatItem.type === "enter-info"?<UserInfoInput setOptions={setOptions} setShowOptions={setShowOptions} getSomethingElseMessage={getSomethingElseMessage} />
             :chatItem.type === "food-list"?<FoodCarousel setShowOptions={setShowOptions} setLoading={setLoading} message={chatItem} loading={loading} />
-            // :chatItem.type === "receipt-list"?<ReceiptCarousel key={index} setShowOptions={setShowOptions} setMessageList={setMessageList} setLoading={setLoading} />
+            :chatItem.type === "receipt-list"?<ReceiptCarousel key={index} setShowOptions={setShowOptions} setMessageList={setMessageList} setLoading={setLoading} />
             :null
         )
 }

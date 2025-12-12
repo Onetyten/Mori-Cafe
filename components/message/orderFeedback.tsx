@@ -1,71 +1,110 @@
-/* eslint-disable react-hooks/exhaustive-deps */
+ 
+import { AddMessage } from "@/store/messageListSlice"
+import api from "@/utils/api"
+import { isAxiosError } from "axios"
 import { useEffect, useState } from "react"
+import { View } from "react-native"
+import { usePaystack } from "react-native-paystack-webview"
 import { useDispatch, useSelector } from "react-redux"
 import type { RootState } from "../../utils/store"
-import api from "../../utils/api"
-import { isAxiosError } from "axios"
-import { addPendingOrder } from "../../store/pendingOrderSlice"
-import { ActivityIndicator, Text, View } from "react-native"
 import BotImage from "./chat Bubble/BotImage"
-import { usePaystack } from "react-native-paystack-webview"
+import BotLoader from "./chat Bubble/BotLoader"
 
+interface propTypes{
+    setOptions: React.Dispatch<React.SetStateAction<{
+        name: string;
+        onClick: () => void;
+    }[]>>,
+    setShowOptions: React.Dispatch<React.SetStateAction<boolean>>
+    getSomethingElseMessage: (message: string) => void
+}
 
-
-
-export default function OrderFeedback() {
+export default function OrderFeedback(props:propTypes) {
+    const {setOptions,setShowOptions,getSomethingElseMessage} = props
     const dispatch = useDispatch()
     const order = useSelector((state:RootState)=>state.newOrder.newOrder)
-    const [added,setAdded] = useState(false)
-    const [feedBack,setFeedback] = useState(`Pay`)
+    const {popup} = usePaystack()
+
+    const [orderCreated,setOrderCreated] = useState(false)
+
+    const deleteOrder = async(id:string)=>{
+        await api.delete(`/order/delete/${id}`)
+    }
+
+    const endPaymentProcess = async(message:string)=>{
+        const newMessage = {type:"message",next:()=>{}, sender:"bot",content:[message]}
+        dispatch(AddMessage(newMessage)) 
+        setOptions([{name:'Continue shopping', onClick:()=>getSomethingElseMessage("Let's continue")}])
+        setShowOptions(true)   
+        return
+    }
 
     useEffect(()=>{
         async function createOrder() {
             try {
-                const response = await api.post('/order/create',order)
-                if (response.data.success===false){
-                    return
-                }
-                setFeedback("You will be redirected to your payment portal shortly")
+                const response = await api.post('/order/create?isMobile=true',order)
                 const data = response.data.data
-                dispatch(addPendingOrder(data.reference))
-                setTimeout(()=>{
-                    window.location.href = data.authorization_url
-                },1000)
+                console.log(data)
+                const payNow = () => popup.checkout({
+                    email: data.email,
+                    amount: data.amount,
+                    onSuccess:async (res)=>{
+                        const reference = res.reference
+                        if (!reference) {
+                            return endPaymentProcess("Unable to retrieve payment reference")
+                        }
+                        console.log("payment successful",res)
+                        try {
+                            const response = await api.post('/order/verify',{orderId:data.orderId, reference})
+                            console.log(`\n`,response.data?.message,"\n")
+                            endPaymentProcess(`A payment of ₦${data.amount} was successfully verified.`)
+                        }
+                        catch (error) {
+                            if (isAxiosError(error)){
+                                endPaymentProcess(`Error while verifying payment, ${error.response?.data.message}`)
+                            }
+                            endPaymentProcess("Error while verifying payment")
+                        }
+                    },
+                    onCancel: async () =>{
+                        console.log('User cancelled')
+                        await deleteOrder(data.orderId)
+                        endPaymentProcess("Order cancelled")
+                    },
+                    onError: async (err) => {
+                        console.log('WebView Error:', err)
+                        await deleteOrder(data.orderId)
+                        endPaymentProcess("Error during payment")
+                    }
+                })
+                setTimeout(() => {
+                    payNow();
+                }, 300);
             }
+
             catch (error) {
                 if (isAxiosError(error)){
-                    setFeedback(error.response?.data.message)
+                    endPaymentProcess(error.response?.data.message)
                 }
                 else{
-                    setFeedback("Internal server error")
+                    endPaymentProcess("Internal server error")
                 }
-                
             }
             finally{
-                setAdded(true)
+                setOrderCreated(true)
+
             }
         }
         createOrder()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
+ 
+    if (orderCreated) return null
 
   return (
-    <View className="max-w-8/12 flex gap-2 items-start">
+    <View style={{flexDirection:"row",gap:8,alignItems:"flex-start"}}>
         <BotImage sender="bot"/>
-        {added?(
-            <View className=" flex justify-start items-center text-primary ">
-                <Text className='bg-primary text-background rounded-2xl rounded-tl-none sm:text-sm text-xs p-2.5 px-4 sm:px-6' >
-                    {feedBack}
-                </Text>
-            </View>
-        ):
-        (
-            <View className=" flex justify-start items-center">
-                <View className='bg-primary text-background p-2.5 px-6 rounded-2xl text-sm' >
-                    <ActivityIndicator size="small"/>
-                </View>
-            </View>
-        )}
-
+        <BotLoader />
     </View>
   )
 }

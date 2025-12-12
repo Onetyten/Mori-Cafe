@@ -15,12 +15,13 @@ export default function useFetchReceiptList()
     const fetchReceiptList = useCallback(()=>{
         try
         {   
-            const newCommand = {type:"message",next:()=>{}, sender:"user",content:['Fetch my order history']}
+            const newCommand = {type:"message",next:()=>{}, sender:"user",content:['show my order history']}
             dispatch(AddMessage(newCommand))            
             timers.current.push(setTimeout(()=>{
-                const newMessage = {type:"message",next:()=>{}, sender:"bot",content:['Fetching History...']}
+                const newMessage = {type:"message",next:()=>{}, sender:"bot",content:['Getting history...']}
                 dispatch(AddMessage(newMessage))
             },1000))
+            
             timers.current.push(setTimeout(()=>{
                 const newReceipt = {type:"receipt-list",next:()=>{}, sender:"bot",content:[]}
                 dispatch(AddMessage(newReceipt))
