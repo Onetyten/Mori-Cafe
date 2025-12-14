@@ -4,11 +4,14 @@ import useGetElse from "@/hooks/useGetElse";
 import useListCart from "@/hooks/useListCart";
 import useSubcategory from "@/hooks/useSubcategory";
 import { colors, GlobalStyle } from "@/styles/global";
+import { useClickOutside } from 'expo-click-outside';
 import { Dice6, History, ShoppingCart } from "lucide-react-native";
+import { useRef } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 interface propType{
     showButtons:boolean;
+    setShowButtons: React.Dispatch<React.SetStateAction<boolean>>;
     setShowOptions: React.Dispatch<React.SetStateAction<boolean>>;
     setOptions: React.Dispatch<React.SetStateAction<{name: string; onClick: () => void;}[]>>;
     setLoading: React.Dispatch<React.SetStateAction<boolean>>
@@ -16,16 +19,20 @@ interface propType{
 }
 
 export default function QuickActions(props:propType) {
-    const {showButtons,setShowOptions,setOptions,setLoading,loading} = props
+    const viewRef = useRef<View>(null!)
+    const {showButtons,setShowButtons,setShowOptions,setOptions,setLoading,loading} = props
     const {getCategory} = useSubcategory(setOptions,setShowOptions)
     const getSomethingElseMessage = useGetElse(setShowOptions,setOptions,getCategory)
     const CartList = useListCart(setShowOptions,setLoading,setOptions,getSomethingElseMessage)
     const fetchFoodList = useFetchFoodList(loading,setLoading,setShowOptions,setOptions,getSomethingElseMessage)
     const fetchReceiptList =  useFetchReceiptList()
+    useClickOutside(viewRef,()=>{
+        setShowButtons(false)
+    })
 
   return (
     showButtons&&
-    <View style={styles.container}>
+    <View ref={viewRef} style={styles.container}>
         <TouchableOpacity style={[styles.button,styles.icon1]} onPress={()=>{fetchFoodList(`/food/list?random=true`,"Close your eyes...")}}>
             <Dice6 size={20} color={"#e9d5ca"}  />
             <Text style={[GlobalStyle.Outfit_Light_small,styles.iconText]}>Random</Text>

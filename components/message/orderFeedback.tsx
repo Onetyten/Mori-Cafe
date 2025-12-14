@@ -66,6 +66,7 @@ export default function OrderFeedback(props:propTypes) {
                             endPaymentProcess("Error while verifying payment")
                         }
                     },
+                    
                     onCancel: async () =>{
                         console.log('User cancelled')
                         await deleteOrder(data.orderId)

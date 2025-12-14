@@ -50,7 +50,9 @@ export default function ChatBox() {
                 renderItem={({item}) => <MessageRenderer chatItem={item} setOptions={setOptions} setShowOptions={setShowOptions} setLoading={setLoading} loading={loading} />
             } />
         </View>
+
         <SearchBar setOptions={setOptions} setShowOptions={setShowOptions} setLoading={setLoading} loading = {loading} showButtons={showButtons} setShowButtons={setShowButtons}/>
+        
     </View>
     
   )
@@ -61,7 +63,7 @@ const chatStyle = StyleSheet.create({
         width:"100%",
         height:"100%",
         gap:16,
-        paddingHorizontal:24
+        paddingHorizontal:24,
     },
     messageView:{
         width:"100%",
@@ -71,12 +73,4 @@ const chatStyle = StyleSheet.create({
         flex: 1,          
         width: "100%",
     },
-    scrollViewStyle:{
-        width:"100%",
-        display:"flex",
-        marginTop:8,
-        gap:2,
-        justifyContent:"flex-start",
-        alignItems:"center",
-    }
 })

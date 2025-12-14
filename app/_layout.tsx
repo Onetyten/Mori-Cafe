@@ -24,6 +24,8 @@ export default function RootLayout() {
     "Outfit_Regular": require("../assets/font/Outfit/static/Outfit-Regular.ttf"),
     "Outfit_Semibold": require("../assets/font/Outfit/static/Outfit-SemiBold.ttf"),
     "Outfit_Thin": require("../assets/font/Outfit/static/Outfit-Thin.ttf"),
+    "Mono" : require("../assets/font/IBM_Plex_Mono/IBMPlexMono-Regular.ttf"),
+    "Mono_Bold" : require("../assets/font/IBM_Plex_Mono/IBMPlexMono-Bold.ttf")
   });
   
   useEffect(()=>{

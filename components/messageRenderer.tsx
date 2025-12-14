@@ -16,6 +16,7 @@ import NumberInput from './message/NumberInput'
 import SubCarousel from './message/SubCarousel'
 import UserInfoInput from './message/UserInfoInput'
 import OrderFeedback from './message/orderFeedback'
+import ReceiptCarousel from './message/ReceiptCarousel'
 
 interface propType{
     chatItem:messageListType;
@@ -49,7 +50,7 @@ interface propType{
             :chatItem.type === "edit-list"?<CustomisationList message={chatItem} addToCart = {addToCart} />
             :chatItem.type === "enter-info"?<UserInfoInput setOptions={setOptions} setShowOptions={setShowOptions} getSomethingElseMessage={getSomethingElseMessage} />
             :chatItem.type === "food-list"?<FoodCarousel setShowOptions={setShowOptions} setLoading={setLoading} message={chatItem} loading={loading} />
-            :chatItem.type === "receipt-list"?<ReceiptCarousel key={index} setShowOptions={setShowOptions} setMessageList={setMessageList} setLoading={setLoading} />
+            :chatItem.type === "receipt-list"?<ReceiptCarousel setLoading={setLoading} setShowOptions={setShowOptions} />
             :null
         )
 }

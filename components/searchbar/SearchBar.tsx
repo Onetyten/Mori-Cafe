@@ -1,8 +1,10 @@
 import { colors } from '@/styles/global';
+import { RootState } from '@/utils/store';
 import Fontisto from '@expo/vector-icons/Fontisto';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { TextInput, TouchableOpacity, View } from "react-native";
+import { useSelector } from 'react-redux';
 import useFetchFoodList from "../../hooks/useFetchFoodList";
 import useGetElse from "../../hooks/useGetElse";
 import useSubcategory from "../../hooks/useSubcategory";
@@ -19,10 +21,15 @@ interface propType{
 
 export default function SearchBar(props:propType) {
   const {setLoading,setOptions,setShowOptions,loading,showButtons,setShowButtons} = props
+  const messsageList = useSelector((state:RootState)=>state.messageList.messageList)
   const [query,setQuery] = useState("")
   const {getCategory} = useSubcategory(setOptions,setShowOptions)
   const getSomethingElseMessage = useGetElse(setShowOptions,setOptions,getCategory)
   const fetchFoodList = useFetchFoodList(loading,setLoading,setShowOptions,setOptions,getSomethingElseMessage)
+
+  useEffect(()=>{
+    setShowButtons(false)
+  },[messsageList, setShowButtons])
   
 
   function HandleSubmit(){
@@ -39,7 +46,7 @@ export default function SearchBar(props:propType) {
                 <TouchableOpacity className='w-full h-full justify-center items-center z-50 relative' onPress={()=>setShowButtons(!showButtons)}>
                   <Fontisto name="coffeescript" size={24} color={colors.background}/>
                 </TouchableOpacity>
-                <QuickActions showButtons={showButtons} setShowOptions={setShowOptions} setLoading={setLoading} setOptions={setOptions} loading={loading} />
+                <QuickActions setShowButtons={setShowButtons} showButtons={showButtons} setShowOptions={setShowOptions} setLoading={setLoading} setOptions={setOptions} loading={loading} />
           </View>
 
           <TextInput value={query} onChangeText={setQuery} placeholder="Search order" className="w-full text-xl pl-16 font-outfit-light placeholder:text-muted h-full focus:outline-0 focus:bg-secondary-300/15 bg-secondary-300/20 rounded-full px-2" />
