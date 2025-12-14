@@ -19,20 +19,9 @@ export function useChatInit({initiatedRef,setShowOptions}: UseChatInitProps) {
 
 
     useEffect(()=>{
-
         if (initiatedRef.current) return
         initiatedRef.current = true
         let addMessageTimeout:(number | undefined);
-        // if (pendingOrders.length>0 && user ){
-        //     const newMessage = {type:"message", sender:"bot", next:()=>{}, content:['Please wait while I confirm your payment…']}
-        //     dispatch(AddMessage(newMessage))
-        //     addMessageTimeout = setTimeout(()=>{const newMessage = {type:"order-receipt", sender:"bot", next:()=>introMessage(), content:[]}
-        //         dispatch(AddMessage(newMessage))
-        //     },1500)
-        // }
-        // else{
-        //     introMessage()
-        // }
         introMessage()
         return ()=>{
             initiatedRef.current = true

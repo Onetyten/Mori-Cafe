@@ -1,7 +1,7 @@
 import { messageListType } from "@/types/type"
 import { RootState } from "@/utils/store"
 import { useRef, useState } from "react"
-import { FlatList, StyleSheet, View } from "react-native"
+import { FlatList, StyleSheet, TouchableWithoutFeedback, View } from "react-native"
 import { useSelector } from "react-redux"
 import { useChatInit } from "../hooks/useChatInit"
 import useSubcategory from "../hooks/useSubcategory"
@@ -50,6 +50,11 @@ export default function ChatBox() {
                 renderItem={({item}) => <MessageRenderer chatItem={item} setOptions={setOptions} setShowOptions={setShowOptions} setLoading={setLoading} loading={loading} />
             } />
         </View>
+        
+        { showButtons
+        && (<TouchableWithoutFeedback onPress={()=>{setShowButtons(false)}}>
+                <View style={chatStyle.ButtonOverlay} />
+            </TouchableWithoutFeedback>)}
 
         <SearchBar setOptions={setOptions} setShowOptions={setShowOptions} setLoading={setLoading} loading = {loading} showButtons={showButtons} setShowButtons={setShowButtons}/>
         
@@ -72,5 +77,24 @@ const chatStyle = StyleSheet.create({
     scrollView: {
         flex: 1,          
         width: "100%",
+    },
+    scrollViewStyle:{
+        width:"100%",
+        display:"flex",
+        marginTop:8,
+        gap:2,
+        justifyContent:"flex-start",
+        alignItems:"center",
+    },
+    ButtonOverlay: {
+        position: "absolute",
+        width: "200%",
+        height: "200%",
+        right:0,
+        top:0,
+        justifyContent: "center",
+        alignItems: "center",
+        zIndex: 100,
+        // backgroundColor:"#592c0d40"
     },
 })
