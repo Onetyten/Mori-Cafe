@@ -12,7 +12,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Index() {
   const key = process.env.EXPO_PUBLIC_PAYSTACK_KEY
-  if (!key) return console.log(`no "PAYSTACK_PUBLIC_KEY" found in the .env`)
+  if (!key) return console.error(`no "PAYSTACK_PUBLIC_KEY" found in the .env`)
     
   return (
     <PaystackProvider debug={true} publicKey={key} currency="NGN" defaultChannels={["card","mobile_money"]}>

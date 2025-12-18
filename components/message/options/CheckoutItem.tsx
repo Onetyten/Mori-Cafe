@@ -32,7 +32,6 @@ export default function CheckoutItem(props:propType) {
 
   return (
     <View style={styles.parent} onLayout={(e)=>setParentHeight(e.nativeEvent.layout.height)}>
-        <Image source={require("../../../assets/images/patterns/grid.webp")} resizeMode="repeat" style={[StyleSheet.absoluteFill,{width:"100%",height:"100%",opacity:0.1}]}/>
         <Image source={{uri:food.foodId.imageUrl}} style={styles.foodImage} />
         <View style={styles.viewContainer}>
             <Text style={[GlobalStyle.Outfit_Semibold_body,{textTransform:"capitalize",textAlign:"left",color:"#fff"}]}>

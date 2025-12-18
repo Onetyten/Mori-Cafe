@@ -81,7 +81,7 @@ const CustomisationList = memo(function CustomisationList(props:propType) {
                 {message.content.map((index)=>{
                     return(
                         <View key={index} style={styles.loader}>
-                            <ActivityIndicator size="small" color={colors.brown}/> 
+                            <ActivityIndicator size="small" color="#fff"/> 
                         </View>
                     )
                 })}
@@ -151,8 +151,7 @@ const styles = StyleSheet.create({
     },
     loader:{
         width:240,
-        borderRadius:2,
-        backgroundColor:"rgb(79 72 73 / 0.4)",
+        backgroundColor:colors.light,
         height:40,
         justifyContent:"center",
         alignItems:"center"

@@ -1,3 +1,4 @@
+import useOptionCount from "@/hooks/useOptionCount";
 import { AddMessage } from "@/store/messageListSlice";
 import { colors } from "@/styles/global";
 import { isAxiosError } from "axios";
@@ -8,7 +9,6 @@ import { useDispatch } from "react-redux";
 import type { FoodType, messageListType } from '../../types/type';
 import api from "../../utils/api";
 import FoodCard from "../FoodCard";
-import useOptionCount from "@/hooks/useOptionCount";
 
 interface propType{
     message:messageListType
@@ -55,16 +55,17 @@ const FoodCarousel = memo(function FoodCarousel(props:propType) {
       if (foodList.length===0){
         if (fetched===false){
             return(
-            <View className="flex flex-col justify-center items-center gap-2">
-                <View className="w-full gap-2 flex-row flex-wrap">
-                    <View style={{height:240}} className="bg-muted/40 flex justify-center items-center w-full rounded-md">
-                        <ActivityIndicator size="large" color={colors.muted}/> 
+                <View style={Styles.loaderRow}>
+                    <View style={Styles.loaderContainer}>
+                        <View style={Styles.loaderBox}>
+                            <ActivityIndicator size="large" color="#fff"/> 
+                        </View>
                     </View>
                 </View>
-            </View>
             )
         }
-        else{
+
+        else {
             return null
         }        
       }
@@ -82,6 +83,25 @@ const FoodCarousel = memo(function FoodCarousel(props:propType) {
 })
 
 const Styles = StyleSheet.create({
+    loaderRow:{
+        justifyContent:"center",
+        alignItems:"center",
+        gap:8
+    },
+    loaderContainer:{
+        width:"100%",
+        gap:8,
+        flexDirection:"row",
+        flexWrap:"wrap"
+    },
+    loaderBox:{
+        height:240,
+        backgroundColor:colors.light,
+        justifyContent:"center",
+        alignItems:"center",
+        width:"100%",
+        borderRadius:6
+    },
     passiveDot:{
         backgroundColor:"#a2b18a60",
     },

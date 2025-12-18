@@ -44,7 +44,6 @@ export default function OrderFeedback(props:propTypes) {
             try {
                 const response = await api.post('/order/create?isMobile=true',order)
                 const data = response.data.data
-                console.log(data)
                 const payNow = () => popup.checkout({
                     email: data.email,
                     amount: data.amount,
@@ -53,10 +52,8 @@ export default function OrderFeedback(props:propTypes) {
                         if (!reference) {
                             return endPaymentProcess("Unable to retrieve payment reference")
                         }
-                        console.log("payment successful",res)
                         try {
-                            const response = await api.post('/order/verify',{orderId:data.orderId, reference})
-                            console.log(`\n`,response.data?.message,"\n")
+                            await api.post('/order/verify',{orderId:data.orderId, reference})
                             endPaymentProcess(`A payment of ₦${data.amount} was successfully verified.`)
                         }
                         catch (error) {
@@ -68,12 +65,10 @@ export default function OrderFeedback(props:propTypes) {
                     },
                     
                     onCancel: async () =>{
-                        console.log('User cancelled')
                         await deleteOrder(data.orderId)
                         endPaymentProcess("Order cancelled")
                     },
                     onError: async (err) => {
-                        console.log('WebView Error:', err)
                         await deleteOrder(data.orderId)
                         endPaymentProcess("Error during payment")
                     }

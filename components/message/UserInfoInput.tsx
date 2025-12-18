@@ -52,7 +52,6 @@ export default function UserInfoInput(props:propType) {
     getLocation().then((address)=>{
       if (!address || address?.length===0 || !address[0].formattedAddress) return
       setAddress(address[0].formattedAddress)
-      console.log(address[0].formattedAddress)
     })
   },[])
   

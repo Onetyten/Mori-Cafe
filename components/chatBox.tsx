@@ -94,7 +94,7 @@ const chatStyle = StyleSheet.create({
         top:0,
         justifyContent: "center",
         alignItems: "center",
-        zIndex: 100,
+        zIndex: 30,
         // backgroundColor:"#592c0d40"
     },
 })

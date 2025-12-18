@@ -31,7 +31,7 @@ export default function ReceiptCarousel(props:propType) {
                     dispatch(AddMessage(newMessage))
                     return
                 }
-                setOrderList(response.data.data)
+                // setOrderList(response.data.data)
            }
            catch (error) {
                 if (!isAxiosError(error)) return
@@ -39,7 +39,7 @@ export default function ReceiptCarousel(props:propType) {
                 dispatch(AddMessage(newMessage))
            }
            finally {
-                fetched.current = true
+                // fetched.current = true
                 setShowOptions(true)
            }
         }
@@ -51,13 +51,11 @@ export default function ReceiptCarousel(props:propType) {
     if (orderList.length===0){
         if (fetched.current===false){
             return(
-            <View className="flex flex-col justify-center items-center gap-2">
-                <View className="w-full gap-2 grid grid-cols-1">
+                <View style={{justifyContent:"center",alignItems:"center",gap:8,width:"100%"}}>
                     <View className="bg-muted/40 hidden sm:flex justify-center items-center w-[400px] max-w-full h-60 rounded-md">
                         <ActivityIndicator/>
                     </View>
                 </View>
-            </View>
             )
         }
         else{
@@ -68,7 +66,7 @@ export default function ReceiptCarousel(props:propType) {
 
   return (
     <View className="flex flex-col justify-center items-center gap-2">
-            <Swiper horizontal activeDot={<View style={[Styles.dot,Styles.activeDot]} />} dot={<View style={[Styles.dot,Styles.passiveDot]} />} loop showsPagination={true} height={500}>
+            <Swiper horizontal activeDot={<View style={[Styles.dot,Styles.activeDot]} />} dot={<View style={[Styles.dot,Styles.passiveDot]} />} loop showsPagination={true} height={490}>
                 {orderList.map((item) => (
                     <View key={item._id}>
                          <HistoryReceipt order={item}/>
