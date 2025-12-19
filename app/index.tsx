@@ -15,7 +15,7 @@ export default function Index() {
   if (!key) return console.error(`no "PAYSTACK_PUBLIC_KEY" found in the .env`)
     
   return (
-    <PaystackProvider debug={true} publicKey={key} currency="NGN" defaultChannels={["card","mobile_money"]}>
+    <PaystackProvider publicKey={key} currency="NGN" defaultChannels={["card","mobile_money"]}>
       <SafeAreaView style={Styles.container}>
             <UserCheck/>
             <View style={Styles.headerView}>

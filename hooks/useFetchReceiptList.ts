@@ -18,14 +18,14 @@ export default function useFetchReceiptList()
             const newCommand = {type:"message",next:()=>{}, sender:"user",content:['show my order history']}
             dispatch(AddMessage(newCommand))            
             timers.current.push(setTimeout(()=>{
-                const newMessage = {type:"message",next:()=>{}, sender:"bot",content:['Getting history...']}
+                const newMessage = {type:"message",next:()=>{}, sender:"bot",content:['Getting order history...']}
                 dispatch(AddMessage(newMessage))
             },1000))
             
             timers.current.push(setTimeout(()=>{
                 const newReceipt = {type:"receipt-list",next:()=>{}, sender:"bot",content:[]}
                 dispatch(AddMessage(newReceipt))
-            },2000))
+            },1500))
         }
         catch (error) {
             console.error(error)

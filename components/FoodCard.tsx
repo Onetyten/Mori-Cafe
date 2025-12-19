@@ -23,7 +23,7 @@ export default function FoodCard(props:propType) {
             </View>
             <View style={{width:"100%", height:"100%",padding:16,justifyContent:"space-between",alignItems:"center"}}>
                 <View style={Styles.foodImageView}>
-                    <Image source={{uri:optimisedUrl(300,300)}} style={{objectFit:"contain",borderRadius:9999,width:160,height:160}} />
+                    <Image source={{uri:optimisedUrl(300,300)}} style={{objectFit:"contain",borderRadius:9999,width:140,height:140}} />
                 </View>
                 <View style={{gap:2,width:"100%"}}>
                     <View>
