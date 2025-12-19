@@ -4,6 +4,7 @@ import { colors, GlobalStyle } from "@/styles/global"
 import { toWords } from "number-to-words"
 import { memo, useEffect, useRef, useState } from "react"
 import { ActivityIndicator, StyleSheet, Text, TouchableOpacity, View } from "react-native"
+import { widthPercentageToDP as wp } from "react-native-responsive-screen"
 import { useDispatch, useSelector } from "react-redux"
 import { setCurrentCart } from "../../store/currentCartItem"
 import type { customisationType, messageListType, tweakType } from "../../types/type"
@@ -12,6 +13,7 @@ import type { RootState } from "../../utils/store"
 import OptionCheckbox from "./options/OptionCheckbox"
 import OptionQuantity from "./options/OptionQuantity"
 import OptionSelect from "./options/OptionSelect"
+
 
 
 interface propType{
@@ -94,7 +96,7 @@ const CustomisationList = memo(function CustomisationList(props:propType) {
   return (
     <View className="w-full flex justify-end items-end  flex-col gap-2">
         {!addedToCart?(
-            <View className="flex gap-2 justify-start flex-col items-end">
+            <View className="flex w-full gap-2 justify-start flex-col items-end">
                 {selectOptions.map((item,index)=>{
                     return(
                         <OptionSelect tweakList={tweakList} setTweakList={setTweakList} edit={item} key={index}/>
@@ -111,9 +113,8 @@ const CustomisationList = memo(function CustomisationList(props:propType) {
                     )
                 })}
 
-                <TouchableOpacity style={{borderWidth:1}} onPress={handleAddCustomOptions}
-                 className="rounded-md h-10 text-sm flex justify-center px-4 items-center gap-1 border border-primary">
-                    <Text style={[GlobalStyle.Outfit_Regular_body,{color:colors.primary}]}>Confirm</Text>
+                <TouchableOpacity style={styles.button} onPress={handleAddCustomOptions} >
+                    <Text style={[GlobalStyle.Outfit_Regular_body,{color:colors.primary}]}> Confirm </Text>
                 </TouchableOpacity>
             </View>
         ):(
@@ -149,8 +150,15 @@ const styles = StyleSheet.create({
         alignItems:"flex-end",
         gap:8
     },
+    button: {
+        padding: wp("1.5%"),
+        borderWidth: 1,
+        borderColor: colors.primary,
+        backgroundColor:colors.background,
+        borderRadius: 6,
+    },
     loader:{
-        width:240,
+        width:"70%",
         backgroundColor:colors.light,
         height:40,
         justifyContent:"center",

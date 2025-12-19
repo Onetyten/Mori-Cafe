@@ -80,9 +80,7 @@ const Styles = StyleSheet.create({
         backgroundColor:"#395a3f"
     },
     priceText:{
-        fontSize:20,
-        lineHeight:28,
-        fontFamily:"Outfit_Bold",
+        ...GlobalStyle.Outfit_Bold_body,
         color:"#fff"
 
     },

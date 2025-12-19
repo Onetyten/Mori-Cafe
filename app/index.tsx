@@ -8,7 +8,9 @@ import { Image } from "expo-image";
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
 import { PaystackProvider } from "react-native-paystack-webview";
+import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 import { SafeAreaView } from "react-native-safe-area-context";
+
 
 export default function Index() {
   const key = process.env.EXPO_PUBLIC_PAYSTACK_KEY
@@ -26,7 +28,7 @@ export default function Index() {
             <ChatBox/>      
             <Comfirmation/>          
 
-            <Image source={require('../assets/images/floral/flora.webp')} contentFit="contain" transition={1000} style={{position: 'absolute',right: '-10%',bottom: 0,opacity: 0.4,width: '60%',height: '30%',zIndex: -10}} />
+            <Image source={require('../assets/images/floral/flora.webp')} contentFit="contain" style={{position: 'absolute',right: '-10%',bottom: 0,opacity: 0.4,width: '60%',height: '30%',zIndex: -10}} />
 
         <StatusBar hidden={true}/>
       </SafeAreaView>
@@ -39,7 +41,6 @@ const Styles = StyleSheet.create({
     width:"100%",
     position:"absolute",
     height:"100%",
-    overflow:"hidden",
     justifyContent:"flex-start",
     alignContent:"center"
   },
@@ -48,9 +49,9 @@ const Styles = StyleSheet.create({
     flexDirection:"row",
     justifyContent:"flex-start",
     alignItems:"center",
-    paddingVertical:16,
+    paddingVertical:wp("3.5%"),
     gap:8,
-    paddingHorizontal:24,
+    paddingHorizontal:wp("3%"),
     color:colors.primary
   },
   headerText:{

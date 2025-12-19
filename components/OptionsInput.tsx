@@ -1,5 +1,6 @@
 import { colors, GlobalStyle } from '@/styles/global'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 interface optionType{
   name:string,
   onClick:()=>void
@@ -31,16 +32,16 @@ const styles = StyleSheet.create({
   container: {
     width: '100%',
     alignItems:"flex-end",
-    marginTop: 16,
+    marginTop: wp("3%"),
   },
   optionRow: {
     flexDirection: 'row',
     justifyContent: 'flex-end',
-    gap: 8,
+    gap: wp("2%"),
     maxWidth: '80%',
   },
   button: {
-    padding: 8,
+    padding: wp("1.5%"),
     borderWidth: 1,
     borderColor: colors.primary,
     backgroundColor:colors.background,

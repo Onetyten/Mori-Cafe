@@ -1,7 +1,8 @@
 import { colors } from '@/styles/global';
+import { normalize } from "@/utils/scaling";
 import { ChevronDown } from 'lucide-react-native';
 import React, { memo, useEffect, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, useWindowDimensions, View } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
 import type { customisationType, optionType, tweakType } from '../../../types/type';
 
@@ -12,6 +13,9 @@ interface propType {
 }
 
 const OptionSelect = memo(function OptionSelect(props: propType) {
+  const {width,height} = useWindowDimensions()
+  const landscape = width>height
+  const dynamicWidth = landscape ? "40%" : "70%";
   const { edit, setTweakList } = props;
   const [selectedOption, setSelectedOption] = useState<optionType | null>(null);
 
@@ -36,7 +40,7 @@ const OptionSelect = memo(function OptionSelect(props: propType) {
   }, [selectedOption]);
 
   return (
-    <View style={styles.container}>
+    <View style={ { width: dynamicWidth, minHeight: 48 }}>
       <Dropdown data={edit.options.map((item) => ({label: item.label, value: item.label }))} labelField="label" valueField="value" placeholder={edit.name}
         value={selectedOption?.label ?? null}
         onChange={(item) => {
@@ -60,10 +64,7 @@ const OptionSelect = memo(function OptionSelect(props: propType) {
 export default OptionSelect
 
 const styles = StyleSheet.create({
-  container: {
-    width: 240,
-    minHeight: 48,
-  },
+
   dropdown: {
     minHeight: 48,
     borderWidth: 1,
@@ -73,14 +74,14 @@ const styles = StyleSheet.create({
     paddingVertical:0
   },
   input: {
-    fontSize: 18,
+    fontSize: normalize(18),
     color: colors.primary,
     fontFamily: 'Outfit_Regular',
     paddingHorizontal:8,
     textTransform: 'capitalize',
   },
   placeholder: {
-    fontSize: 18,
+    fontSize: normalize(18),
     color: colors.light,
     fontFamily: 'Outfit_Regular',
     paddingHorizontal:8,

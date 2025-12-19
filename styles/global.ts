@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 
 export const colors = {
   primary: "#588159",
@@ -30,12 +31,12 @@ export const fontFamily = {
 };
 
 const font = {
-  h1: { fontSize: 36, lineHeight: 44 },
-  h2: { fontSize: 28, lineHeight: 36 },
-  button: { fontSize: 24, lineHeight: 30 },
-  body: { fontSize: 18, lineHeight: 30 },
-  small: { fontSize: 14, lineHeight: 20 },
-}
+  h1: { fontSize: wp('8.75%'), lineHeight: wp('10.7%') },
+  h2: { fontSize: wp('6.8%'), lineHeight: wp('8.75%') },
+  button: { fontSize: wp('5.8%'), lineHeight: wp('7.3%') },
+  body: { fontSize: wp('4.4%'), lineHeight: wp('7.3%') },
+  small: { fontSize: wp('3.4%'),lineHeight: wp('4.8%') },
+};
 
 
 

@@ -2,6 +2,7 @@ import { messageListType } from "@/types/type"
 import { RootState } from "@/utils/store"
 import { useRef, useState } from "react"
 import { FlatList, StyleSheet, TouchableWithoutFeedback, View } from "react-native"
+import { widthPercentageToDP as wp } from "react-native-responsive-screen"
 import { useSelector } from "react-redux"
 import { useChatInit } from "../hooks/useChatInit"
 import useSubcategory from "../hooks/useSubcategory"
@@ -40,11 +41,11 @@ export default function ChatBox() {
                 windowSize={7}
                 updateCellsBatchingPeriod={30}
                 ListFooterComponentStyle={{marginBottom:128}}
-                onContentSizeChange={()=>{
-                    requestAnimationFrame(()=>{
-                    scrollRef.current?.scrollToEnd({animated:true})
-                    })
-                }}
+                // onContentSizeChange={()=>{
+                //     requestAnimationFrame(()=>{
+                //     scrollRef.current?.scrollToEnd({animated:true})
+                //     })
+                // }}
                 ItemSeparatorComponent={()=><View style={{height:16}} />}
                 ListFooterComponent={()=>showoptions&& <OptionsInput options = {options}/>}
                 renderItem={({item}) => <MessageRenderer chatItem={item} setOptions={setOptions} setShowOptions={setShowOptions} setLoading={setLoading} loading={loading} />
@@ -68,7 +69,7 @@ const chatStyle = StyleSheet.create({
         width:"100%",
         height:"100%",
         gap:16,
-        paddingHorizontal:24,
+        paddingHorizontal:wp("3%"),
     },
     messageView:{
         width:"100%",

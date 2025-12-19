@@ -1,7 +1,7 @@
 import { colors, GlobalStyle } from '@/styles/global';
 import { Minus, Plus } from 'lucide-react-native';
 import { useEffect, useState } from 'react';
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity, useWindowDimensions, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { setDeleteCartItem } from '../../../store/cartDeleteSlice';
 import type { cartListType } from '../../../types/type';
@@ -14,6 +14,9 @@ interface propType{
 export default function CheckoutItem(props:propType) {
     const {food} = props
     const [quantity,setQuantity] = useState(food.quantity)
+    const {width,height} = useWindowDimensions()
+    const landscape = width>height
+    const dynamicWidth = landscape ? "40%" : "70%";
     const [parentHeight,setParentHeight] = useState(80)
     const dispatch = useDispatch()
 
@@ -31,13 +34,13 @@ export default function CheckoutItem(props:propType) {
     }
 
   return (
-    <View style={styles.parent} onLayout={(e)=>setParentHeight(e.nativeEvent.layout.height)}>
+    <View style={[styles.parent,{width: dynamicWidth}]} onLayout={(e)=>setParentHeight(e.nativeEvent.layout.height)}>
         <Image source={{uri:food.foodId.imageUrl}} style={styles.foodImage} />
         <View style={styles.viewContainer}>
             <Text style={[GlobalStyle.Outfit_Semibold_body,{textTransform:"capitalize",textAlign:"left",color:"#fff"}]}>
                 {food.foodId.name}
             </Text>
-            <View style={{flexDirection:"row",justifyContent:"center", gap:8}}>
+            <View style={{flexDirection:"row",justifyContent:"center", gap:8,marginBottom:6}}>
                 <Text style={[GlobalStyle.Outfit_Regular_small,{color:"#fff"}]}>
                     &#8358; {food.totalPrice}
                 </Text>
@@ -69,7 +72,6 @@ export default function CheckoutItem(props:propType) {
 
 const styles = StyleSheet.create({
   parent: {
-    width: 270,
     minHeight:80,
     borderRadius: 8,
     borderTopRightRadius:0,

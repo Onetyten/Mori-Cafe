@@ -62,9 +62,8 @@ const styles = StyleSheet.create({
   text: {
     textAlign: "center",
     color: colors.secondary,
-    fontFamily: "Outfit_Regular",
     width: "100%",
-    fontSize: 24,
+    ...GlobalStyle.Outfit_Regular_body
   },
   button: {
     borderRadius: 4,

@@ -3,6 +3,7 @@ import { AddMessage } from '@/store/messageListSlice'
 import { setOrder } from '@/store/newOrderSlice'
 import { setInfo } from '@/store/userInfoSlice'
 import { colors, GlobalStyle } from '@/styles/global'
+import { normalize } from "@/utils/scaling"
 import * as Location from 'expo-location'
 import { useEffect, useRef, useState } from 'react'
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
@@ -111,7 +112,7 @@ export default function UserInfoInput(props:propType) {
 
   return (
     <View style={styles.container}>
-      <View style={{maxWidth:"90%",width:"100%",gap:8}}>
+      <View style={{maxWidth:"70%",width:"100%",gap:8}}>
         <TextInput keyboardType="default" placeholder='Full name' placeholderTextColor={colors.light} value={name} onChangeText={setName} style={[GlobalStyle.Outfit_Regular_body,styles.textInput]} />
         <TextInput keyboardType="email-address" placeholder='Email' value={email} onChangeText={setEmail} placeholderTextColor={colors.light} style={[GlobalStyle.Outfit_Regular_body,styles.textInput]} />
         
@@ -172,7 +173,7 @@ const styles = StyleSheet.create({
     marginTop:16
   },
   dropdown: {
-    width:95,
+    width:100,
     borderWidth: 1,
     borderColor: colors.primary,
     borderRadius: 6,
@@ -187,14 +188,14 @@ const styles = StyleSheet.create({
     borderRadius: 6,
   },
   input: {
-    fontSize: 18,
+    fontSize: normalize(18),
     color: colors.primary,
     fontFamily: 'Outfit_Regular',
     paddingHorizontal:8,
     textTransform: 'capitalize',
   },
   placeholder: {
-    fontSize: 18,
+    fontSize: normalize(18),
     color: colors.light,
     fontFamily: 'Outfit_Regular',
     paddingHorizontal:8,

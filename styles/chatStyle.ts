@@ -9,7 +9,6 @@ export const chatStyles = StyleSheet.create({
         borderRadius:8,
     },
     chatBubble:{
-        
         color:"#fff",
         padding:8,
         borderRadius:8,
@@ -79,7 +78,7 @@ export const chatStyles = StyleSheet.create({
     chatMessageView:{
         gap:4,
         alignItems:"flex-end",
-        maxWidth:"80%"
+        maxWidth:"70%"
     }
 
 })

@@ -1,7 +1,7 @@
 import { colors, GlobalStyle } from '@/styles/global';
 import { Checkbox } from "expo-checkbox";
 import React, { memo, useEffect, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import type { customisationType, tweakType } from '../../../types/type';
 
 
@@ -13,6 +13,9 @@ interface propType{
 }
 
 const OptionCheckbox = memo (function OptionCheckbox(props:propType) {
+    const {width,height} = useWindowDimensions()
+    const landscape = width>height
+    const dynamicWidth = landscape ? "40%" : "70%";
     const {edit,tweakList,setTweakList} = props
     const [isChecked,setIsChecked] = useState(false)
 
@@ -31,7 +34,7 @@ const OptionCheckbox = memo (function OptionCheckbox(props:propType) {
     
 
   return (
-    <View style={styles.parent}>
+    <View style={[styles.parent,{width: dynamicWidth}]}>
             <Text style={[GlobalStyle.Outfit_Regular_body,{textTransform:"capitalize",textAlign:"center",paddingHorizontal:8,color:colors.primary}]}>{edit.name}</Text>
 
             <View style={styles.imageBackground} >
@@ -45,7 +48,6 @@ export default OptionCheckbox
  
 const styles = StyleSheet.create({
   parent: {
-    width: 240,
     minHeight: 48,
     borderRadius: 2,
     borderWidth: 1,

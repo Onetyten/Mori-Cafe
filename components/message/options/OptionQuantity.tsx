@@ -2,7 +2,7 @@ import { colors, GlobalStyle } from '@/styles/global';
 import type { customisationType, tweakType } from '@/types/type';
 import { Minus, Plus } from 'lucide-react-native';
 import React, { memo, useEffect, useState } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, useWindowDimensions, View } from 'react-native';
 
 
 interface propType{
@@ -12,6 +12,9 @@ interface propType{
 }
 
 const OptionQuantity = memo(function OptionQuantity(props:propType) {
+    const {width,height} = useWindowDimensions()
+    const landscape = width>height
+    const dynamicWidth = landscape ? "40%" : "70%";
     const {edit,setTweakList} = props
     const [quantity,setQuantity] = useState(edit.quantity.size)
     const [touched, setTouched] = useState(false);
@@ -46,7 +49,7 @@ const OptionQuantity = memo(function OptionQuantity(props:propType) {
     }
 
   return (
-    <View style={styles.parent}>
+    <View style={[styles.parent,{width: dynamicWidth}]}>
 
         <TouchableOpacity style={styles.button} onPress={()=>handleSetSize(-1)}>
              <View style={styles.imageBackground}>
@@ -75,7 +78,6 @@ export default OptionQuantity
 
 const styles = StyleSheet.create({
   parent: {
-    width: 240,
     minHeight: 48,
     borderRadius: 2,
     borderWidth: 1,
