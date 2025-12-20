@@ -21,6 +21,7 @@ const BotMessage = memo(
     const [isTyping,setIsTyping] = useState(true);
     const indexRef = useRef(0);
     const timers = useRef<ReturnType<typeof setTimeout>[]>([])
+    const hasRun = useRef(false)
 
     useEffect(() => {
         return () => {
@@ -29,6 +30,7 @@ const BotMessage = memo(
         };
     }, []);
     useEffect(()=>{
+        if (hasRun.current) return
         indexRef.current = -1;
         let isCancelled = false;
         function loadNextMessage(){
@@ -43,8 +45,9 @@ const BotMessage = memo(
                     if (indexRef.current<message.content.length-1){
                         timers.current.push(setTimeout(loadNextMessage,200))
                     }
-                    else{
+                    else{                     
                         if (message.next) message.next()
+                        hasRun.current = true
                     }
                 },200))
             }

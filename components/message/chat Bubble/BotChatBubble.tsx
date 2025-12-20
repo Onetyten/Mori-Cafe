@@ -1,6 +1,6 @@
 import { chatStyles } from '@/styles/chatStyle';
 import { GlobalStyle } from '@/styles/global';
-import { Text } from 'react-native';
+import { MotiText } from 'moti';
 
 
 interface propTypes{
@@ -12,11 +12,9 @@ interface propTypes{
 export default function BotChatBubble(props:propTypes) {
     const {message,index,sender} = props
   return (
-     <Text style={[
-      GlobalStyle.Outfit_Regular_body,
-      sender === "bot-error"?chatStyles.errorChatBubble:chatStyles.botchatBubble,
+     <MotiText from={{translateX:-5,translateY:5,opacity:0}} animate={{translateX:0,translateY:0,opacity:100}} transition={{duration:400, type:"timing"}} style={[ GlobalStyle.Outfit_Regular_body, sender === "bot-error"?chatStyles.errorChatBubble:chatStyles.botchatBubble,
       index === 0&&chatStyles.firstBotBubble]} >
         {message}
-    </Text>
+    </MotiText>
   )
 }

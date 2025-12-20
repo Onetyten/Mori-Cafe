@@ -159,7 +159,7 @@ const styles = StyleSheet.create({
     },
     loader:{
         width:"70%",
-        backgroundColor:colors.light,
+        backgroundColor:colors.light+"70",
         height:40,
         justifyContent:"center",
         alignItems:"center"

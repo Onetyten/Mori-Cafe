@@ -96,7 +96,7 @@ const Styles = StyleSheet.create({
     },
     loaderBox:{
         height:240,
-        backgroundColor:colors.light,
+        backgroundColor:colors.light+"70",
         justifyContent:"center",
         alignItems:"center",
         width:"100%",

@@ -10,7 +10,6 @@ export default function useAddToCart(
     getSomethingElseMessage:(message: string) => void,
     setLoading:React.Dispatch<React.SetStateAction<boolean>>,
     setOptions: React.Dispatch<React.SetStateAction<{name: string; onClick: () => void}[]>>,
-    isAdding: React.RefObject<boolean>
     ) {
 
     const timers = useRef<ReturnType<typeof setTimeout>[]>([])
@@ -21,6 +20,7 @@ export default function useAddToCart(
         };
     }, []);
     const dispatch = useDispatch();
+    const isAdding = useRef(false)
 
     const addToCartCleanup=useCallback(()=>{  
         setLoading(false);
@@ -43,5 +43,5 @@ export default function useAddToCart(
         },500))
     },[addToCartCleanup, dispatch, isAdding, setShowOptions]
     );
-    return {addToCart,addToCartCleanup}
+    return {addToCart,addToCartCleanup,isAdding}
 }

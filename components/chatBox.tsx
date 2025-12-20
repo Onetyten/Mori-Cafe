@@ -1,6 +1,11 @@
+import useAddToCart from "@/hooks/useAddToCart"
+import useConfirmToCart from "@/hooks/useConfirmToCart"
+import useFetchFoodList from "@/hooks/useFetchFoodList"
+import useGetElse from "@/hooks/useGetElse"
+import useListCart from "@/hooks/useListCart"
 import { messageListType } from "@/types/type"
 import { RootState } from "@/utils/store"
-import { useRef, useState } from "react"
+import { useCallback, useMemo, useRef, useState } from "react"
 import { FlatList, StyleSheet, TouchableWithoutFeedback, View } from "react-native"
 import { widthPercentageToDP as wp } from "react-native-responsive-screen"
 import { useSelector } from "react-redux"
@@ -19,11 +24,32 @@ export default function ChatBox() {
     const [showoptions,setShowOptions] = useState(false)
     const [loading,setLoading] = useState(false)
     const initiatedRef = useRef<boolean>(false)
-    const [options,setOptions] = useState([{name:'Coffee', onClick:()=>getCategory('coffee')},{name:'Drink',onClick:()=>getCategory('drink')},{name:'Snacks',onClick:()=>getCategory('snack')}])
     const [showButtons,setShowButtons] = useState(false)
-    useChatInit({initiatedRef,setShowOptions})
+    const [options, setOptions] = useState<{name: string; onClick: () => void}[]>([]);
+    
     const {getCategory} = useSubcategory(setOptions,setShowOptions)
+    useChatInit({initiatedRef,setShowOptions,setOptions,options,getCategory})
+    const getSomethingElseMessage = useGetElse(setShowOptions,setOptions,getCategory)
+    const CartList = useListCart(setShowOptions,setLoading,setOptions,getSomethingElseMessage)
+    const {addToCart,isAdding} = useAddToCart(setShowOptions,CartList,getSomethingElseMessage,setLoading,setOptions)
+    const comfirmToCart = useConfirmToCart(setLoading,setShowOptions,addToCart,setOptions)
+    const fetchFoodList = useFetchFoodList(loading,setLoading,setShowOptions,setOptions,getSomethingElseMessage)
 
+    const chatContext  = useMemo(()=>({
+        getCategory,getSomethingElseMessage,CartList,addToCart,isAdding,comfirmToCart,fetchFoodList,setOptions,setShowOptions, setLoading, loading
+    }),[CartList, addToCart, comfirmToCart, fetchFoodList, getCategory, getSomethingElseMessage, isAdding,setOptions,setShowOptions, setLoading, loading])
+
+    const renderItem = useCallback(({item,index}:{item:messageListType,index:number})=>(
+        <MessageRenderer isLast = {index === messageList.length-1} chatItem={item} context={chatContext}/>
+    ),[chatContext, messageList.length])
+
+
+    const ItemSeparator = useCallback(() => <View style={{ height: 16 }} />, []);
+    const listFooter = useCallback(()=>showoptions?<OptionsInput options = {options}/>:null ,[options, showoptions])
+    
+    const scrollDown = useCallback(()=>{
+        requestAnimationFrame(()=>{ scrollRef.current?.scrollToEnd({animated:true})})
+    },[])
 
     
   return (
@@ -38,18 +64,14 @@ export default function ChatBox() {
                 initialNumToRender={4}
                 removeClippedSubviews={true}
                 maxToRenderPerBatch={5}
-                windowSize={7}
+                windowSize={15}
                 updateCellsBatchingPeriod={30}
                 ListFooterComponentStyle={{marginBottom:128}}
-                onContentSizeChange={()=>{
-                    requestAnimationFrame(()=>{
-                    scrollRef.current?.scrollToEnd({animated:true})
-                    })
-                }}
-                ItemSeparatorComponent={()=><View style={{height:16}} />}
-                ListFooterComponent={()=>showoptions&& <OptionsInput options = {options}/>}
-                renderItem={({item}) => <MessageRenderer chatItem={item} setOptions={setOptions} setShowOptions={setShowOptions} setLoading={setLoading} loading={loading} />
-            } />
+                onContentSizeChange= {scrollDown}
+                ItemSeparatorComponent= {ItemSeparator}
+                ListFooterComponent={listFooter}
+                renderItem={renderItem}
+                 />
         </View>
         
         { showButtons

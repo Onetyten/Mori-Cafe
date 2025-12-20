@@ -1,4 +1,5 @@
 import { colors, GlobalStyle } from '@/styles/global'
+import { MotiView } from 'moti'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 interface optionType{
@@ -18,9 +19,12 @@ export default function OptionsInput(props:propType) {
       <View style={styles.optionRow}>
         {options.map((item,index)=>{
           return(
-            <TouchableOpacity onPress={item.onClick} key={index} style={styles.button} >
-              <Text numberOfLines={1} ellipsizeMode='tail' style={[GlobalStyle.Outfit_Regular_body,styles.text]}>{item.name}</Text>
-            </TouchableOpacity>
+            <MotiView from={{opacity:0, translateX:50}} animate={{opacity:100, translateX:0}} transition={{delay:index*50}} key={index}>
+              <TouchableOpacity onPress={item.onClick} style={styles.button} >
+                <Text numberOfLines={1} ellipsizeMode='tail' style={[GlobalStyle.Outfit_Regular_body,styles.text]}>{item.name}</Text>
+              </TouchableOpacity>
+            </MotiView>
+            
           )
         })}
       </View>

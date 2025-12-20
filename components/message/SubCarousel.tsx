@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
         justifyContent:"center"
     },
     loaderContainer:{
-        backgroundColor:colors.light,
+        backgroundColor:colors.light+"70",
         justifyContent:"center",
         alignItems:"center",
         width:"48%",

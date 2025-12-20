@@ -4,6 +4,7 @@ import { memo, useEffect, useRef, useState } from "react"
 import { ActivityIndicator, Text, View } from "react-native"
 
 interface propType{
+    isLast:boolean,
     message:{
         type:string,
         sender:string,
@@ -14,6 +15,7 @@ interface propType{
 
 const ChatMessage = memo(
  function ChatMessage (props:propType) {
+    const hasRun = useRef<boolean>(false)
     const {message} = props
     const [displayedMessage,setDisplayedMessage] = useState<string[]>([])
     const [isTyping,setIsTyping] = useState(true)
@@ -27,6 +29,7 @@ const ChatMessage = memo(
     }, []);
 
     useEffect(()=>{
+        if (hasRun.current) return
         indexRef.current = -1
         let isCancelled = false
         function loadNextMessage(){
@@ -43,7 +46,7 @@ const ChatMessage = memo(
                     }
                     else{
                         if (message.next) message.next()
-                        
+                        hasRun.current = true
                     }
                 },300))
             }
