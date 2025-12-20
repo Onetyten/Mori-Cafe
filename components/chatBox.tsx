@@ -34,18 +34,18 @@ export default function ChatBox() {
                 contentContainerStyle={chatStyle.messageView}
                 data={messageList}
                 showsVerticalScrollIndicator={false}
-                keyExtractor={(_item,index)=>index.toString()}
+                keyExtractor={(item,)=>item.id}
                 initialNumToRender={4}
                 removeClippedSubviews={true}
                 maxToRenderPerBatch={5}
                 windowSize={7}
                 updateCellsBatchingPeriod={30}
                 ListFooterComponentStyle={{marginBottom:128}}
-                // onContentSizeChange={()=>{
-                //     requestAnimationFrame(()=>{
-                //     scrollRef.current?.scrollToEnd({animated:true})
-                //     })
-                // }}
+                onContentSizeChange={()=>{
+                    requestAnimationFrame(()=>{
+                    scrollRef.current?.scrollToEnd({animated:true})
+                    })
+                }}
                 ItemSeparatorComponent={()=><View style={{height:16}} />}
                 ListFooterComponent={()=>showoptions&& <OptionsInput options = {options}/>}
                 renderItem={({item}) => <MessageRenderer chatItem={item} setOptions={setOptions} setShowOptions={setShowOptions} setLoading={setLoading} loading={loading} />

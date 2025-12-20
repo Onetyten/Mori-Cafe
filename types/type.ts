@@ -7,6 +7,7 @@ export interface subCategoryType {
 }
 
 export interface messageListType{
+    id:string,
     type:string,
     sender:string,
     next:()=>void,
