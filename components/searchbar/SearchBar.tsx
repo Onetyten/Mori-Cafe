@@ -43,10 +43,11 @@ export default function SearchBar(props:propType) {
     <View className="w-full flex justify-center items-center h-14 mb-20">
         <View className="flex justify-between items-center relative w-full h-full ">
           <View style={{backgroundColor:colors.primary}} className="absolute w-14 h-14 rounded-full items-center justify-center left-0 bg-primary">
-                <TouchableOpacity className='w-full h-full justify-center items-center z-50 relative' onPress={()=>setShowButtons(!showButtons)}>
+                <TouchableOpacity style={{zIndex:40}} className='w-full h-full justify-center items-center z-90 relative' onPress={()=>setShowButtons(!showButtons)}>
                   <Fontisto name="coffeescript" size={24} color={colors.background}/>
-                  <QuickActions showButtons={showButtons} setShowOptions={setShowOptions} setLoading={setLoading} setOptions={setOptions} loading={loading} />
+                  
                 </TouchableOpacity>
+                <QuickActions showButtons={showButtons} setShowOptions={setShowOptions} setLoading={setLoading} setOptions={setOptions} loading={loading} />
                 
           </View>
 
