@@ -6,7 +6,7 @@ import { colors, GlobalStyle } from '@/styles/global'
 import { normalize } from "@/utils/scaling"
 import * as Location from 'expo-location'
 import { useEffect, useRef, useState } from 'react'
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { StyleSheet, Text, TextInput, TouchableOpacity, useWindowDimensions, View } from 'react-native'
 import { Dropdown } from 'react-native-element-dropdown'
 import MapView, { LatLng, MapPressEvent, Marker } from 'react-native-maps'
 import { useDispatch, useSelector } from 'react-redux'
@@ -19,11 +19,12 @@ interface propType{
     setOptions: React.Dispatch<React.SetStateAction<{ name: string; onClick: () => void}[]>>,
     setShowOptions: React.Dispatch<React.SetStateAction<boolean>>,
     getSomethingElseMessage: (message: string) => void,
+    isLast:boolean
 }
 
 
 export default function UserInfoInput(props:propType) {
-  const {setOptions,setShowOptions,getSomethingElseMessage} = props
+  const {setOptions,setShowOptions,getSomethingElseMessage,isLast} = props
   const userInfo = useSelector((state:RootState)=>state.userInfo.userInfo)
   const dispatch = useDispatch()
   const ProceedToPayment = useProceedPayment(setShowOptions)
@@ -35,12 +36,15 @@ export default function UserInfoInput(props:propType) {
   const [email,setEmail] = useState(userInfo.email)
   const neworder = useSelector((state:RootState)=>state.newOrder.newOrder)
   const [selectedLocation, setSelectedLocation] = useState< LatLng | null >(null)
+  const {width,height} = useWindowDimensions()
+  const isLandscape = width>height
 
 
   async function getLocation(){
     const {status} = await Location.requestForegroundPermissionsAsync()
     if (status !== "granted") return null
     const loc = await Location.getCurrentPositionAsync({})
+    
     const address = await Location.reverseGeocodeAsync({
       longitude:loc.coords.longitude,
       latitude:loc.coords.latitude
@@ -106,13 +110,13 @@ export default function UserInfoInput(props:propType) {
     setAddress(newAddress[0].formattedAddress)
   }
 
-  if (confirmed.current === true){
+  if (confirmed.current === true || !isLast){
     return null
   }
 
   return (
     <View style={styles.container}>
-      <View style={{maxWidth:"70%",width:"100%",gap:8}}>
+      <View style={{maxWidth:isLandscape?"45%":"85%",width:"100%",gap:8}}>
         <TextInput keyboardType="default" placeholder='Full name' placeholderTextColor={colors.light} value={name} onChangeText={setName} style={[GlobalStyle.Outfit_Regular_body,styles.textInput]} />
         <TextInput keyboardType="email-address" placeholder='Email' value={email} onChangeText={setEmail} placeholderTextColor={colors.light} style={[GlobalStyle.Outfit_Regular_body,styles.textInput]} />
         

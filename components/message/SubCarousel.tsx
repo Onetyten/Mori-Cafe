@@ -1,5 +1,6 @@
 import { colors, GlobalStyle } from "@/styles/global"
-import { memo, useEffect, useState } from "react"
+import { MotiImage } from "moti"
+import { memo, useEffect, useRef, useState } from "react"
 import { ActivityIndicator, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native"
 import type { subCategoryType } from '../../types/type'
 import api from "../../utils/api"
@@ -18,13 +19,17 @@ interface propType{
     const SubCarousel = memo(function SubCarousel(props:propType) {
     const {message,fetchFoodList} = props
     const [subcategoryList,setSubcategoryList] = useState<subCategoryType[]>([])
+    const hasRun  = useRef(false)
+
     useEffect(()=>{
+        if (hasRun.current) return
         let cancelled = false
         async function getSubCategory() {
              const category = message.content[0]
              if (!category) return;
              if (cancelled) return
              const response = await api.get(`/food/subcategory/${message.content[0]}`)
+             hasRun.current = true
              if (response.data.success === false) return
              setSubcategoryList(response.data.data)
              if (message.next) message.next()
@@ -53,12 +58,12 @@ interface propType{
 
   return (
     <View style={styles.parent}>
-        {subcategoryList.map((item)=>{
+        {subcategoryList.map((item,index)=>{
             return(
                 <TouchableOpacity onPress={()=>{fetchFoodList(`/food/list?sub_id=${item._id}`,`Select your ${item.name}`)}} key={item._id} style={styles.Button}>
                         <Image source={require("../../assets/images/patterns/hex.webp")} style={[StyleSheet.absoluteFill,styles.backgroundImage]}/>
                         <View style={styles.imageContainer}>
-                            <Image source={{uri:item.imageUrl}} style={styles.foodImage}/>
+                            <MotiImage from={{translateY:-15}} transition={{delay:(index+1)*100}} animate={{translateY:0}}  source={{uri:item.imageUrl}} style={styles.foodImage}/>
                         </View>
                     
                         <Text style={styles.nameText}>{item.name}</Text>

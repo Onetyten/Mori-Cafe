@@ -13,10 +13,11 @@ import ReceiptSkeleton from "./chat Bubble/ReceiptSkeleton";
 interface propType{
     setLoading:React.Dispatch<React.SetStateAction<boolean>>,
     setShowOptions:React.Dispatch<React.SetStateAction<boolean>>,
+    isLast:boolean
 }
 
 export default function ReceiptCarousel(props:propType) {
-    const {setShowOptions} = props
+    const {setShowOptions,isLast} = props
     const [orderList,setOrderList] = useState<FetchedOrderType[]>([])
     const fetched = useRef(false)
     const [loaded,setLoaded] = useState(false)
@@ -28,7 +29,7 @@ export default function ReceiptCarousel(props:propType) {
         async function getOrderList() {
            try {
                 setShowOptions(false)
-                const response = await api.post('/order/fetch')
+                const response = await api.post('/order/fetch/?limit=10')
                 if (response.data.success===false){
                     const newMessage = {type:"message",next:()=>{}, sender:"bot",content:["No history found"]}
                     dispatch(AddMessage(newMessage))
@@ -54,6 +55,8 @@ export default function ReceiptCarousel(props:propType) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
 
+    if (!isLast) return null
+
 
     if (orderList.length===0){
         if (fetched.current===false){
@@ -65,6 +68,7 @@ export default function ReceiptCarousel(props:propType) {
             return null
         }        
     }
+
 
 
   return (

@@ -23,7 +23,9 @@ export default function useSubcategory(setOptions: React.Dispatch<React.SetState
     const showSubcategoryCarousel=useCallback((category:string)=>{
         setShowOptions(false)
         const newCarousel = {type:"subcarousel",next:()=>subCategoryCleanup(), sender:"bot",content:[category]}
-        dispatch(AddMessage(newCarousel))
+        timers.current.push(setTimeout(()=>{
+            dispatch(AddMessage(newCarousel))
+        },500))
     },[dispatch, setShowOptions, subCategoryCleanup])
 
     const getSubcategoryMessage = useCallback((category:string)=>{

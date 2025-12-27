@@ -52,15 +52,15 @@ interface propType{
             case "order-feedback":
                 return <OrderFeedback setShowOptions={setShowOptions} setOptions={setOptions}  getSomethingElseMessage = {getSomethingElseMessage}/>
             case "cart-list-feedback":
-                return <CheckoutList message={chatItem} setShowOptions={setShowOptions} setOptions={setOptions} getSomethingElseMessage = {getSomethingElseMessage}/>;
+                return <CheckoutList isLast={isLast} message={chatItem} setShowOptions={setShowOptions} setOptions={setOptions} getSomethingElseMessage = {getSomethingElseMessage}/>;
             case "edit-list":
                 return <CustomisationList message={chatItem} addToCart = {addToCart} />;
             case "enter-info":
-                return <UserInfoInput setOptions={setOptions} setShowOptions={setShowOptions} getSomethingElseMessage={getSomethingElseMessage} />;
+                return <UserInfoInput isLast={isLast} setOptions={setOptions} setShowOptions={setShowOptions} getSomethingElseMessage={getSomethingElseMessage} />;
             case "food-list":
                 return <FoodCarousel setShowOptions={setShowOptions} setLoading={setLoading} message={chatItem} loading={loading} />;
             case "receipt-list":
-                return <ReceiptCarousel setLoading={setLoading} setShowOptions={setShowOptions} />
+                return <ReceiptCarousel isLast={isLast} setLoading={setLoading} setShowOptions={setShowOptions} />
             default:
                 return null   
         } 

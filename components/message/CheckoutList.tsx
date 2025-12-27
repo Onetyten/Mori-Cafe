@@ -28,12 +28,16 @@ interface propType{
     }[]>>,
     getSomethingElseMessage: (message: string) => void,
     setShowOptions: React.Dispatch<React.SetStateAction<boolean>>,
+    isLast:boolean
 }
+
 const CheckoutList = memo(function CheckoutList(props:propType) {
-    const {message,setShowOptions,setOptions} = props
+    const {message,setShowOptions,setOptions,isLast} = props
     const {getCategory} = useSubcategory(setOptions,setShowOptions)
     const getSomethingElseMessage = useGetElse(setShowOptions,setOptions,getCategory)
     const calculateSelectedPrice = useCalculatePrice(getSomethingElseMessage,setShowOptions,setOptions)
+    const hasRun = useRef(false)
+
     const [added,setAdded] = useState(false)
     const [checkedOut,setCheckedOut] = useState(false)
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -55,8 +59,8 @@ const CheckoutList = memo(function CheckoutList(props:propType) {
             { name: 'Checkout', onClick: ()=>calculateSelectedPrice() },
             { name: 'Continue shopping', onClick: () => getSomethingElseMessage("Let's continue") }
             ]]);
-            setShowOptions(true);
-        }, 1000));
+            setShowOptions(true)
+        }, 200));
     }
     
     function checkOutListCleared(){
@@ -64,13 +68,14 @@ const CheckoutList = memo(function CheckoutList(props:propType) {
     }
 
 
-
     useEffect(()=>{
+        if (!isLast) hasRun.current = true
+        if (hasRun.current) return
         let cancelled  = false
+        setShowOptions(false)
         async function fetchCart() {
             if (cancelled) return
             try {
-                setShowOptions(false)
                 if (!message.next) return
                 const response = await api.get('/order/cart/fetch')
                 if (response.data.success === false){
@@ -82,6 +87,7 @@ const CheckoutList = memo(function CheckoutList(props:propType) {
             }
             catch (error) {
                 console.error(error)
+                setShowOptions(true)
                 if (isAxiosError(error)){
                     return setFeedback(error.response?.data.message)
                 }
@@ -90,7 +96,7 @@ const CheckoutList = memo(function CheckoutList(props:propType) {
             finally{
                 message.next()
                 setAdded(true)
-                setShowOptions(true)
+                hasRun.current = true
             }
         }
         fetchCart()
@@ -107,6 +113,7 @@ const CheckoutList = memo(function CheckoutList(props:propType) {
             dispatch(AddMessage(newMessage))
             setFeedback("Your tab is empty.")
             checkOutListCleared()
+            hasRun.current = true
         }
     }, [cartList, checkedOut, added])
 
@@ -121,7 +128,7 @@ const CheckoutList = memo(function CheckoutList(props:propType) {
         }
     }, [newOrder])
 
-    if (checkedOut || cartList.length===0){
+    if (checkedOut || cartList.length===0 || !isLast){
         return null
     }
     

@@ -24,10 +24,9 @@ export default function useListCart(setShowOptions:React.Dispatch<React.SetState
     const CartList=useCallback(()=>{
         const newMessage = {type:"message",next:()=>{}, sender:"user",content:[`Let's Checkout`]}
         dispatch(AddMessage(newMessage))
-        setShowOptions(false)
         const newFeedBack = {type:"cart-list-feedback",next:addToCartCleanup, sender:"bot",content:['']}
         dispatch(AddMessage(newFeedBack))
-    },[addToCartCleanup, dispatch, setShowOptions])
 
+    },[addToCartCleanup, dispatch])
     return CartList
 }

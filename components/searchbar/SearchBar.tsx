@@ -45,8 +45,9 @@ export default function SearchBar(props:propType) {
           <View style={{backgroundColor:colors.primary}} className="absolute w-14 h-14 rounded-full items-center justify-center left-0 bg-primary">
                 <TouchableOpacity className='w-full h-full justify-center items-center z-50 relative' onPress={()=>setShowButtons(!showButtons)}>
                   <Fontisto name="coffeescript" size={24} color={colors.background}/>
+                  <QuickActions showButtons={showButtons} setShowOptions={setShowOptions} setLoading={setLoading} setOptions={setOptions} loading={loading} />
                 </TouchableOpacity>
-                <QuickActions showButtons={showButtons} setShowOptions={setShowOptions} setLoading={setLoading} setOptions={setOptions} loading={loading} />
+                
           </View>
 
           <TextInput value={query} onChangeText={setQuery} placeholder="Search order" className="w-full text-xl pl-16 font-outfit-light placeholder:text-muted h-full focus:outline-0 focus:bg-secondary-300/15 bg-secondary-300/20 rounded-full px-2" />

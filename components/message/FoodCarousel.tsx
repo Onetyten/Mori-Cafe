@@ -2,7 +2,7 @@ import useOptionCount from "@/hooks/useOptionCount";
 import { AddMessage } from "@/store/messageListSlice";
 import { colors } from "@/styles/global";
 import { isAxiosError } from "axios";
-import React, { memo, useEffect, useState } from "react";
+import React, { memo, useEffect, useRef, useState } from "react";
 import { ActivityIndicator, StyleSheet, View } from "react-native";
 import Swiper from "react-native-swiper";
 import { useDispatch } from "react-redux";
@@ -18,6 +18,7 @@ interface propType{
 }
 
 const FoodCarousel = memo(function FoodCarousel(props:propType) {
+    const hasRun = useRef(false)
     const dispatch = useDispatch()
     const {message,setLoading,setShowOptions,loading} = props
     const optionCount = useOptionCount(setShowOptions,setLoading,loading)
@@ -25,7 +26,7 @@ const FoodCarousel = memo(function FoodCarousel(props:propType) {
     const [fetched,setFetched] = useState(false)
 
     useEffect(()=>{
-        if (fetched) return
+        if (hasRun.current || fetched) return
         async function getFoodList() {
            try {
                 setShowOptions(false)
@@ -45,6 +46,7 @@ const FoodCarousel = memo(function FoodCarousel(props:propType) {
             setFetched(true)
             setLoading(false)
             setShowOptions(true)
+            hasRun.current = true
            }
         }
         getFoodList()
@@ -72,7 +74,7 @@ const FoodCarousel = memo(function FoodCarousel(props:propType) {
 
     return (
         <Swiper autoplay horizontal autoplayTimeout={5} activeDot={<View style={[Styles.dot,Styles.activeDot]} />} dot={<View style={[Styles.dot,Styles.passiveDot]} />} loop showsPagination={true} height={290}>
-            {foodList.map((item) => (
+            {foodList.map((item,index) => (
                 <View key={item._id}>
                     <FoodCard food={item} onClick={optionCount}/>
                 </View>

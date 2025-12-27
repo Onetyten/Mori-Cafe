@@ -7,10 +7,10 @@ import Fontisto from '@expo/vector-icons/Fontisto';
 import { Image } from "expo-image";
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { PaystackProvider } from "react-native-paystack-webview";
 import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 import { SafeAreaView } from "react-native-safe-area-context";
-
 
 export default function Index() {
   const key = process.env.EXPO_PUBLIC_PAYSTACK_KEY
@@ -19,6 +19,7 @@ export default function Index() {
   return (
     <PaystackProvider publicKey={key} currency="NGN" defaultChannels={["card","mobile_money"]}>
       <SafeAreaView style={Styles.container}>
+        <GestureHandlerRootView>
             <UserCheck/>
             <View style={Styles.headerView}>
               <Fontisto name="coffeescript" size={25} color={colors.primary} />
@@ -29,8 +30,9 @@ export default function Index() {
             <Comfirmation/>          
 
             <Image source={require('../assets/images/floral/flora.webp')} contentFit="contain" style={{position: 'absolute',right: '-10%',bottom: 0,opacity: 0.4,width: '60%',height: '30%',zIndex: -10}} />
-
-        <StatusBar hidden={true}/>
+            
+            <StatusBar hidden={true}/>
+        </GestureHandlerRootView>
       </SafeAreaView>
     </PaystackProvider>
   );

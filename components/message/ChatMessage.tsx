@@ -4,7 +4,6 @@ import { memo, useEffect, useRef, useState } from "react"
 import { ActivityIndicator, Text, View } from "react-native"
 
 interface propType{
-    isLast:boolean,
     message:{
         type:string,
         sender:string,

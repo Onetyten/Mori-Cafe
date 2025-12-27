@@ -53,6 +53,8 @@ export default function OrderFeedback(props:propTypes) {
                             return endPaymentProcess("Unable to retrieve payment reference")
                         }
                         try {
+                            const newMessage = {type:"message",next:()=>{}, sender:"bot",content:["Order created, verifying your payment"]}
+                            dispatch(AddMessage(newMessage)) 
                             await api.post('/order/verify',{orderId:data.orderId, reference})
                             endPaymentProcess(`A payment of ₦${data.amount} was successfully verified.`)
                         }
