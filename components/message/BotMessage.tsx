@@ -1,76 +1,38 @@
 import { chatStyles } from '@/styles/chatStyle'
-import { memo, useEffect, useRef, useState } from 'react'
+import { messageListType } from '@/types/type'
+import { memo } from 'react'
 import { View } from 'react-native'
 import BotChatBubble from "./chat Bubble/BotChatBubble"
 import BotImage from './chat Bubble/BotImage'
 import BotLoader from './chat Bubble/BotLoader'
 
 interface propType{
-    message:{
-        type:string,
-        sender:string,
-        next?:()=>void, 
-        content:string[]
-    }
+    message:messageListType
 }
 
 const BotMessage = memo(
     function BotMessage(props:propType) {
     const {message} = props;
-    const [displayedMessage,setDisplayedMessage] = useState<string[]>([]);
-    const [isTyping,setIsTyping] = useState(true);
-    const indexRef = useRef(0);
-    const timers = useRef<ReturnType<typeof setTimeout>[]>([])
-    const hasRun = useRef(false)
 
-    useEffect(() => {
-        return () => {
-            timers.current.forEach(clearTimeout);
-            timers.current = [];
-        };
-    }, []);
-    useEffect(()=>{
-        if (hasRun.current) return
-        indexRef.current = -1;
-        let isCancelled = false;
-        function loadNextMessage(){
-            if (isCancelled) return
-            if (indexRef.current < message.content.length-1){
-                setIsTyping(true)
-                timers.current.push(setTimeout(()=>{
-                    if (isCancelled) return
-                    setIsTyping(false)
-                    setDisplayedMessage((prev) => [...prev, message.content[indexRef.current]]);
-                    indexRef.current++;
-                    if (indexRef.current<message.content.length-1){
-                        timers.current.push(setTimeout(loadNextMessage,200))
-                    }
-                    else{                     
-                        if (message.next) message.next()
-                        hasRun.current = true
-                    }
-                },200))
-            }
-        }
-        loadNextMessage()
-        return ()=>{
-            isCancelled = true;
-        }
-    },[message, message.content])
+    if (message.type !== "message" || message.displayedText === undefined) return
     
     return (
         <View style={{width:"100%",alignItems:"flex-start"}}>
             <View style={{flexDirection:"row",gap:8,alignItems:"flex-start"}}>
                 <BotImage sender = {message.sender}/>
+                
                 <View style={chatStyles.botMessageView}>
-                    {displayedMessage.map((item,index)=>{
-                        return(
-                            <View key={index} style={chatStyles.botBubbleContainer}>
-                                <BotChatBubble sender = {message.sender} message={item} index ={index}/>
-                            </View>
-                        )
-                    })}
-                    {isTyping&&(
+                        {message.displayedText.length>0 && (
+                        message.displayedText.map((item,index)=>{
+                            return(
+                                <View key={index} style={chatStyles.botBubbleContainer}>
+                                    <BotChatBubble sender = {message.sender} message={item} index ={index}/>
+                                </View>
+                            )
+                        })
+                    )}
+
+                    {message.isTyping&&(
                         <BotLoader />
                     )}
                 </View>

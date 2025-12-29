@@ -43,24 +43,24 @@ interface propType{
                 return chatItem.sender==="user"?
                     <ChatMessage message={chatItem}/>:
                     <BotMessage message={chatItem}/>;
-            case "subcarousel":
-                return <SubCarousel message={chatItem} fetchFoodList={fetchFoodList}/>;
-            case "number-input":
-                return <NumberInput message={chatItem} confirm={comfirmToCart} />;
-            case "cart-feedback":
-                return <CartFeedBack message={chatItem} isAdding={isAdding}/>
-            case "order-feedback":
-                return <OrderFeedback setShowOptions={setShowOptions} setOptions={setOptions}  getSomethingElseMessage = {getSomethingElseMessage}/>
-            case "cart-list-feedback":
-                return <CheckoutList isLast={isLast} message={chatItem} setShowOptions={setShowOptions} setOptions={setOptions} getSomethingElseMessage = {getSomethingElseMessage}/>;
-            case "edit-list":
-                return <CustomisationList message={chatItem} addToCart = {addToCart} />;
-            case "enter-info":
-                return <UserInfoInput isLast={isLast} setOptions={setOptions} setShowOptions={setShowOptions} getSomethingElseMessage={getSomethingElseMessage} />;
-            case "food-list":
-                return <FoodCarousel setShowOptions={setShowOptions} setLoading={setLoading} message={chatItem} loading={loading} />;
-            case "receipt-list":
-                return <ReceiptCarousel isLast={isLast} setLoading={setLoading} setShowOptions={setShowOptions} />
+            // case "subcarousel":
+            //     return <SubCarousel message={chatItem} fetchFoodList={fetchFoodList}/>;
+            // case "number-input":
+            //     return <NumberInput message={chatItem} confirm={comfirmToCart} />;
+            // case "cart-feedback":
+            //     return <CartFeedBack message={chatItem} isAdding={isAdding}/>
+            // case "order-feedback":
+            //     return <OrderFeedback setShowOptions={setShowOptions} setOptions={setOptions}  getSomethingElseMessage = {getSomethingElseMessage}/>
+            // case "cart-list-feedback":
+            //     return <CheckoutList isLast={isLast} message={chatItem} setShowOptions={setShowOptions} setOptions={setOptions} getSomethingElseMessage = {getSomethingElseMessage}/>;
+            // case "edit-list":
+            //     return <CustomisationList message={chatItem} addToCart = {addToCart} />;
+            // case "enter-info":
+            //     return <UserInfoInput isLast={isLast} setOptions={setOptions} setShowOptions={setShowOptions} getSomethingElseMessage={getSomethingElseMessage} />;
+            // case "food-list":
+            //     return <FoodCarousel setShowOptions={setShowOptions} setLoading={setLoading} message={chatItem} loading={loading} />;
+            // case "receipt-list":
+            //     return <ReceiptCarousel isLast={isLast} setLoading={setLoading} setShowOptions={setShowOptions} />
             default:
                 return null   
         } 

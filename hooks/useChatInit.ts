@@ -1,4 +1,4 @@
-import { AddMessage } from "@/store/messageListSlice";
+import { AddMessage, NewMessage } from "@/store/messageListSlice";
 import { useCallback, useEffect } from "react";
 import { useDispatch } from "react-redux";
 
@@ -19,9 +19,10 @@ interface UseChatInitProps {
 export function useChatInit({initiatedRef,setShowOptions,setOptions,options,getCategory}: UseChatInitProps) {
     const dispatch = useDispatch()
     const introMessage = useCallback(()=>{
-        const newMessage = {type:"message", sender:"bot", next:()=>{setShowOptions(true)}, content:['Hey there! I’m Mori','your digital barista','What are you craving today?']}
+        const newMessage:NewMessage = {type:"message", sender:"bot", next:()=>{setShowOptions(true)}, content:['Hey there! I’m Mori','your digital barista','What are you craving today?']}
         dispatch(AddMessage(newMessage))
     },[dispatch, setShowOptions])
+    
 
     useEffect(() => {
         if (options.length === 0 && getCategory) {

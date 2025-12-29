@@ -3,12 +3,13 @@ import useConfirmToCart from "@/hooks/useConfirmToCart"
 import useFetchFoodList from "@/hooks/useFetchFoodList"
 import useGetElse from "@/hooks/useGetElse"
 import useListCart from "@/hooks/useListCart"
+import { AppendTextMessage, setIsTyping } from "@/store/messageListSlice"
 import { messageListType } from "@/types/type"
 import { RootState } from "@/utils/store"
-import { useCallback, useMemo, useRef, useState } from "react"
+import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { FlatList, StyleSheet, TouchableWithoutFeedback, View } from "react-native"
 import { widthPercentageToDP as wp } from "react-native-responsive-screen"
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { useChatInit } from "../hooks/useChatInit"
 import useSubcategory from "../hooks/useSubcategory"
 import MessageRenderer from "./messageRenderer"
@@ -51,6 +52,55 @@ export default function ChatBox() {
         requestAnimationFrame(()=>{ scrollRef.current?.scrollToEnd({animated:true})})
     },[])
 
+    const lastProcessedId = useRef<string|null>(null)
+    const timers = useRef<ReturnType<typeof setTimeout>[]>([])
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        return () => {
+            timers.current.forEach(clearTimeout)
+            timers.current = []
+        }
+    }, [])
+
+    useEffect(()=>{
+        const chatManager=()=>{
+            const message = messageList.at(-1)
+            if (!message || message.id === lastProcessedId.current) return
+            lastProcessedId.current = message.id
+            
+            switch (message.type){
+                case "message":
+                    
+
+                // case "subcarousel":
+                //     console.log("new subcarousel message");
+                // case "number-input":
+                //     console.log("new input message");
+                // case "cart-feedback":
+                //     console.log("new message");
+                // case "order-feedback":
+                //     console.log("new order feedback message");
+                // case "cart-list-feedback":
+                //     console.log("new order feedback message");
+                // case "edit-list":
+                //     console.log("new order feedback message");
+                // case "enter-info":
+                //     console.log("new order feedback message");
+                // case "food-list":
+                //     console.log("new order feedback message");
+                // case "receipt-list":
+                //     console.log("new order feedback message");
+                default:
+                    return
+            }
+
+        }
+
+        chatManager()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    },[messageList])
+
     
   return (
     <View style={chatStyle.container}>
@@ -60,7 +110,7 @@ export default function ChatBox() {
                 contentContainerStyle={chatStyle.messageView}
                 data={messageList}
                 showsVerticalScrollIndicator={false}
-                keyExtractor={(item,)=>item.id}
+                keyExtractor={(item)=>item.id}
                 initialNumToRender={4}
                 removeClippedSubviews={true}
                 maxToRenderPerBatch={5}
