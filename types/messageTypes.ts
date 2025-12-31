@@ -22,12 +22,19 @@ export interface subCarouselMessage extends baseMessage{
 }
 
 export interface foodCarouselMessage extends baseMessage{
-  type:"food-list";
+  type:"foodCarousel";
   next?:()=>void;
   route:string;
   content: FoodType[];
   fetched: boolean;
 }
 
+export interface numberInputMessage extends baseMessage{
+  type:"numberInput";
+  next?:()=>void;
+  food: FoodType
+  loaded: boolean;
+}
 
-export type messageListType = chatMessage | subCarouselMessage | foodCarouselMessage
+
+export type messageListType = chatMessage | subCarouselMessage | foodCarouselMessage | numberInputMessage

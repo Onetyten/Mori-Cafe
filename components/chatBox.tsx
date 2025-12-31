@@ -1,4 +1,5 @@
 import useRenderFoodCarousel from "@/hooks/chatManagement/useRenderFoodCarousel"
+import useRenderNumberInput from "@/hooks/chatManagement/useRenderNumberInput"
 import useRenderSubcarousel from "@/hooks/chatManagement/useRenderSubCarousel"
 import { useRenderTextMessage } from "@/hooks/chatManagement/useRenderTextMessage"
 import useAddToCart from "@/hooks/useAddToCart"
@@ -44,6 +45,7 @@ export default function ChatBox() {
     const {renderTextMessage} = useRenderTextMessage();
     const {renderSubcarousel} =useRenderSubcarousel();
     const {renderFoodCarousel} =useRenderFoodCarousel(setLoading,setShowOptions,loading);
+    const {renderNumberInput} =useRenderNumberInput(setShowOptions,setLoading,loading);
 
     const renderItem = useCallback(({item,index}:{item:messageListType,index:number})=>(
         <MessageRenderer isLast = {index === messageList.length-1} chatItem={item} context={chatContext}/>
@@ -78,8 +80,8 @@ export default function ChatBox() {
                     renderTextMessage(message)
                 case "subcarousel":
                     renderSubcarousel(message)    
-                // case "number-input":
-                //     console.log("new input message");
+                case "numberInput":
+                    renderNumberInput(message)
                 // case "cart-feedback":
                 //     console.log("new message");
                 // case "order-feedback":
@@ -90,7 +92,7 @@ export default function ChatBox() {
                 //     console.log("new order feedback message");
                 // case "enter-info":
                 //     console.log("new order feedback message");
-                case "food-list":
+                case "foodCarousel":
                     renderFoodCarousel(message)
                 // case "receipt-list":
                 //     console.log("new order feedback message");

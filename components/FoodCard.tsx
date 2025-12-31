@@ -1,6 +1,8 @@
+import { AddMessage, NewMessage } from "@/store/messageListSlice"
 import { colors, GlobalStyle } from "@/styles/global"
 import { MotiImage } from "moti"
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native"
+import { useDispatch } from "react-redux"
 import type { FoodType } from "../types/type"
 
 interface propType{
@@ -9,14 +11,21 @@ interface propType{
 }
 
 export default function FoodCard(props:propType) {
-    const {food,onClick} = props
+    const dispatch = useDispatch()
+    const {food} = props
     const optimisedUrl =(w:number,h:number)=>{
         return food.imageUrl.replace('/upload',`/upload/w_${w},h_${h},c_fill,f_auto,q_auto`)
     }
+
+    function optionCount(){
+        const newInput:NewMessage = {type:"numberInput",next:()=>{},food}
+        dispatch(AddMessage(newInput))
+    }
+    
     
   return (
     <View style={{width:"100%",alignItems:"center"}}>
-        <TouchableOpacity style={Styles.parent} onPress={()=>{onClick(food)}}>
+        <TouchableOpacity style={Styles.parent} onPress = {optionCount} >
             <Image source={require("../assets/images/patterns/hex.webp")} style={[StyleSheet.absoluteFill,{width:"100%",height:"100%"}]}/>
 
             <View style={Styles.priceView}>

@@ -18,7 +18,7 @@ const FoodCarousel = memo(function FoodCarousel(props:propType) {
     const optionCount = useOptionCount(setShowOptions,setLoading,loading)
     console.log(message)
 
-    if (message.type !== "food-list") return
+    if (message.type !== "foodCarousel") return
 
       if (message.content.length===0){
         if (message.fetched===false){

@@ -3,6 +3,7 @@ import React, { memo } from 'react';
 import BotMessage from './message/BotMessage';
 import ChatMessage from './message/ChatMessage';
 import FoodCarousel from './message/FoodCarousel/FoodCarousel';
+import NumberInput from './message/NumberInput';
 import SubCarousel from './message/SubCarousel/SubCarousel';
 
 interface propType{
@@ -38,8 +39,8 @@ interface propType{
                     <BotMessage message={chatItem}/>;
             case "subcarousel":
                 return <SubCarousel message={chatItem} fetchFoodList={fetchFoodList}/>;
-            // case "number-input":
-            //     return <NumberInput message={chatItem} confirm={comfirmToCart} />;
+            case "numberInput":
+                return <NumberInput message={chatItem} confirm={comfirmToCart} />;
             // case "cart-feedback":
             //     return <CartFeedBack message={chatItem} isAdding={isAdding}/>
             // case "order-feedback":
@@ -50,7 +51,7 @@ interface propType{
             //     return <CustomisationList message={chatItem} addToCart = {addToCart} />;
             // case "enter-info":
             //     return <UserInfoInput isLast={isLast} setOptions={setOptions} setShowOptions={setShowOptions} getSomethingElseMessage={getSomethingElseMessage} />;
-            case "food-list":
+            case "foodCarousel":
                 return <FoodCarousel setShowOptions={setShowOptions} setLoading={setLoading} message={chatItem} loading={loading} />;
             // case "receipt-list":
             //     return <ReceiptCarousel isLast={isLast} setLoading={setLoading} setShowOptions={setShowOptions} />

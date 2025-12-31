@@ -1,4 +1,4 @@
-import { AddMessage, hydrateSubcategories, NewMessage, setSubcategoryState } from "@/store/messageListSlice";
+import { AddMessage, NewMessage, updateMessage } from "@/store/messageListSlice";
 import { messageListType } from "@/types/messageTypes";
 import api from "@/utils/api";
 import { isAxiosError } from "axios";
@@ -16,7 +16,8 @@ export default function useRenderSubcarousel(){
         
         try {
             const response = await api.get(`/food/subcategory/${message.subcategory}`)
-            dispatch(hydrateSubcategories({id:message.id, value:response.data.data}))
+            dispatch(updateMessage({id:message.id, update:{content:response.data.data}}))
+            // dispatch(hydrateSubcategories({id:message.id, value:response.data.data}))
             if (message.next) message.next()
         }
      
@@ -32,7 +33,7 @@ export default function useRenderSubcarousel(){
             dispatch(AddMessage(newMessage))
         }
         finally {
-            dispatch(setSubcategoryState({id:message.id,value:true}))
+            dispatch(updateMessage({id:message.id, update:{fetched:true}}))
         }
     }
 

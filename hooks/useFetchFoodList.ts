@@ -14,7 +14,7 @@ export default function useFetchFoodList(loading:boolean,setLoading:React.Dispat
         setLoading(true)
 
         function addFood(endpoint:string){
-            const newList:NewMessage = {type:"food-list",next:()=>{},route:endpoint}
+            const newList:NewMessage = {type:"foodCarousel",next:()=>{},route:endpoint}
             dispatch(AddMessage(newList))
             setOptions([{name:'Get something else', onClick:()=>getSomethingElseMessage("Let’s try something different.")}])
         }

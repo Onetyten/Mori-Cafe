@@ -1,4 +1,4 @@
-import { AddMessage, hydrateFoodList, NewMessage, setfoodListState } from "@/store/messageListSlice";
+import { AddMessage, NewMessage, updateMessage } from "@/store/messageListSlice";
 import { messageListType } from "@/types/messageTypes";
 import api from "@/utils/api";
 import { isAxiosError } from "axios";
@@ -11,12 +11,12 @@ export default function useRenderFoodCarousel (setLoading:React.Dispatch<React.S
     const dispatch = useDispatch()
     
     async function renderFoodCarousel(message:messageListType){
-        if (!message || message.type !== "food-list") return
+        if (!message || message.type !== "foodCarousel") return
         try {
             setShowOptions(false)
             const response = await api.get(message.route)
             if (response.data.success === false) return
-            dispatch(hydrateFoodList({id:message.id,value:response.data.data}))
+            dispatch(updateMessage({id:message.id,update:{content:response.data.data}}))
             if (message.next) message.next()
         }
 
@@ -33,8 +33,8 @@ export default function useRenderFoodCarousel (setLoading:React.Dispatch<React.S
             dispatch(AddMessage(newMessage))
         } 
 
-        finally{
-            dispatch(setfoodListState({id:message.id,value:true}))
+        finally {
+            dispatch(updateMessage({id:message.id,update:{fetched:true}}))
             setLoading(false)
             setShowOptions(true)
         }

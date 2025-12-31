@@ -1,4 +1,4 @@
-import { AppendTextMessage, setIsTyping } from "@/store/messageListSlice";
+import { AppendTextMessage, updateMessage } from "@/store/messageListSlice";
 import { messageListType } from "@/types/messageTypes";
 import { useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
@@ -22,9 +22,10 @@ export function useRenderTextMessage(){
         function loadNextMessage(){
             if (!message || message.type !=="message") return
             if ( index < message.content.length) {
-                dispatch(setIsTyping({id:message.id,value:true}))
+                dispatch(updateMessage({id:message.id,update:{isTyping:true}}))
+
                 timers.current.push(setTimeout(()=>{
-                    dispatch(setIsTyping({id:message.id,value:false}))
+                    dispatch(updateMessage({id:message.id,update:{ isTyping:false }}))
                     dispatch(AppendTextMessage({id:message.id, value:message.content[index]}))
                     index++;
                     if (index < message.content.length){
