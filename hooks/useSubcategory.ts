@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { AddMessage, NewMessage } from '@/store/messageListSlice';
-import { subCategories } from '@/types/type';
+import { subCategories } from '@/types/messageTypes';
 import React, { useCallback, useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 

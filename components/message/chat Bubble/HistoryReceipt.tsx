@@ -40,20 +40,15 @@ export default function HistoryReceipt ({order}:ReceiptProps){
                 })
                 await FileSystem.writeAsStringAsync(fileUri,base64,{encoding:FileSystem.EncodingType.Base64})
                 Alert.alert("Saved as PDF");
-                console.log(permission.directoryUri)
             }
-
+            
             else {
                 const destination = FileSystem.documentDirectory + filename;
                 await FileSystem.moveAsync({from:pdf.uri,to:destination})
                 Alert.alert("Saved as PDF");
             }
-            
-            
         }
         catch (error:any) {
-            console.log("Failed to save PDF",error)
-
             if (Platform.OS === "android" && error?.message?.includes(`'ExponentFileSystem.createSAFFileAsync' has been rejected`) && error?.message?.includes("isn't writable.")){
                 Alert.alert("Error", "The folder you selected is not allowed. Please select or create a subfolder in Downloads or Documents and try again.");
                 return

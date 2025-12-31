@@ -1,4 +1,5 @@
-import { chatMessage, messageListType, subCarouselMessage, subCategoryType } from "@/types/type";
+import { chatMessage, foodCarouselMessage, messageListType, subCarouselMessage } from "@/types/messageTypes";
+import { FoodType, subCategoryType } from "@/types/type";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 
@@ -9,8 +10,9 @@ const initialState:{ messageList:messageListType[],initialized:boolean} = {
 }
 
 type NewChatMessage = Omit<chatMessage, "id"|"isTyping"|"displayedText">
-type NewSubCarouselMessage = Omit<subCarouselMessage, "id"|"loaded"|"content">
-export type NewMessage = NewChatMessage | NewSubCarouselMessage
+type NewSubCarouselMessage = Omit<subCarouselMessage, "id"|"fetched"|"content">
+type NewFoodListMessage = Omit<foodCarouselMessage, "id"|"fetched"|"content">
+export type NewMessage = NewChatMessage | NewSubCarouselMessage | NewFoodListMessage
 
 
 const messageListSlice = createSlice({
@@ -37,7 +39,16 @@ const messageListSlice = createSlice({
                             payload:{
                                 id:`${Date.now()}-${Math.random()}`,
                                 content:[],
-                                loaded:false,
+                                fetched:false,
+                                ...message
+                            }
+                        }
+                    case "food-list":
+                        return {
+                            payload:{
+                                id:`${Date.now()}-${Math.random()}`,
+                                content:[],
+                                fetched:false,
                                 ...message
                             }
                         }
@@ -62,14 +73,27 @@ const messageListSlice = createSlice({
         hydrateSubcategories:(state,action:PayloadAction<{id:string, value:subCategoryType[]}>)=>{
             const message = state.messageList.find(m => m.id === action.payload.id)
             if (!message || message.type !== "subcarousel") return
-            console.log(action.payload.value)
             message.content = action.payload.value
         },
         setSubcategoryState:(state,action:PayloadAction<{id:string, value:boolean}>)=>{
             const message = state.messageList.find(m => m.id === action.payload.id)
             if (!message || message.type !== "subcarousel") return
-            message.loaded = action.payload.value
+            message.fetched = action.payload.value
         },
+
+        // food list
+        hydrateFoodList:(state,action:PayloadAction<{id:string, value:FoodType[]}>)=>{
+            const message = state.messageList.find(m => m.id === action.payload.id)
+            if (!message || message.type !== "food-list") return
+            message.content = action.payload.value
+        },
+
+        setfoodListState:(state,action:PayloadAction<{id:string, value:boolean}>)=>{
+            const message = state.messageList.find(m => m.id === action.payload.id)
+            if (!message || message.type !== "food-list") return
+            message.fetched = action.payload.value
+        },
+
 
         initialize:(state)=>{
             state.initialized = true
@@ -80,5 +104,5 @@ const messageListSlice = createSlice({
         }
     }
 })
-export const {AddMessage,removeMessage,setIsTyping,AppendTextMessage,hydrateSubcategories,initialize,setSubcategoryState} = messageListSlice.actions
+export const {AddMessage,removeMessage,setIsTyping,AppendTextMessage,hydrateFoodList,hydrateSubcategories,initialize,setSubcategoryState,setfoodListState} = messageListSlice.actions
 export default messageListSlice.reducer

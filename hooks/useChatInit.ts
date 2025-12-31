@@ -1,5 +1,5 @@
 import { AddMessage, initialize, NewMessage } from "@/store/messageListSlice";
-import { subCategories } from "@/types/type";
+import { subCategories } from "@/types/messageTypes";
 import type { RootState } from "@/utils/store";
 import { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";

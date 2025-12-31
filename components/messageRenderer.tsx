@@ -1,8 +1,9 @@
-import { messageListType, subCategories } from '@/types/type';
+import { messageListType, subCategories } from '@/types/messageTypes';
 import React, { memo } from 'react';
 import BotMessage from './message/BotMessage';
 import ChatMessage from './message/ChatMessage';
-import SubCarousel from './message/SubCarousel';
+import FoodCarousel from './message/FoodCarousel/FoodCarousel';
+import SubCarousel from './message/SubCarousel/SubCarousel';
 
 interface propType{
     chatItem:messageListType;
@@ -49,8 +50,8 @@ interface propType{
             //     return <CustomisationList message={chatItem} addToCart = {addToCart} />;
             // case "enter-info":
             //     return <UserInfoInput isLast={isLast} setOptions={setOptions} setShowOptions={setShowOptions} getSomethingElseMessage={getSomethingElseMessage} />;
-            // case "food-list":
-            //     return <FoodCarousel setShowOptions={setShowOptions} setLoading={setLoading} message={chatItem} loading={loading} />;
+            case "food-list":
+                return <FoodCarousel setShowOptions={setShowOptions} setLoading={setLoading} message={chatItem} loading={loading} />;
             // case "receipt-list":
             //     return <ReceiptCarousel isLast={isLast} setLoading={setLoading} setShowOptions={setShowOptions} />
             default:

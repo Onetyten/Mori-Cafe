@@ -1,3 +1,4 @@
+import useRenderFoodCarousel from "@/hooks/chatManagement/useRenderFoodCarousel"
 import useRenderSubcarousel from "@/hooks/chatManagement/useRenderSubCarousel"
 import { useRenderTextMessage } from "@/hooks/chatManagement/useRenderTextMessage"
 import useAddToCart from "@/hooks/useAddToCart"
@@ -5,7 +6,7 @@ import useConfirmToCart from "@/hooks/useConfirmToCart"
 import useFetchFoodList from "@/hooks/useFetchFoodList"
 import useGetElse from "@/hooks/useGetElse"
 import useListCart from "@/hooks/useListCart"
-import { messageListType } from "@/types/type"
+import { messageListType } from "@/types/messageTypes"
 import { RootState } from "@/utils/store"
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { FlatList, StyleSheet, TouchableWithoutFeedback, View } from "react-native"
@@ -40,8 +41,9 @@ export default function ChatBox() {
         getCategory,getSomethingElseMessage,CartList,addToCart,isAdding,comfirmToCart,fetchFoodList,setOptions,setShowOptions, setLoading, loading
     }),[CartList, addToCart, comfirmToCart, fetchFoodList, getCategory, getSomethingElseMessage, isAdding,setOptions,setShowOptions, setLoading, loading])
 
-    const {renderTextMessage} = useRenderTextMessage()
-    const {renderSubcarousel} =useRenderSubcarousel()
+    const {renderTextMessage} = useRenderTextMessage();
+    const {renderSubcarousel} =useRenderSubcarousel();
+    const {renderFoodCarousel} =useRenderFoodCarousel(setLoading,setShowOptions,loading);
 
     const renderItem = useCallback(({item,index}:{item:messageListType,index:number})=>(
         <MessageRenderer isLast = {index === messageList.length-1} chatItem={item} context={chatContext}/>
@@ -88,8 +90,8 @@ export default function ChatBox() {
                 //     console.log("new order feedback message");
                 // case "enter-info":
                 //     console.log("new order feedback message");
-                // case "food-list":
-                //     console.log("new order feedback message");
+                case "food-list":
+                    renderFoodCarousel(message)
                 // case "receipt-list":
                 //     console.log("new order feedback message");
                 default:

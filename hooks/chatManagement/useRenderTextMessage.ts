@@ -1,5 +1,5 @@
 import { AppendTextMessage, setIsTyping } from "@/store/messageListSlice";
-import { messageListType } from "@/types/type";
+import { messageListType } from "@/types/messageTypes";
 import { useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
 

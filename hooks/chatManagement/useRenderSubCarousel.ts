@@ -1,5 +1,5 @@
 import { AddMessage, hydrateSubcategories, NewMessage, setSubcategoryState } from "@/store/messageListSlice";
-import { messageListType } from "@/types/type";
+import { messageListType } from "@/types/messageTypes";
 import api from "@/utils/api";
 import { isAxiosError } from "axios";
 import { useDispatch } from "react-redux";
@@ -13,10 +13,9 @@ export default function useRenderSubcarousel(){
         if (!message || message.type !== "subcarousel") return
         const category = message.subcategory
         if (!category) return;
-        console.log(category)
+        
         try {
             const response = await api.get(`/food/subcategory/${message.subcategory}`)
-            console.log(response)
             dispatch(hydrateSubcategories({id:message.id, value:response.data.data}))
             if (message.next) message.next()
         }
@@ -24,10 +23,10 @@ export default function useRenderSubcarousel(){
         catch (error) {
             let message = ""
             if (isAxiosError(error)){
-                message = error.response?.data.message || "Could'nt get get this category"
+                message = error.response?.data.message || "Couldn't get get this category"
             }
             else{
-                message = "Could'nt get get this category"
+                message = "Couldn't get get this category"
             }
             const newMessage:NewMessage = {type:"message", sender:"bot", next:()=>{}, content:[message]}
             dispatch(AddMessage(newMessage))
