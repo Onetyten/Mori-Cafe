@@ -1,8 +1,9 @@
-import { AddMessage } from '@/store/messageListSlice';
+import { AddMessage, NewMessage } from '@/store/messageListSlice';
+import { subCategories } from '@/types/type';
 import React, { useCallback, useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 
-export default function useGetElse(setShowOptions:React.Dispatch<React.SetStateAction<boolean>>,setOptions: React.Dispatch<React.SetStateAction<{name: string; onClick: () => void}[]>>,getCategory: (food: string) => void) {
+export default function useGetElse(setShowOptions:React.Dispatch<React.SetStateAction<boolean>>,setOptions: React.Dispatch<React.SetStateAction<{name: string; onClick: () => void}[]>>,getCategory: (food: subCategories) => void) {
     const dispatch = useDispatch()
     const timers = useRef<ReturnType<typeof setTimeout>[]>([])
     useEffect(() => {
@@ -14,9 +15,9 @@ export default function useGetElse(setShowOptions:React.Dispatch<React.SetStateA
 
     const getSomethingElseMessage = useCallback((message:string)=>{
         setShowOptions(false)
-        const  newMessage = {type:"message",next:()=>{}, sender:"user",content:[message]}
+        const  newMessage:NewMessage = {type:"message",next:()=>{}, sender:"user",content:[message]}
         dispatch(AddMessage(newMessage))
-        const newQuestion = {type:"message",next:()=>{}, sender:"bot",content:[`What would you like`]}
+        const newQuestion:NewMessage = {type:"message",next:()=>{}, sender:"bot",content:[`What would you like`]}
         timers.current.push(setTimeout(()=>{
             dispatch(AddMessage(newQuestion))
         },500))

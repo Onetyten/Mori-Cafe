@@ -1,15 +1,16 @@
+import useRenderSubcarousel from "@/hooks/chatManagement/useRenderSubCarousel"
+import { useRenderTextMessage } from "@/hooks/chatManagement/useRenderTextMessage"
 import useAddToCart from "@/hooks/useAddToCart"
 import useConfirmToCart from "@/hooks/useConfirmToCart"
 import useFetchFoodList from "@/hooks/useFetchFoodList"
 import useGetElse from "@/hooks/useGetElse"
 import useListCart from "@/hooks/useListCart"
-import { AppendTextMessage, setIsTyping } from "@/store/messageListSlice"
 import { messageListType } from "@/types/type"
 import { RootState } from "@/utils/store"
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { FlatList, StyleSheet, TouchableWithoutFeedback, View } from "react-native"
 import { widthPercentageToDP as wp } from "react-native-responsive-screen"
-import { useDispatch, useSelector } from "react-redux"
+import { useSelector } from "react-redux"
 import { useChatInit } from "../hooks/useChatInit"
 import useSubcategory from "../hooks/useSubcategory"
 import MessageRenderer from "./messageRenderer"
@@ -24,12 +25,11 @@ export default function ChatBox() {
     const scrollRef = useRef<FlatList<messageListType>|null>(null)
     const [showoptions,setShowOptions] = useState(false)
     const [loading,setLoading] = useState(false)
-    const initiatedRef = useRef<boolean>(false)
     const [showButtons,setShowButtons] = useState(false)
     const [options, setOptions] = useState<{name: string; onClick: () => void}[]>([]);
     
     const {getCategory} = useSubcategory(setOptions,setShowOptions)
-    useChatInit({initiatedRef,setShowOptions,setOptions,options,getCategory})
+    useChatInit({setShowOptions,setOptions,options,getCategory})
     const getSomethingElseMessage = useGetElse(setShowOptions,setOptions,getCategory)
     const CartList = useListCart(setShowOptions,setLoading,setOptions,getSomethingElseMessage)
     const {addToCart,isAdding} = useAddToCart(setShowOptions,CartList,getSomethingElseMessage,setLoading,setOptions)
@@ -39,6 +39,9 @@ export default function ChatBox() {
     const chatContext  = useMemo(()=>({
         getCategory,getSomethingElseMessage,CartList,addToCart,isAdding,comfirmToCart,fetchFoodList,setOptions,setShowOptions, setLoading, loading
     }),[CartList, addToCart, comfirmToCart, fetchFoodList, getCategory, getSomethingElseMessage, isAdding,setOptions,setShowOptions, setLoading, loading])
+
+    const {renderTextMessage} = useRenderTextMessage()
+    const {renderSubcarousel} =useRenderSubcarousel()
 
     const renderItem = useCallback(({item,index}:{item:messageListType,index:number})=>(
         <MessageRenderer isLast = {index === messageList.length-1} chatItem={item} context={chatContext}/>
@@ -54,7 +57,6 @@ export default function ChatBox() {
 
     const lastProcessedId = useRef<string|null>(null)
     const timers = useRef<ReturnType<typeof setTimeout>[]>([])
-    const dispatch = useDispatch()
 
     useEffect(() => {
         return () => {
@@ -71,10 +73,9 @@ export default function ChatBox() {
             
             switch (message.type){
                 case "message":
-                    
-
-                // case "subcarousel":
-                //     console.log("new subcarousel message");
+                    renderTextMessage(message)
+                case "subcarousel":
+                    renderSubcarousel(message)    
                 // case "number-input":
                 //     console.log("new input message");
                 // case "cart-feedback":

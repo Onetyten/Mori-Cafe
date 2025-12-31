@@ -9,6 +9,7 @@ export interface subCategoryType {
 export interface baseMessage{
     id:string,
 }
+export type subCategories = "coffee" | "drink" | "snack"
 export interface chatMessage extends baseMessage{
   type:"message",
   sender:"bot" | "user",
@@ -19,11 +20,11 @@ export interface chatMessage extends baseMessage{
 }
 
 export interface subCarouselMessage extends baseMessage{
-  type:"subcarousel",
-  next:()=>void,
-  subcategory: "coffee" | "drink" | "snack",
-  content:subCategoryType[]
-
+  type:"subcarousel";
+  next?:()=>void;
+  subcategory:subCategories;
+  content: subCategoryType[];
+  loaded: boolean;
 }
 
 export type messageListType = chatMessage | subCarouselMessage

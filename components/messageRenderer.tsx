@@ -1,22 +1,14 @@
-import { messageListType } from '@/types/type'
-import React, { memo } from 'react'
-import BotMessage from './message/BotMessage'
-import CartFeedBack from './message/CartFeedBack'
-import ChatMessage from './message/ChatMessage'
-import CheckoutList from './message/CheckoutList'
-import CustomisationList from './message/CustomisationList'
-import FoodCarousel from './message/FoodCarousel'
-import NumberInput from './message/NumberInput'
-import OrderFeedback from './message/orderFeedback'
-import ReceiptCarousel from './message/ReceiptCarousel'
-import SubCarousel from './message/SubCarousel'
-import UserInfoInput from './message/UserInfoInput'
+import { messageListType, subCategories } from '@/types/type';
+import React, { memo } from 'react';
+import BotMessage from './message/BotMessage';
+import ChatMessage from './message/ChatMessage';
+import SubCarousel from './message/SubCarousel';
 
 interface propType{
     chatItem:messageListType;
     isLast:boolean;
     context: {
-        getCategory: (food: string) => void;
+        getCategory: (food: subCategories) => void;
         getSomethingElseMessage: (message: string) => void;
         CartList: () => void;
         addToCart: (foodName: string) => void;
@@ -43,8 +35,8 @@ interface propType{
                 return chatItem.sender==="user"?
                     <ChatMessage message={chatItem}/>:
                     <BotMessage message={chatItem}/>;
-            // case "subcarousel":
-            //     return <SubCarousel message={chatItem} fetchFoodList={fetchFoodList}/>;
+            case "subcarousel":
+                return <SubCarousel message={chatItem} fetchFoodList={fetchFoodList}/>;
             // case "number-input":
             //     return <NumberInput message={chatItem} confirm={comfirmToCart} />;
             // case "cart-feedback":

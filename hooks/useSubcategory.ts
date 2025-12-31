@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { AddMessage } from '@/store/messageListSlice';
+import { AddMessage, NewMessage } from '@/store/messageListSlice';
+import { subCategories } from '@/types/type';
 import React, { useCallback, useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 
@@ -20,32 +21,32 @@ export default function useSubcategory(setOptions: React.Dispatch<React.SetState
         setShowOptions(true)
     },[setOptions, setShowOptions])
 
-    const showSubcategoryCarousel=useCallback((category:string)=>{
+    const showSubcategoryCarousel=useCallback((category:subCategories)=>{
         setShowOptions(false)
-        const newCarousel = {type:"subcarousel",next:()=>subCategoryCleanup(), sender:"bot",content:[category]}
+        const newCarousel:NewMessage = {type:"subcarousel",next:()=>subCategoryCleanup(), subcategory:category,}
         timers.current.push(setTimeout(()=>{
             dispatch(AddMessage(newCarousel))
         },500))
     },[dispatch, setShowOptions, subCategoryCleanup])
 
-    const getSubcategoryMessage = useCallback((category:string)=>{
+    const getSubcategoryMessage = useCallback((category:subCategories)=>{
         setShowOptions(false)
-        const newMessage = {type:"message",next:()=>showSubcategoryCarousel(category), sender:"bot",content:[`What kind of ${category} would you like`]}
+        const newMessage:NewMessage = {type:"message",next:()=>showSubcategoryCarousel(category), sender:"bot",content:[`What kind of ${category} would you like`]}
         dispatch(AddMessage(newMessage))
     },[dispatch, setShowOptions, showSubcategoryCarousel])
 
 
-    const getCategory= useCallback((food:string)=>{
+    const getCategory= useCallback((food:subCategories)=>{
         setShowOptions(false)
-        const  newMessage = {type:"message",next:()=>getSubcategoryMessage(food), sender:"user",content:[` ${food==='snack'?"Some":"A"} ${food}${food==='snack'?"s":""}`]}
+        const  newMessage:NewMessage = {type:"message",next:()=>getSubcategoryMessage(food), sender:"user",content:[` ${food==='snack'?"Some":"A"} ${food}${food==='snack'?"s":""}`]}
         dispatch(AddMessage(newMessage))
     },[dispatch, getSubcategoryMessage, setShowOptions])
 
     const getSomethingElseMessage =useCallback((message:string)=>{
         setShowOptions(false)
-        const  newMessage = {type:"message",next:()=>{}, sender:"user",content:[message]}
+        const  newMessage:NewMessage = {type:"message",next:()=>{}, sender:"user",content:[message]}
         dispatch(AddMessage(newMessage))
-        const newQuestion = {type:"message",next:()=>{}, sender:"bot",content:[`What would you like`]}
+        const newQuestion:NewMessage = {type:"message",next:()=>{}, sender:"bot",content:[`What would you like`]}
         timers.current.push(setTimeout(()=>{
             dispatch(AddMessage(newQuestion))
         },500))
