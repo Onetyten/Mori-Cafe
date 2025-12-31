@@ -3,7 +3,7 @@ import React, { memo } from 'react';
 import BotMessage from './message/BotMessage';
 import ChatMessage from './message/ChatMessage';
 import FoodCarousel from './message/FoodCarousel/FoodCarousel';
-import NumberInput from './message/NumberInput';
+import NumberInput from './message/NumberInput/NumberInput';
 import SubCarousel from './message/SubCarousel/SubCarousel';
 
 interface propType{
@@ -29,7 +29,7 @@ interface propType{
 
  const MessageRenderer = memo(
     function MessageRenderer(props:propType) {
-        const {chatItem,context,isLast} = props
+        const {chatItem,context} = props
         const {getSomethingElseMessage,addToCart,isAdding,comfirmToCart,fetchFoodList,setOptions,setShowOptions,loading,setLoading} = context
 
         switch (chatItem.type){
@@ -52,7 +52,7 @@ interface propType{
             // case "enter-info":
             //     return <UserInfoInput isLast={isLast} setOptions={setOptions} setShowOptions={setShowOptions} getSomethingElseMessage={getSomethingElseMessage} />;
             case "foodCarousel":
-                return <FoodCarousel setShowOptions={setShowOptions} setLoading={setLoading} message={chatItem} loading={loading} />;
+                return <FoodCarousel message={chatItem}/>;
             // case "receipt-list":
             //     return <ReceiptCarousel isLast={isLast} setLoading={setLoading} setShowOptions={setShowOptions} />
             default:

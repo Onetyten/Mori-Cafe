@@ -1,4 +1,4 @@
-import { chatMessage, foodCarouselMessage, messageListType, numberInputMessage, subCarouselMessage } from "@/types/messageTypes";
+import { chatMessage, foodCarouselMessage, messageListType, numberCountTrigger, numberInputMessage, subCarouselMessage } from "@/types/messageTypes";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 
@@ -11,8 +11,9 @@ const initialState:{ messageList:messageListType[],initialized:boolean} = {
 type NewChatMessage = Omit<chatMessage, "id"|"isTyping"|"displayedText">
 type NewSubCarouselMessage = Omit<subCarouselMessage, "id"|"fetched"|"content">
 type NewFoodListMessage = Omit<foodCarouselMessage, "id"|"fetched"|"content">
-type NewFoodInput = Omit<numberInputMessage, "id"|"loaded">
-export type NewMessage = NewChatMessage | NewSubCarouselMessage | NewFoodListMessage | NewFoodInput
+type NewFoodInput = Omit<numberInputMessage, "id"|"confirmed"|"isTyping"|"value"|"error">
+type NewFoodInputTrigger = Omit<numberCountTrigger,"id">
+export type NewMessage = NewChatMessage | NewSubCarouselMessage | NewFoodListMessage | NewFoodInput | NewFoodInputTrigger
 
 const messageDefaults =  {
   message: {
@@ -28,8 +29,11 @@ const messageDefaults =  {
     fetched: false
   },
   numberInput:{
-    loaded:false
-  }
+    confirmed:false,
+    isTyping:true,
+    value:1,
+    error:""
+  },
 }
 
 const messageListSlice = createSlice({
@@ -51,6 +55,8 @@ const messageListSlice = createSlice({
                         return {payload : { id, ...messageDefaults.foodCarousel, ...message }}
                     case "numberInput":
                         return {payload : { id, ...messageDefaults.numberInput, ...message }}
+                    case "numberCountTrigger":
+                        return {payload : { id, ...message }}
                 }
             }
         },

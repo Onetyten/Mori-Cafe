@@ -45,7 +45,7 @@ export default function ChatBox() {
     const {renderTextMessage} = useRenderTextMessage();
     const {renderSubcarousel} =useRenderSubcarousel();
     const {renderFoodCarousel} =useRenderFoodCarousel(setLoading,setShowOptions,loading);
-    const {renderNumberInput} =useRenderNumberInput(setShowOptions,setLoading,loading);
+    const {renderNumberInput,triggerNumberInput} =useRenderNumberInput(setShowOptions,setLoading,loading);
 
     const renderItem = useCallback(({item,index}:{item:messageListType,index:number})=>(
         <MessageRenderer isLast = {index === messageList.length-1} chatItem={item} context={chatContext}/>
@@ -79,9 +79,12 @@ export default function ChatBox() {
                 case "message":
                     renderTextMessage(message)
                 case "subcarousel":
-                    renderSubcarousel(message)    
+                    renderSubcarousel(message) 
+                case "numberCountTrigger":
+                    triggerNumberInput(message)   
                 case "numberInput":
                     renderNumberInput(message)
+                
                 // case "cart-feedback":
                 //     console.log("new message");
                 // case "order-feedback":

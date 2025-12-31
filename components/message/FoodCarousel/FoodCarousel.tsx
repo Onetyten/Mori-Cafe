@@ -1,4 +1,3 @@
-import useOptionCount from "@/hooks/useOptionCount";
 import { messageListType } from "@/types/messageTypes";
 import React, { memo } from "react";
 import { ActivityIndicator, View } from "react-native";
@@ -8,14 +7,10 @@ import { Styles } from "./style";
 
 interface propType{
     message:messageListType
-    setLoading:React.Dispatch<React.SetStateAction<boolean>>,
-    setShowOptions:React.Dispatch<React.SetStateAction<boolean>>,
-    loading:boolean
 }
 
 const FoodCarousel = memo(function FoodCarousel(props:propType) {
-    const {message,setLoading,setShowOptions,loading} = props
-    const optionCount = useOptionCount(setShowOptions,setLoading,loading)
+    const {message} = props
     console.log(message)
 
     if (message.type !== "foodCarousel") return
@@ -40,9 +35,9 @@ const FoodCarousel = memo(function FoodCarousel(props:propType) {
 
     return (
         <Swiper autoplay horizontal autoplayTimeout={5} activeDot={<View style={[Styles.dot,Styles.activeDot]} />} dot={<View style={[Styles.dot,Styles.passiveDot]} />} loop showsPagination={true} height={290}>
-            {message.content.map((item,index) => (
+            {message.content.map((item) => (
                 <View key={item._id}>
-                    <FoodCard food={item} onClick={optionCount}/>
+                    <FoodCard food={item}/>
                 </View>
             ))}
         </Swiper>

@@ -33,8 +33,15 @@ export interface numberInputMessage extends baseMessage{
   type:"numberInput";
   next?:()=>void;
   food: FoodType
-  loaded: boolean;
+  confirmed:boolean;
+  isTyping: boolean;
+  value: number;
+  error: string;
+}
+export interface numberCountTrigger extends baseMessage{
+  type:"numberCountTrigger";
+  next?:()=>void;
+  food: FoodType
 }
 
-
-export type messageListType = chatMessage | subCarouselMessage | foodCarouselMessage | numberInputMessage
+export type messageListType = chatMessage | subCarouselMessage | foodCarouselMessage | numberInputMessage | numberCountTrigger

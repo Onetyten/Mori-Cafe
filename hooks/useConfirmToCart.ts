@@ -1,4 +1,4 @@
-import { AddMessage } from "@/store/messageListSlice";
+import { AddMessage, NewMessage } from "@/store/messageListSlice";
 import { useCallback, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setCurrentCart } from "../store/currentCartItem";
@@ -49,13 +49,13 @@ export default function useConfirmToCart(setLoading:React.Dispatch<React.SetStat
         if (currentFood.customisationId.length>0){
             timers.current.push(
                 setTimeout(()=>{
-                const newMessage = {type:"message",next:()=>{}, sender:"bot",content:[`Should I add any custom options to your order${value>1?"s":""}`]};
+                const newMessage:NewMessage = {type:"message",next:()=>{}, sender:"bot",content:[`Should I add any custom options to your order${value>1?"s":""}`]};
                 dispatch(AddMessage(newMessage));
             },1000));
              timers.current.push(
                 setTimeout(()=>{
                     setOptions([{name:'Yes',onClick:()=>customiseOrder(currentFood)},{name:'No', onClick:()=>{
-                        const newAnswer = {type:"message",next:()=>{}, sender:"user",content:[`No`]};
+                        const newAnswer:NewMessage = {type:"message",next:()=>{}, sender:"user",content:[`No`]};
                         dispatch(AddMessage(newAnswer));
                         addToCart(currentFood.name)}}]);
                     setShowOptions(true);

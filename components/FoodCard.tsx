@@ -7,7 +7,6 @@ import type { FoodType } from "../types/type"
 
 interface propType{
     food:FoodType
-    onClick:(food:FoodType)=>void
 }
 
 export default function FoodCard(props:propType) {
@@ -18,7 +17,7 @@ export default function FoodCard(props:propType) {
     }
 
     function optionCount(){
-        const newInput:NewMessage = {type:"numberInput",next:()=>{},food}
+        const newInput:NewMessage = {type:"numberCountTrigger",food}
         dispatch(AddMessage(newInput))
     }
     
