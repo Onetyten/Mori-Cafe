@@ -20,8 +20,8 @@ export default function OptionsInput(props:propType) {
         {options.map((item,index)=>{
           return(
             <MotiView from={{opacity:0, translateX:50}} animate={{opacity:100, translateX:0}} transition={{delay:index*50}} key={index}>
-              <TouchableOpacity onPress={item.onClick} style={styles.button} >
-                <Text numberOfLines={1} ellipsizeMode='tail' style={[GlobalStyle.Outfit_Regular_body,styles.text]}>{item.name}</Text>
+              <TouchableOpacity onPress={item.onClick} style={[styles.button,item.name.length<4?{paddingHorizontal:wp("4.5%")}:{}]} >
+                <Text numberOfLines={1} ellipsizeMode='tail' style={[GlobalStyle.Outfit_Regular_body,styles.text ]}>{item.name}</Text>
               </TouchableOpacity>
             </MotiView>
             

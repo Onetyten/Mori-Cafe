@@ -1,4 +1,4 @@
-import { AddMessage, NewMessage } from "@/store/messageListSlice"
+import { AddMessage, NewMessage, removeMessage } from "@/store/messageListSlice"
 import { colors, GlobalStyle } from "@/styles/global"
 import { messageListType } from "@/types/messageTypes"
 import { toWords } from "number-to-words"
@@ -47,6 +47,7 @@ const CustomisationList = memo(function CustomisationList(props:propType) {
             )} `
         const newMessage:NewMessage = {type:"message",next:()=>{}, sender:"user",content:[orderContent]}
         dispatch(AddMessage(newMessage))
+        dispatch(removeMessage(message.id))
     }
 
     if (message.customisations.length===0){

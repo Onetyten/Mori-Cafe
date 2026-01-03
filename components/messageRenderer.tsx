@@ -1,12 +1,12 @@
 import { messageListType, subCategories } from '@/types/messageTypes';
 import React, { memo } from 'react';
 import BotMessage from './message/BotMessage';
+import CartFeedBack from './message/CartFeedBack';
 import ChatMessage from './message/ChatMessage';
+import CustomisationList from './message/CustomisationList';
 import FoodCarousel from './message/FoodCarousel/FoodCarousel';
 import NumberInput from './message/NumberInput/NumberInput';
 import SubCarousel from './message/SubCarousel/SubCarousel';
-import CartFeedBack from './message/CartFeedBack';
-import CustomisationList from './message/CustomisationList';
 
 interface propType{
     chatItem:messageListType;
@@ -31,7 +31,7 @@ interface propType{
  const MessageRenderer = memo(
     function MessageRenderer(props:propType) {
         const {chatItem,context} = props
-        const {getSomethingElseMessage,addToCart,isAdding,fetchFoodList,setOptions,setShowOptions,loading,setLoading} = context
+        const {addToCart,fetchFoodList} = context
 
         switch (chatItem.type){
             case "message":
