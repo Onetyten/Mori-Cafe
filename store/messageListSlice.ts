@@ -1,4 +1,4 @@
-import { cartFeedback, chatMessage, confirmToCartTrigger, editListType, foodCarouselMessage, messageListType, numberCountTrigger, numberInputMessage, subCarouselMessage } from "@/types/messageTypes";
+import { cartFeedback, chatMessage, checkoutList, confirmToCartTrigger, editListType, foodCarouselMessage, messageListType, numberCountTrigger, numberInputMessage, subCarouselMessage, userInputType } from "@/types/messageTypes";
 import { tweakType } from "@/types/type";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
@@ -16,8 +16,10 @@ type NewFoodInput = Omit<numberInputMessage, "id"|"confirmed"|"isTyping"|"value"
 type NewFoodInputTrigger = Omit<numberCountTrigger,"id">
 type NewConfirmToCart = Omit<confirmToCartTrigger,"id">
 type NewCartFeedback = Omit<cartFeedback,"id">
+type NewUserInputType = Omit<userInputType,"id" | "location" | "address" | "confirmed" | "goBack" | "selectLocation">
+type NewCartListFeedback = Omit<checkoutList,"id"|"fetched">
 type NewEditListType = Omit<editListType,"id"|"fetched"|"customisations"|"confirmed"|"tweaks">
-export type NewMessage = NewChatMessage | NewSubCarouselMessage | NewFoodListMessage | NewFoodInput | NewFoodInputTrigger | NewConfirmToCart | NewCartFeedback | NewEditListType
+export type NewMessage = NewChatMessage | NewSubCarouselMessage | NewFoodListMessage | NewFoodInput | NewFoodInputTrigger | NewConfirmToCart | NewCartFeedback | NewEditListType | NewCartListFeedback | NewUserInputType
 
 const messageDefaults =  {
   message: {
@@ -43,6 +45,16 @@ const messageDefaults =  {
     confirmed:false,
     customisations:[],
     tweaks:[]
+  },
+  checkoutList:{
+    fetched:false,
+  },
+  enterInfo:{
+    location:null,
+    confirmed:false,
+    address:"",
+    goBack:()=>{},
+    selectLocation:()=>Promise.resolve()
   }
 }
 
@@ -71,8 +83,12 @@ const messageListSlice = createSlice({
                         return {payload : { id, ...message }}
                     case "cartFeedback":
                         return {payload : { id, ...message }}
+                    case "checkoutList":
+                        return {payload : { id,...messageDefaults.checkoutList, ...message }}
                     case "editList":
                         return {payload : { id, ...messageDefaults.editList, ...message }}
+                    case "enterInfo":
+                        return {payload : { id,...messageDefaults.enterInfo ,...message }}
                 }
             }
         },

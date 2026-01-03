@@ -20,7 +20,7 @@ export function useRenderTextMessage(){
         let index = 0;
 
         function loadNextMessage(){
-            if (!message || message.type !=="message") return
+            if (!message || message.type !=="message" || message.displayedText.length === message.content.length) return
             if ( index < message.content.length) {
                 dispatch(updateMessage({id:message.id,update:{isTyping:true}}))
 

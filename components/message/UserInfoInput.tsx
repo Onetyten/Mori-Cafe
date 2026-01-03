@@ -1,11 +1,11 @@
 import useProceedPayment from '@/hooks/useProceedPayment'
-import { AddMessage } from '@/store/messageListSlice'
+import { AddMessage, NewMessage } from '@/store/messageListSlice'
 import { setOrder } from '@/store/newOrderSlice'
 import { setInfo } from '@/store/userInfoSlice'
 import { colors, GlobalStyle } from '@/styles/global'
 import { normalize } from "@/utils/scaling"
 import * as Location from 'expo-location'
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import { StyleSheet, Text, TextInput, TouchableOpacity, useWindowDimensions, View } from 'react-native'
 import { Dropdown } from 'react-native-element-dropdown'
 import MapView, { LatLng, MapPressEvent, Marker } from 'react-native-maps'
@@ -14,8 +14,10 @@ import type { countryCodeType } from '../../types/type'
 import { countryCodes } from '../../utils/data'
 import type { RootState } from '../../utils/store'
 import { OrderSchema } from '../../utils/validation'
+import { messageListType } from '@/types/messageTypes'
 
 interface propType{
+    message:messageListType
     setOptions: React.Dispatch<React.SetStateAction<{ name: string; onClick: () => void}[]>>,
     setShowOptions: React.Dispatch<React.SetStateAction<boolean>>,
     getSomethingElseMessage: (message: string) => void,
@@ -24,7 +26,7 @@ interface propType{
 
 
 export default function UserInfoInput(props:propType) {
-  const {setOptions,setShowOptions,getSomethingElseMessage,isLast} = props
+  const {setOptions,setShowOptions,getSomethingElseMessage,isLast,message} = props
   const userInfo = useSelector((state:RootState)=>state.userInfo.userInfo)
   const dispatch = useDispatch()
   const ProceedToPayment = useProceedPayment(setShowOptions)
@@ -40,25 +42,6 @@ export default function UserInfoInput(props:propType) {
   const isLandscape = width>height
 
 
-  async function getLocation(){
-    const {status} = await Location.requestForegroundPermissionsAsync()
-    if (status !== "granted") return null
-    const loc = await Location.getCurrentPositionAsync({})
-    
-    const address = await Location.reverseGeocodeAsync({
-      longitude:loc.coords.longitude,
-      latitude:loc.coords.latitude
-    })
-    setSelectedLocation({longitude:loc.coords.longitude, latitude:loc.coords.latitude})
-    return address
-  }
-
-  useEffect(()=>{
-    getLocation().then((address)=>{
-      if (!address || address?.length===0 || !address[0].formattedAddress) return
-      setAddress(address[0].formattedAddress)
-    })
-  },[])
   
   function SubmitInfo(){
     if (!neworder) return
@@ -74,7 +57,7 @@ export default function UserInfoInput(props:propType) {
 
   const {error,value} = OrderSchema.validate(payload)
     if (error){
-      const newMessage = {type:"message",next:()=>{}, sender:"bot-error",content:[error.message]}
+      const newMessage:NewMessage = {type:"message",next:()=>{}, sender:"bot-error",content:[error.message]}
       dispatch(AddMessage(newMessage))
       return
     }
@@ -90,29 +73,17 @@ export default function UserInfoInput(props:propType) {
     dispatch(setInfo(infoData))
     setShowOptions(false)
     dispatch(setOrder(value))
-    const newMessage = {type:"message",next:()=>{}, sender:"user",content:[`Name: ${value.name}`,`Delivery Address: ${value.address}`,`Phone number: ${value.phone_number}`]}
+    const newMessage:NewMessage = {type:"message",next:()=>{}, sender:"user",content:[`Name: ${value.name}`,`Delivery Address: ${value.address}`,`Phone number: ${value.phone_number}`]}
     dispatch(AddMessage(newMessage))
     setOptions([{name:'Proceed to payment', onClick:()=>ProceedToPayment()},{name:'Continue shopping', onClick:()=>getSomethingElseMessage("Let's continue")}])
     setShowOptions(true)
     confirmed.current = true
   }
   
-  function goBack(){
-    confirmed.current = true
-    getSomethingElseMessage("Let's continue")
-    setShowOptions(true)
-  }
+  if (!message || message.type !== "enterInfo") return
 
-  async function selectLocation(e:MapPressEvent){
-    setSelectedLocation(e.nativeEvent.coordinate)
-    const newAddress = await Location.reverseGeocodeAsync(e.nativeEvent.coordinate)
-    if (!newAddress || newAddress?.length===0 || !newAddress[0].formattedAddress) return
-    setAddress(newAddress[0].formattedAddress)
-  }
 
-  if (confirmed.current === true || !isLast){
-    return null
-  }
+
 
   return (
     <View style={styles.container}>
@@ -145,7 +116,7 @@ export default function UserInfoInput(props:propType) {
            <TouchableOpacity onPress={SubmitInfo} style={styles.button} >
                 <Text numberOfLines={1} ellipsizeMode='tail' style={[GlobalStyle.Outfit_Regular_body,{color: colors.primary,}]}>Confirm</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={goBack} style={styles.button} >
+          <TouchableOpacity onPress={message.goBack} style={styles.button} >
                 <Text numberOfLines={1} ellipsizeMode='tail' style={[GlobalStyle.Outfit_Regular_body,{color: colors.primary,}]}>Go back</Text>
           </TouchableOpacity>
         </View>

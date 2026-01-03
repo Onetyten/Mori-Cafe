@@ -1,3 +1,4 @@
+import { LatLng, MapPressEvent } from 'react-native-maps';
 import { customisationType, FoodType, subCategoryType, tweakType } from "./type";
 
 export interface baseMessage{
@@ -6,7 +7,7 @@ export interface baseMessage{
 export type subCategories = "coffee" | "drink" | "snack"
 export interface chatMessage extends baseMessage{
   type:"message",
-  sender:"bot" | "user",
+  sender:"bot" | "user" | "bot-error",
   isTyping: boolean,
   next:()=>void,
   content:string[]
@@ -51,6 +52,20 @@ export interface cartFeedback extends baseMessage{
   type:"cartFeedback";
   next?:()=>void;
 }
+export interface checkoutList extends baseMessage{
+  type:"checkoutList";
+  next?:()=>void;
+  fetched:boolean;
+}
+export interface userInputType extends baseMessage{
+  type:"enterInfo";
+  next?:()=>void;
+  location:LatLng | null;
+  address:string;
+  confirmed:boolean;
+  goBack(): void;
+  selectLocation(e: MapPressEvent): Promise<void>
+}
 export interface editListType extends baseMessage{
   type:"editList";
   next?:()=>void;
@@ -58,7 +73,6 @@ export interface editListType extends baseMessage{
   customisations: customisationType[];
   tweaks: tweakType[];
   confirmed:boolean;
-
 }
 
-export type messageListType = chatMessage | subCarouselMessage | foodCarouselMessage | numberInputMessage | numberCountTrigger | confirmToCartTrigger | cartFeedback | editListType
+export type messageListType = chatMessage | subCarouselMessage | foodCarouselMessage | numberInputMessage | numberCountTrigger | confirmToCartTrigger | cartFeedback | editListType | checkoutList | userInputType

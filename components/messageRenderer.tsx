@@ -3,6 +3,7 @@ import React, { memo } from 'react';
 import BotMessage from './message/BotMessage';
 import CartFeedBack from './message/CartFeedBack';
 import ChatMessage from './message/ChatMessage';
+import CheckoutList from './message/CheckoutList';
 import CustomisationList from './message/CustomisationList';
 import FoodCarousel from './message/FoodCarousel/FoodCarousel';
 import NumberInput from './message/NumberInput/NumberInput';
@@ -46,11 +47,11 @@ interface propType{
                 return <CartFeedBack/>
             // case "order-feedback":
             //     return <OrderFeedback setShowOptions={setShowOptions} setOptions={setOptions}  getSomethingElseMessage = {getSomethingElseMessage}/>
-            // case "cart-list-feedback":
-            //     return <CheckoutList isLast={isLast} message={chatItem} setShowOptions={setShowOptions} setOptions={setOptions} getSomethingElseMessage = {getSomethingElseMessage}/>;
+            case "checkoutList":
+                return <CheckoutList message={chatItem}/>;
             case "editList":
                 return <CustomisationList message={chatItem} addToCart = {addToCart} />;
-            // case "enter-info":
+            // case "enterInfo":
             //     return <UserInfoInput isLast={isLast} setOptions={setOptions} setShowOptions={setShowOptions} getSomethingElseMessage={getSomethingElseMessage} />;
             case "foodCarousel":
                 return <FoodCarousel message={chatItem}/>;

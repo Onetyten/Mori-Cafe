@@ -1,8 +1,10 @@
+import { useRenderCheckoutList } from "@/hooks/chatManagement/useRenderCheckoutList"
 import { useRenderCustomisatonList } from "@/hooks/chatManagement/useRenderCustomisatonList"
 import useRenderFoodCarousel from "@/hooks/chatManagement/useRenderFoodCarousel"
 import useRenderNumberInput from "@/hooks/chatManagement/useRenderNumberInput"
 import useRenderSubcarousel from "@/hooks/chatManagement/useRenderSubCarousel"
 import { useRenderTextMessage } from "@/hooks/chatManagement/useRenderTextMessage"
+import useRenderUserInput from "@/hooks/chatManagement/useRenderUserInput"
 import useAddToCart from "@/hooks/useAddToCart"
 import useConfirmToCart from "@/hooks/useConfirmToCart"
 import useFetchFoodList from "@/hooks/useFetchFoodList"
@@ -48,6 +50,8 @@ export default function ChatBox() {
     const {renderFoodCarousel} =useRenderFoodCarousel(setLoading,setShowOptions,loading);
     const {renderNumberInput,triggerNumberInput} =useRenderNumberInput(setShowOptions,setLoading,loading);
     const {renderCustomisationList} = useRenderCustomisatonList()
+    const {renderUserInput} = useRenderUserInput()
+    const {renderCheckoutList} = useRenderCheckoutList(setShowOptions,getSomethingElseMessage,setOptions,loading,setLoading)
 
     const renderItem = useCallback(({item,index}:{item:messageListType,index:number})=>(
         <MessageRenderer chatItem={item}  isLast = {index === messageList.length-1} context={chatContext}/>
@@ -94,12 +98,12 @@ export default function ChatBox() {
                 //     console.log("new message");
                 // case "order-feedback":
                 //     console.log("new order feedback message");
-                // case "cart-list-feedback":
-                //     console.log("new order feedback message");
+                case "checkoutList":
+                    renderCheckoutList(message)
                 case "editList":
                     renderCustomisationList(message)
-                // case "enter-info":
-                //     console.log("new order feedback message");
+                case "enterInfo":
+                    renderUserInput(message)
                 case "foodCarousel":
                     renderFoodCarousel(message)
                 // case "receipt-list":

@@ -2,7 +2,7 @@ import { AddMessage, NewMessage, removeMessage } from "@/store/messageListSlice"
 import { colors, GlobalStyle } from "@/styles/global"
 import { messageListType } from "@/types/messageTypes"
 import { toWords } from "number-to-words"
-import { memo, useEffect } from "react"
+import { memo } from "react"
 import { ActivityIndicator, StyleSheet, Text, TouchableOpacity, View } from "react-native"
 import { widthPercentageToDP as wp } from "react-native-responsive-screen"
 import { useDispatch, useSelector } from "react-redux"
@@ -22,11 +22,6 @@ const CustomisationList = memo(function CustomisationList(props:propType) {
     const dispatch = useDispatch()
     const currentCartFood = useSelector((state:RootState)=>state.cart.cart)
     const foodRedux = useSelector((state:RootState)=>state.food.food)
-
-    useEffect(()=>{
-        if (message.type !== "editList") return
-        console.log(JSON.stringify(message.tweaks,null,2))
-    },[message])
 
     if (message.type !== "editList") return
     
