@@ -1,51 +1,36 @@
+import { UpdateTweakList } from '@/store/messageListSlice';
 import { colors } from '@/styles/global';
 import { normalize } from "@/utils/scaling";
 import { ChevronDown } from 'lucide-react-native';
-import React, { memo, useEffect, useState } from 'react';
+import React, { memo } from 'react';
 import { StyleSheet, useWindowDimensions, View } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
-import type { customisationType, optionType, tweakType } from '../../../types/type';
+import { useDispatch } from 'react-redux';
+import type { customisationType, tweakType } from '../../../types/type';
 
 interface propType {
-  edit: customisationType;
-  tweakList: tweakType[];
-  setTweakList: React.Dispatch<React.SetStateAction<tweakType[]>>;
+  customisation : customisationType;
+  messageId:string
 }
 
 const OptionSelect = memo(function OptionSelect(props: propType) {
   const {width,height} = useWindowDimensions()
   const landscape = width>height
   const dynamicWidth = landscape ? "40%" : "70%";
-  const { edit, setTweakList } = props;
-  const [selectedOption, setSelectedOption] = useState<optionType | null>(null);
+  const { customisation, messageId } = props;
+  const dispatch = useDispatch()
 
-  useEffect(() => {
-    if (!selectedOption) return;
-    setTweakList((prev) => {
-      const existingIndex = prev.findIndex((item) => item.name === edit.name);
-      const payload: tweakType = {
-        name: edit.name,
-        type: edit.type,
-        value: selectedOption.label,
-        price: selectedOption.extraPrice,
-      };
-      if (existingIndex !== -1) {
-        const updated = [...prev];
-        updated[existingIndex] = payload;
-        return updated;
-      }
-      return [...prev, payload];
-    });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedOption]);
+
 
   return (
     <View style={ { width: dynamicWidth, minHeight: 48 }}>
-      <Dropdown data={edit.options.map((item) => ({label: item.label, value: item.label }))} labelField="label" valueField="value" placeholder={edit.name}
-        value={selectedOption?.label ?? null}
+      <Dropdown 
+        data={customisation.options.map((item) => ({label: item.label, value: item.label }))} labelField="label" valueField="value" placeholder={customisation.name}
         onChange={(item) => {
-          const option = edit.options.find((opt) => opt.label === item.value);
-          if (option) setSelectedOption(option);
+          const option = customisation.options.find((opt) => opt.label === item.value);
+          if (!option) return
+          const payload: tweakType = { name: customisation.name, type: customisation.type, value: option.label, price: option.extraPrice };
+          dispatch(UpdateTweakList({id:messageId,value:payload}))
         }}
         renderRightIcon={() => (
           <View style={styles.iconContainer}>

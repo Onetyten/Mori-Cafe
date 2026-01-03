@@ -5,17 +5,18 @@ import ChatMessage from './message/ChatMessage';
 import FoodCarousel from './message/FoodCarousel/FoodCarousel';
 import NumberInput from './message/NumberInput/NumberInput';
 import SubCarousel from './message/SubCarousel/SubCarousel';
+import CartFeedBack from './message/CartFeedBack';
+import CustomisationList from './message/CustomisationList';
 
 interface propType{
     chatItem:messageListType;
     isLast:boolean;
-    context: {
+    context:{
         getCategory: (food: subCategories) => void;
         getSomethingElseMessage: (message: string) => void;
         CartList: () => void;
-        addToCart: (foodName: string) => void;
+        addToCart: () => void;
         isAdding: React.RefObject<boolean>;
-        comfirmToCart: (value: number) => void;
         fetchFoodList: (endpoint: string, expression: string) => Promise<void>;
         setOptions: React.Dispatch<React.SetStateAction<{
             name: string;
@@ -30,7 +31,7 @@ interface propType{
  const MessageRenderer = memo(
     function MessageRenderer(props:propType) {
         const {chatItem,context} = props
-        const {getSomethingElseMessage,addToCart,isAdding,comfirmToCart,fetchFoodList,setOptions,setShowOptions,loading,setLoading} = context
+        const {getSomethingElseMessage,addToCart,isAdding,fetchFoodList,setOptions,setShowOptions,loading,setLoading} = context
 
         switch (chatItem.type){
             case "message":
@@ -40,15 +41,15 @@ interface propType{
             case "subcarousel":
                 return <SubCarousel message={chatItem} fetchFoodList={fetchFoodList}/>;
             case "numberInput":
-                return <NumberInput message={chatItem} confirm={comfirmToCart} />;
-            // case "cart-feedback":
-            //     return <CartFeedBack message={chatItem} isAdding={isAdding}/>
+                return <NumberInput message={chatItem} />;
+            case "cartFeedback":
+                return <CartFeedBack/>
             // case "order-feedback":
             //     return <OrderFeedback setShowOptions={setShowOptions} setOptions={setOptions}  getSomethingElseMessage = {getSomethingElseMessage}/>
             // case "cart-list-feedback":
             //     return <CheckoutList isLast={isLast} message={chatItem} setShowOptions={setShowOptions} setOptions={setOptions} getSomethingElseMessage = {getSomethingElseMessage}/>;
-            // case "edit-list":
-            //     return <CustomisationList message={chatItem} addToCart = {addToCart} />;
+            case "editList":
+                return <CustomisationList message={chatItem} addToCart = {addToCart} />;
             // case "enter-info":
             //     return <UserInfoInput isLast={isLast} setOptions={setOptions} setShowOptions={setShowOptions} getSomethingElseMessage={getSomethingElseMessage} />;
             case "foodCarousel":

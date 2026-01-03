@@ -1,5 +1,5 @@
 import { setFood } from "@/store/currentFoodSlice";
-import { AddMessage, NewMessage } from "@/store/messageListSlice";
+import { AddMessage, NewMessage, removeMessage } from "@/store/messageListSlice";
 import { messageListType } from "@/types/messageTypes";
 import { useCallback } from "react";
 import { useDispatch } from "react-redux";
@@ -26,8 +26,9 @@ export default function useRenderNumberInput (setShowOptions:React.Dispatch<Reac
         dispatch(AddMessage(newMessage))
 
         await delay(300)
-        const newInput:NewMessage = {type:"numberInput",next:()=>{}, food:message.food}
+        const newInput:NewMessage = {type:"numberInput",next:()=>{}}
         dispatch(AddMessage(newInput))
+        dispatch(removeMessage(message.id))
 
     },[dispatch, loading, setLoading, setShowOptions])
 

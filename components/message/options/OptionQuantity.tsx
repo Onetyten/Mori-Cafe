@@ -1,51 +1,41 @@
+import { deleteTweak, UpdateTweakList } from '@/store/messageListSlice';
 import { colors, GlobalStyle } from '@/styles/global';
 import type { customisationType, tweakType } from '@/types/type';
 import { Minus, Plus } from 'lucide-react-native';
-import React, { memo, useEffect, useState } from 'react';
+import React, { memo, useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, useWindowDimensions, View } from 'react-native';
+import { useDispatch } from 'react-redux';
 
 
-interface propType{
-    edit:customisationType,
-    tweakList:tweakType[],
-    setTweakList:React.Dispatch<React.SetStateAction<tweakType[]>>
+interface propType {
+  customisation : customisationType;
+  messageId:string
 }
 
 const OptionQuantity = memo(function OptionQuantity(props:propType) {
     const {width,height} = useWindowDimensions()
     const landscape = width>height
     const dynamicWidth = landscape ? "40%" : "70%";
-    const {edit,setTweakList} = props
-    const [quantity,setQuantity] = useState(edit.quantity.size)
-    const [touched, setTouched] = useState(false);
+    const {customisation,messageId} = props
+    const [quantity,setQuantity] = useState(customisation.quantity.size)
+    const dispatch = useDispatch()
 
-    useEffect(()=>{
-        if (!touched) return
-        if (quantity>edit.quantity.max) setQuantity(edit.quantity.max)
-        if (quantity<edit.quantity.min) setQuantity(edit.quantity.min)
-        if (quantity>0){
-            setTweakList((prev) => {
-                const existingIndex = prev.findIndex(item=>item.name === edit.name)
-                const payload:tweakType = {name:edit.name, type:edit.type, value:quantity.toString(), price:edit.options[0].extraPrice}
-                if (existingIndex !== -1){
-                    const updated = [...prev]
-                    updated[existingIndex] = payload
-                    return updated
-                }
-                return [...prev,payload]
-            })
-        }
-        else{
-            setTweakList((prev)=>prev.filter(change=>change.name !== edit.name ))
-        }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[quantity,touched])
 
     function handleSetSize(delta:number){
-        setTouched(true)
-        if (quantity >= edit.quantity.max && delta > 0) return
-        if (quantity <= edit.quantity.min && delta < 0) return
+        if (quantity >= customisation.quantity.max && delta > 0) return
+        if (quantity <= customisation.quantity.min && delta < 0) return
+        const value = quantity+delta
         setQuantity(quantity+delta)
+
+        if (value > customisation.quantity.max) setQuantity(customisation.quantity.max)
+        if (value < customisation.quantity.min) setQuantity(customisation.quantity.min)
+        if (value>0){
+            const payload:tweakType = {name:customisation.name, type:customisation.type, value:value.toString(), price:customisation.options[0].extraPrice}
+            dispatch(UpdateTweakList({id:messageId,value:payload}))
+        }
+        else{
+          dispatch(deleteTweak({id:messageId,name:customisation.name}))
+        }
     }
 
   return (
@@ -58,7 +48,7 @@ const OptionQuantity = memo(function OptionQuantity(props:propType) {
         </TouchableOpacity>
 
         <View style={styles.textContainer}>
-            <Text style={[GlobalStyle.Outfit_Regular_body,{textTransform:"capitalize",textAlign:"center",color:colors.primary}]}>{edit.name}</Text>
+            <Text style={[GlobalStyle.Outfit_Regular_body,{textTransform:"capitalize",textAlign:"center",color:colors.primary}]}>{customisation.name}</Text>
             <Text style={[GlobalStyle.Outfit_Regular_body,{color:colors.primary}]}>
                 {quantity}
             </Text>

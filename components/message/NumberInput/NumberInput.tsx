@@ -1,5 +1,5 @@
 
-import { updateMessage } from '@/store/messageListSlice'
+import { AddMessage, NewMessage, updateMessage } from '@/store/messageListSlice'
 import { chatStyles } from '@/styles/chatStyle'
 import { GlobalStyle } from '@/styles/global'
 import { messageListType } from '@/types/messageTypes'
@@ -7,23 +7,21 @@ import { toWords } from 'number-to-words'
 import { memo } from 'react'
 import { ActivityIndicator, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import { useDispatch } from 'react-redux'
-import type { FoodType } from '../../../types/type'
 import { styles } from "./style"
 
 
 interface propType{
     message:messageListType
-    confirm:(value:number,food:FoodType)=>void
 }
 
 const NumberInput = memo( function NumberInput(props:propType) {
-  const {confirm,message} = props
+  const {message} = props
   const dispatch = useDispatch()
   if (message.type !== "numberInput") return null
   const delay = (ms:number) => new Promise(resolve=>setTimeout(resolve,ms))
 
 
-  const handleConfirm = async ()=>{
+  const handleConfirm = async ()=> {
     if (message.value < 1) {
       dispatch(updateMessage({id:message.id,update:{error:"Minimum 1 item required."}}))
     }
@@ -34,9 +32,8 @@ const NumberInput = memo( function NumberInput(props:propType) {
 
     await delay(300)
     dispatch(updateMessage({id:message.id,update:{isTyping:false}}))
-    // confirm(message.value,message.food)
-    console.log("confirmed",message.value)
-
+    const confirmToCart:NewMessage = {type:"confirmToCart", value: message.value}
+    dispatch(AddMessage(confirmToCart))
   }
 
   if (message.confirmed === false){

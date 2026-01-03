@@ -30,7 +30,7 @@ export default function useOptionCount(setShowOptions:React.Dispatch<React.SetSt
         },1000))
 
         timers.current.push(setTimeout(()=>{
-            const newInput:NewMessage = {type:"numberInput",food}
+            const newInput:NewMessage = {type:"numberInput"}
             dispatch(AddMessage(newInput))
         },2000))
     },[dispatch, loading, setLoading, setShowOptions])

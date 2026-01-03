@@ -1,4 +1,4 @@
-import { FoodType, subCategoryType } from "./type";
+import { customisationType, FoodType, subCategoryType, tweakType } from "./type";
 
 export interface baseMessage{
     id:string,
@@ -32,7 +32,6 @@ export interface foodCarouselMessage extends baseMessage{
 export interface numberInputMessage extends baseMessage{
   type:"numberInput";
   next?:()=>void;
-  food: FoodType
   confirmed:boolean;
   isTyping: boolean;
   value: number;
@@ -41,7 +40,25 @@ export interface numberInputMessage extends baseMessage{
 export interface numberCountTrigger extends baseMessage{
   type:"numberCountTrigger";
   next?:()=>void;
-  food: FoodType
+  food:FoodType;
+}
+export interface confirmToCartTrigger extends baseMessage{
+  type:"confirmToCart";
+  next?:()=>void;
+  value:number;
+}
+export interface cartFeedback extends baseMessage{
+  type:"cartFeedback";
+  next?:()=>void;
+}
+export interface editListType extends baseMessage{
+  type:"editList";
+  next?:()=>void;
+  fetched:boolean;
+  customisations: customisationType[];
+  tweaks: tweakType[];
+  confirmed:boolean;
+
 }
 
-export type messageListType = chatMessage | subCarouselMessage | foodCarouselMessage | numberInputMessage | numberCountTrigger
+export type messageListType = chatMessage | subCarouselMessage | foodCarouselMessage | numberInputMessage | numberCountTrigger | confirmToCartTrigger | cartFeedback | editListType

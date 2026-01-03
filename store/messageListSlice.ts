@@ -1,4 +1,5 @@
-import { chatMessage, foodCarouselMessage, messageListType, numberCountTrigger, numberInputMessage, subCarouselMessage } from "@/types/messageTypes";
+import { cartFeedback, chatMessage, confirmToCartTrigger, editListType, foodCarouselMessage, messageListType, numberCountTrigger, numberInputMessage, subCarouselMessage } from "@/types/messageTypes";
+import { tweakType } from "@/types/type";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 
@@ -13,7 +14,10 @@ type NewSubCarouselMessage = Omit<subCarouselMessage, "id"|"fetched"|"content">
 type NewFoodListMessage = Omit<foodCarouselMessage, "id"|"fetched"|"content">
 type NewFoodInput = Omit<numberInputMessage, "id"|"confirmed"|"isTyping"|"value"|"error">
 type NewFoodInputTrigger = Omit<numberCountTrigger,"id">
-export type NewMessage = NewChatMessage | NewSubCarouselMessage | NewFoodListMessage | NewFoodInput | NewFoodInputTrigger
+type NewConfirmToCart = Omit<confirmToCartTrigger,"id">
+type NewCartFeedback = Omit<cartFeedback,"id">
+type NewEditListType = Omit<editListType,"id"|"fetched"|"customisations"|"confirmed"|"tweaks">
+export type NewMessage = NewChatMessage | NewSubCarouselMessage | NewFoodListMessage | NewFoodInput | NewFoodInputTrigger | NewConfirmToCart | NewCartFeedback | NewEditListType
 
 const messageDefaults =  {
   message: {
@@ -34,6 +38,12 @@ const messageDefaults =  {
     value:1,
     error:""
   },
+  editList:{
+    fetched:false,
+    confirmed:false,
+    customisations:[],
+    tweaks:[]
+  }
 }
 
 const messageListSlice = createSlice({
@@ -57,6 +67,12 @@ const messageListSlice = createSlice({
                         return {payload : { id, ...messageDefaults.numberInput, ...message }}
                     case "numberCountTrigger":
                         return {payload : { id, ...message }}
+                    case "confirmToCart":
+                        return {payload : { id, ...message }}
+                    case "cartFeedback":
+                        return {payload : { id, ...message }}
+                    case "editList":
+                        return {payload : { id, ...messageDefaults.editList, ...message }}
                 }
             }
         },
@@ -66,6 +82,25 @@ const messageListSlice = createSlice({
             const message = state.messageList.find(m => m.id === action.payload.id)
             if (!message || message.type !== "message") return
             message.displayedText?.push(action.payload.value)
+        },
+        
+        UpdateTweakList:(state,action:PayloadAction<{id:string,value:tweakType}>)=>{
+            const value = action.payload.value
+            const message = state.messageList.find(m => m.id === action.payload.id)
+            if (!message || message.type !== "editList") return
+            const existingIndex = message.tweaks.findIndex((item) => item.name === value.name);
+            if (existingIndex !== -1) {
+                message.tweaks[existingIndex] = value;
+                return
+            }
+            message.tweaks.push(value)
+        },
+
+        deleteTweak:(state,action:PayloadAction<{id:string,name:string}>)=>{
+            const message = state.messageList.find(m => m.id === action.payload.id)
+            if (!message || message.type !== "editList") return
+            console.log(`deleting ${action.payload.name}}`)
+            message.tweaks = message.tweaks.filter(tweak=>tweak.name !== action.payload.name )
         },
 
         updateMessage:(state,action:PayloadAction<{id:string, update:Partial<messageListType>}>)=>{
@@ -79,10 +114,12 @@ const messageListSlice = createSlice({
             state.initialized = true
         },
 
-        removeMessage:(state,action:PayloadAction<number>)=>{
-            state.messageList.splice(action.payload,1)
+        removeMessage:(state,action:PayloadAction<string>)=>{
+            const deleteId = action.payload
+            const Index = state.messageList.findIndex(m => m.id === deleteId)
+            state.messageList.splice(Index,1)
         }
     }
 })
-export const {AddMessage,removeMessage,AppendTextMessage,initialize,updateMessage} = messageListSlice.actions
+export const {AddMessage,removeMessage,AppendTextMessage,initialize,updateMessage,UpdateTweakList,deleteTweak} = messageListSlice.actions
 export default messageListSlice.reducer

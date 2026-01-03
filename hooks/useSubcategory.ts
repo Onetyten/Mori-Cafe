@@ -26,7 +26,7 @@ export default function useSubcategory(setOptions: React.Dispatch<React.SetState
         const newCarousel:NewMessage = {type:"subcarousel",next:()=>subCategoryCleanup(), subcategory:category,}
         timers.current.push(setTimeout(()=>{
             dispatch(AddMessage(newCarousel))
-        },500))
+        },300))
     },[dispatch, setShowOptions, subCategoryCleanup])
 
     const getSubcategoryMessage = useCallback((category:subCategories)=>{
@@ -49,11 +49,11 @@ export default function useSubcategory(setOptions: React.Dispatch<React.SetState
         const newQuestion:NewMessage = {type:"message",next:()=>{}, sender:"bot",content:[`What would you like`]}
         timers.current.push(setTimeout(()=>{
             dispatch(AddMessage(newQuestion))
-        },500))
+        },200))
         setOptions([{name:'Coffee', onClick:()=>getCategory('coffee')},{name:'Drink',onClick:()=>getCategory('drink')},{name:'Snacks',onClick:()=>getCategory('snack')}])
         timers.current.push(setTimeout(()=>{
             setShowOptions(true)
-        },1000))
+        },500))
     },[dispatch, getCategory, setOptions, setShowOptions])
 
 

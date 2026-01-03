@@ -1,4 +1,4 @@
-import { AddMessage } from "@/store/messageListSlice";
+import { AddMessage, NewMessage } from "@/store/messageListSlice";
 import { useCallback, useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
 
@@ -32,16 +32,17 @@ export default function useAddToCart(
         },[CartList, getSomethingElseMessage, setLoading, setOptions, setShowOptions]
     );
 
-    const addToCart = useCallback((foodName:string)=>{
+    const addToCart = useCallback(()=>{
         if (isAdding.current) return;
         isAdding.current = true;
         setShowOptions(false);
         timers.current.push(setTimeout(()=>{
             setShowOptions(false);
-            const CartfeedBack = {type:"cart-feedback",next:addToCartCleanup, sender:"bot",content:[foodName]};
+            const CartfeedBack:NewMessage = {type:"cartFeedback",next:()=>{addToCartCleanup()}};
             dispatch(AddMessage(CartfeedBack));
         },500))
-    },[addToCartCleanup, dispatch, isAdding, setShowOptions]
+    },[addToCartCleanup, dispatch, setShowOptions]
+    
     );
     return {addToCart,addToCartCleanup,isAdding}
 }

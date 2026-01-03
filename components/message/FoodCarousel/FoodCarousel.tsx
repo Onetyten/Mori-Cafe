@@ -11,7 +11,6 @@ interface propType{
 
 const FoodCarousel = memo(function FoodCarousel(props:propType) {
     const {message} = props
-    console.log(message)
 
     if (message.type !== "foodCarousel") return
 

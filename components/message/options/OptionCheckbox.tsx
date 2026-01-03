@@ -1,44 +1,40 @@
+import { deleteTweak, UpdateTweakList } from '@/store/messageListSlice';
 import { colors, GlobalStyle } from '@/styles/global';
 import { Checkbox } from "expo-checkbox";
-import React, { memo, useEffect, useState } from 'react';
+import React, { memo, useState } from 'react';
 import { StyleSheet, Text, useWindowDimensions, View } from 'react-native';
-import type { customisationType, tweakType } from '../../../types/type';
+import { useDispatch } from 'react-redux';
+import type { customisationType } from '../../../types/type';
 
-
-
-interface propType{
-    edit:customisationType,
-    tweakList:tweakType[],
-    setTweakList:React.Dispatch<React.SetStateAction<tweakType[]>>
+interface propType {
+  customisation : customisationType;
+  messageId:string
 }
 
 const OptionCheckbox = memo (function OptionCheckbox(props:propType) {
     const {width,height} = useWindowDimensions()
     const landscape = width>height
     const dynamicWidth = landscape ? "40%" : "70%";
-    const {edit,tweakList,setTweakList} = props
+    const {customisation,messageId} = props
+    const dispatch  = useDispatch()
     const [isChecked,setIsChecked] = useState(false)
-
-    useEffect(()=>{
-        if (isChecked){
-            const property = tweakList.find(property=>property.name === edit.name)
-            if (property) return
-            const payload:tweakType = {name:edit.name,type:edit.type,value:isChecked?"true":"false",price:edit.options[0].extraPrice}
-            setTweakList((prev)=>[...prev, payload])
-        }
-        else{
-            setTweakList((prev)=>prev.filter(change=>change.name !== edit.name ))
-        }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[isChecked])
     
 
   return (
     <View style={[styles.parent,{width: dynamicWidth}]}>
-            <Text style={[GlobalStyle.Outfit_Regular_body,{textTransform:"capitalize",textAlign:"center",paddingHorizontal:8,color:colors.primary}]}>{edit.name}</Text>
+            <Text style={[GlobalStyle.Outfit_Regular_body,{textTransform:"capitalize",textAlign:"center",paddingHorizontal:8,color:colors.primary}]}>{customisation.name}</Text>
 
             <View style={styles.imageBackground} >
-                <Checkbox color={colors.primary} value={isChecked} onValueChange={setIsChecked}/>
+                <Checkbox color={colors.primary} value={isChecked} onValueChange={(e)=>{
+                  setIsChecked(e)
+                  if (e === true){
+                      const payload = {name:customisation.name,type:customisation.type,value:e===true?"true":"false",price:customisation.options[0].extraPrice}
+                      dispatch(UpdateTweakList({id:messageId,value:payload}))
+                  }
+                  else{
+                    dispatch(deleteTweak({id:messageId,name:customisation.name}))
+                  }
+                }}/>
             </View>
     </View>
   )

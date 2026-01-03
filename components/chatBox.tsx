@@ -1,3 +1,4 @@
+import { useRenderCustomisatonList } from "@/hooks/chatManagement/useRenderCustomisatonList"
 import useRenderFoodCarousel from "@/hooks/chatManagement/useRenderFoodCarousel"
 import useRenderNumberInput from "@/hooks/chatManagement/useRenderNumberInput"
 import useRenderSubcarousel from "@/hooks/chatManagement/useRenderSubCarousel"
@@ -35,20 +36,21 @@ export default function ChatBox() {
     const getSomethingElseMessage = useGetElse(setShowOptions,setOptions,getCategory)
     const CartList = useListCart(setShowOptions,setLoading,setOptions,getSomethingElseMessage)
     const {addToCart,isAdding} = useAddToCart(setShowOptions,CartList,getSomethingElseMessage,setLoading,setOptions)
-    const comfirmToCart = useConfirmToCart(setLoading,setShowOptions,addToCart,setOptions)
+    const {comfirmToCart,cartFeedback} = useConfirmToCart(setLoading,setShowOptions,addToCart,setOptions,isAdding)
     const fetchFoodList = useFetchFoodList(loading,setLoading,setShowOptions,setOptions,getSomethingElseMessage)
 
     const chatContext  = useMemo(()=>({
-        getCategory,getSomethingElseMessage,CartList,addToCart,isAdding,comfirmToCart,fetchFoodList,setOptions,setShowOptions, setLoading, loading
-    }),[CartList, addToCart, comfirmToCart, fetchFoodList, getCategory, getSomethingElseMessage, isAdding,setOptions,setShowOptions, setLoading, loading])
+        getCategory,getSomethingElseMessage,CartList,addToCart,isAdding,fetchFoodList,setOptions,setShowOptions, setLoading, loading
+    }),[CartList, addToCart, fetchFoodList, getCategory, getSomethingElseMessage, isAdding,setOptions,setShowOptions, setLoading, loading])
 
     const {renderTextMessage} = useRenderTextMessage();
     const {renderSubcarousel} =useRenderSubcarousel();
     const {renderFoodCarousel} =useRenderFoodCarousel(setLoading,setShowOptions,loading);
     const {renderNumberInput,triggerNumberInput} =useRenderNumberInput(setShowOptions,setLoading,loading);
+    const {renderCustomisationList} = useRenderCustomisatonList()
 
     const renderItem = useCallback(({item,index}:{item:messageListType,index:number})=>(
-        <MessageRenderer isLast = {index === messageList.length-1} chatItem={item} context={chatContext}/>
+        <MessageRenderer chatItem={item}  isLast = {index === messageList.length-1} context={chatContext}/>
     ),[chatContext, messageList.length])
 
 
@@ -84,15 +86,18 @@ export default function ChatBox() {
                     triggerNumberInput(message)   
                 case "numberInput":
                     renderNumberInput(message)
-                
-                // case "cart-feedback":
+                case "confirmToCart":
+                    comfirmToCart(message)
+                case "cartFeedback":
+                    cartFeedback(message)
+                // case "cartFeedback":
                 //     console.log("new message");
                 // case "order-feedback":
                 //     console.log("new order feedback message");
                 // case "cart-list-feedback":
                 //     console.log("new order feedback message");
-                // case "edit-list":
-                //     console.log("new order feedback message");
+                case "editList":
+                    renderCustomisationList(message)
                 // case "enter-info":
                 //     console.log("new order feedback message");
                 case "foodCarousel":
