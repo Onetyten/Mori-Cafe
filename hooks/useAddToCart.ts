@@ -24,7 +24,7 @@ export default function useAddToCart(
 
     const addToCartCleanup=useCallback(()=>{  
         setLoading(false);
-        setOptions([{name:'Checkout tab', onClick:CartList},{name:'Continue shopping', onClick:()=>getSomethingElseMessage("Let's continue")}]);
+        setOptions([{name:'Checkout tab', onClick:CartList },{name:'Continue shopping', onClick:()=>getSomethingElseMessage("Let's continue")}]);
         timers.current.push(
             setTimeout(()=>{
                 setShowOptions(true);

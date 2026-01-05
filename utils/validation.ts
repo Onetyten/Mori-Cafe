@@ -5,33 +5,33 @@ export const OrderSchema = Joi.object({
     .min(3)
     .required()
     .messages({
-      'string.base': 'Name must be a text value',
-      'string.empty': 'Name is required',
+      'string.base': 'Your name must be a text value',
+      'string.empty': 'Please enter your name',
       'string.min': 'Name must be at least 3 characters long',
-      'any.required': 'Name is required'
+      'any.required': 'Please enter your name'
     }),
   email: Joi.string().email({tlds:{allow:false}}).required()
     .messages({
-      'string.base': 'Email must be a text value',
-      'string.email': 'Email must be a valid email address',
-      'string.empty': 'Email is required',
-      'any.required': 'Email is required'
+      'string.base': 'Your email must be a text value',
+      'string.email': 'Your email must be a valid email address',
+      'string.empty': 'Please enter your email address',
+      'any.required': 'Please enter your email address'
     }),
   address: Joi.string()
     .required()
     .messages({
-      'string.base': 'Address must be a text value',
-      'string.empty': 'Address is required',
-      'any.required': 'Address is required'
+      'string.base': 'Your address must be a text value',
+      'string.empty': 'Please enter your address',
+      'any.required': 'Please enter your address'
     }),
   phone_number: Joi.string()
     .pattern(/^[+0-9]{7,15}$/)
     .required()
     .messages({
-      'string.base': 'Phone number must be a text value',
-      'string.empty': 'Phone number is required',
-      'string.pattern.base': 'Phone number must contain only digits and may start with +',
-      'any.required': 'Phone number is required'
+      'string.base': 'Your phone number must be a text value',
+      'string.empty': 'Please enter your phone number',
+      'string.pattern.base': 'Your phone number must contain only digits and may start with +',
+      'any.required': 'Please enter your phone number'
     }),
     items: Joi.array()
       .items(
@@ -45,7 +45,7 @@ export const OrderSchema = Joi.object({
           }).unknown(true)
         })
       )
-      .required()
-      .error(() => new Error('Malformed order'))
+      .optional()
+      .error(() => new Error('Looks like we have an invalid order, plese try again'))
 
 });

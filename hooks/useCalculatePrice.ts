@@ -1,6 +1,6 @@
 import { AddMessage, NewMessage, removeMessage } from '@/store/messageListSlice';
 import { messageListType } from '@/types/messageTypes';
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback } from 'react';
 import { useDispatch, useStore } from 'react-redux';
 import { setOrder } from '../store/newOrderSlice';
 import type { RootState } from '../utils/store';
@@ -12,20 +12,16 @@ export default function useCalculatePrice(
     {
         const dispatch = useDispatch();
         const store = useStore<RootState>();
-        const timers = useRef<ReturnType<typeof setTimeout>[]>([])
         const delay = (ms:number)=> new Promise(resolve=>setTimeout(resolve,ms))
         
-        const selectInfo= useCallback(()=>{
+        const selectInfo= useCallback(async()=>{
             const newMessage:NewMessage = {type:"message",next:()=>{}, sender:"bot",content:[`Enter your delivery information`]};
             dispatch(AddMessage(newMessage));
             setShowOptions(false)
-            timers.current.push(
-                setTimeout(()=>{
-                    setOptions([{name:'Continue shopping', onClick:()=>getSomethingElseMessage("Let's continue")}]);
-                    const newInput:NewMessage = {type:"enterInfo",next:()=>{}};
-                    dispatch(AddMessage(newInput));
-                },1000)
-            );
+            setOptions([{name:'Continue shopping', onClick:()=>getSomethingElseMessage("Let's continue")}]);
+            await delay(300)
+            const newInput:NewMessage = {type:"enterInfo",next:()=>{}};
+            dispatch(AddMessage(newInput));
 
         },[dispatch, getSomethingElseMessage, setOptions, setShowOptions]);
 
@@ -40,7 +36,7 @@ export default function useCalculatePrice(
                     address:"",
                     email:"",
                     phone_number:"",
-                    items:cart
+                    items:cart.filter(item=>item.foodId !== null)
                 }
                 
                 dispatch(removeMessage(message.id))

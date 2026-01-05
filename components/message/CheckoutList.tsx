@@ -19,6 +19,7 @@ const CheckoutList = memo(function CheckoutList(props:propType) {
     
     if (message.type !== "checkoutList") return
     
+    console.log(message)
     // useEffect(() => {
     //     if (added && cartList.length === 0 && !checkedOut) {
     //         setCheckedOut(true)

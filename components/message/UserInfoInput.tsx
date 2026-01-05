@@ -1,113 +1,103 @@
-import useProceedPayment from '@/hooks/useProceedPayment'
-import { AddMessage, NewMessage } from '@/store/messageListSlice'
-import { setOrder } from '@/store/newOrderSlice'
+import { AddMessage, NewMessage, updateMessage } from '@/store/messageListSlice'
+import { updateOrderInfo } from '@/store/newOrderSlice'
 import { setInfo } from '@/store/userInfoSlice'
 import { colors, GlobalStyle } from '@/styles/global'
+import { messageListType } from '@/types/messageTypes'
 import { normalize } from "@/utils/scaling"
 import * as Location from 'expo-location'
-import { useRef, useState } from 'react'
 import { StyleSheet, Text, TextInput, TouchableOpacity, useWindowDimensions, View } from 'react-native'
 import { Dropdown } from 'react-native-element-dropdown'
-import MapView, { LatLng, MapPressEvent, Marker } from 'react-native-maps'
+import MapView, { MapPressEvent, Marker } from 'react-native-maps'
 import { useDispatch, useSelector } from 'react-redux'
-import type { countryCodeType } from '../../types/type'
-import { countryCodes } from '../../utils/data'
+
+import { userDetailsType } from '@/types/type'
+import { countryCodes } from '@/utils/data'
 import type { RootState } from '../../utils/store'
 import { OrderSchema } from '../../utils/validation'
-import { messageListType } from '@/types/messageTypes'
 
 interface propType{
     message:messageListType
-    setOptions: React.Dispatch<React.SetStateAction<{ name: string; onClick: () => void}[]>>,
     setShowOptions: React.Dispatch<React.SetStateAction<boolean>>,
-    getSomethingElseMessage: (message: string) => void,
-    isLast:boolean
 }
 
-
 export default function UserInfoInput(props:propType) {
-  const {setOptions,setShowOptions,getSomethingElseMessage,isLast,message} = props
-  const userInfo = useSelector((state:RootState)=>state.userInfo.userInfo)
+  const {setShowOptions,message} = props
   const dispatch = useDispatch()
-  const ProceedToPayment = useProceedPayment(setShowOptions)
-  const confirmed = useRef<boolean>(false)
-  const [selectedCode,setSelectedCode] = useState<countryCodeType>(countryCodes[0])
-  const [name,setName] = useState(userInfo.name)
-  const [address,setAddress] = useState(userInfo.address)
-  const [phoneNum,setPhoneNum] = useState(userInfo.phone_number.number)
-  const [email,setEmail] = useState(userInfo.email)
+
   const neworder = useSelector((state:RootState)=>state.newOrder.newOrder)
-  const [selectedLocation, setSelectedLocation] = useState< LatLng | null >(null)
   const {width,height} = useWindowDimensions()
   const isLandscape = width>height
-
+  if (!message || message.type !== "enterInfo") return
 
   
   function SubmitInfo(){
-    if (!neworder) return
-    const payload = {
-      name:name,
-      address:address,
-      email:email,
-      phone_number:selectedCode.val+phoneNum,
-      items:neworder.items
-    }
-    
-  
+    if (!message || message.type !== "enterInfo") return
 
-  const {error,value} = OrderSchema.validate(payload)
-    if (error){
-      const newMessage:NewMessage = {type:"message",next:()=>{}, sender:"bot-error",content:[error.message]}
-      dispatch(AddMessage(newMessage))
-      return
+    if (!neworder) return
+
+    const payload = {
+      name:message.name,
+      address:message.address,
+      email:message.email,
+      phone_number:message.phone_number.code.val+message.phone_number.number,
     }
-    const infoData = {
-      name:name,
-      address:address,
-      email:email,
+
+    const {error,value} = OrderSchema.validate(payload)
+      if (error){
+        const newMessage:NewMessage = {type:"message",next:()=>{}, sender:"bot-error",content:[error.message]}
+        dispatch(AddMessage(newMessage))
+        return
+    }
+
+    const infoData:userDetailsType = {
+      ...payload,
       phone_number:{
-        code:selectedCode.val,
-        number:phoneNum
+        code:message.phone_number.code.val,
+        number:message.phone_number.number
       },
     }
+
     dispatch(setInfo(infoData))
+
     setShowOptions(false)
-    dispatch(setOrder(value))
+    dispatch(updateOrderInfo(value))
     const newMessage:NewMessage = {type:"message",next:()=>{}, sender:"user",content:[`Name: ${value.name}`,`Delivery Address: ${value.address}`,`Phone number: ${value.phone_number}`]}
     dispatch(AddMessage(newMessage))
-    setOptions([{name:'Proceed to payment', onClick:()=>ProceedToPayment()},{name:'Continue shopping', onClick:()=>getSomethingElseMessage("Let's continue")}])
-    setShowOptions(true)
-    confirmed.current = true
+    if (message.next) message.next()
   }
-  
-  if (!message || message.type !== "enterInfo") return
 
-
+  async function selectLocation(e:MapPressEvent){
+        dispatch(updateMessage({id:message.id,update:{location:e.nativeEvent.coordinate}}))
+        const newAddress = await Location.reverseGeocodeAsync(e.nativeEvent.coordinate)
+        if (!newAddress || newAddress?.length===0 || !newAddress[0].formattedAddress) return
+        dispatch(updateMessage({id:message.id,update:{address:newAddress[0].formattedAddress}}))
+  }
 
 
   return (
     <View style={styles.container}>
       <View style={{maxWidth:isLandscape?"45%":"85%",width:"100%",gap:8}}>
-        <TextInput keyboardType="default" placeholder='Full name' placeholderTextColor={colors.light} value={name} onChangeText={setName} style={[GlobalStyle.Outfit_Regular_body,styles.textInput]} />
-        <TextInput keyboardType="email-address" placeholder='Email' value={email} onChangeText={setEmail} placeholderTextColor={colors.light} style={[GlobalStyle.Outfit_Regular_body,styles.textInput]} />
+        <TextInput keyboardType="default" placeholder='Full name' placeholderTextColor={colors.light} value={message.name} onChangeText={(name)=>{dispatch(updateMessage({id:message.id,update:{name}}))}} style={[GlobalStyle.Outfit_Regular_body,styles.textInput]} />
+        
+        <TextInput keyboardType="email-address" placeholder='Email' value={message.email} onChangeText={(email)=>{dispatch(updateMessage({id:message.id,update:{email}}))}} placeholderTextColor={colors.light} style={[GlobalStyle.Outfit_Regular_body,styles.textInput]} />
         
         <View style={{flexDirection:"row",width:"100%",gap:4}}>
-            <Dropdown data={countryCodes.map((item) => ({label: `${item.flag}  ${item.val}`, value: item.val }))} labelField="label" valueField="value" placeholder={`${selectedCode.flag} ${selectedCode.val}`}
-                value={selectedCode.val ?? null}
+            <Dropdown data={countryCodes.map((item) => ({label: `${item.flag}  ${item.val}`, value: item.val }))} labelField="label" valueField="value" placeholder={`${message.phone_number.code.flag} ${message.phone_number.code.val}`}
+                value={message.phone_number.code.val ?? null}
                 onChange={(item) => {
                   const option = countryCodes.find((opt) => opt.val === item.value);
-                  if (option) setSelectedCode(option);
+                  if (option) {dispatch(updateMessage({id:message.id,update:{phone_number:{code:option,number:message.phone_number.number}}}))}
                 }}
                 style={styles.dropdown}
                 placeholderStyle={styles.placeholder}
                 selectedTextStyle={styles.input}
             />
-          <TextInput keyboardType="number-pad" value={phoneNum} onChangeText={setPhoneNum} placeholder='Phone number' placeholderTextColor={colors.light} style={[GlobalStyle.Outfit_Regular_body,styles.textInput]} />
+          <TextInput keyboardType="number-pad" value={message.phone_number.number} onChangeText={(number)=>{dispatch(updateMessage({id:message.id,update:{phone_number:{code:message.phone_number.code,number}}}))}} placeholder='Phone number' placeholderTextColor={colors.light} style={[GlobalStyle.Outfit_Regular_body,styles.textInput]} />
 
         </View>
         <View style={{width:"100%",height:400,overflow:"hidden",borderRadius:6}}>
-          <MapView region={{latitude: selectedLocation?.latitude || 37.78825, longitude:selectedLocation?.longitude || -122.4324, latitudeDelta: 0.01, longitudeDelta: 0.01,}} style={{height:"100%",width:"100%",borderRadius:6}} onPress={selectLocation}>
-                {selectedLocation&& <Marker coordinate={selectedLocation} />}
+          <MapView region={{latitude: message.location?.latitude || 37.78825, longitude:message.location?.longitude || -122.4324, latitudeDelta: 0.01, longitudeDelta: 0.01,}} style={{height:"100%",width:"100%",borderRadius:6}} onPress={selectLocation}>
+                {message.location&& <Marker coordinate={message.location} />}
           </MapView>
         </View>
 

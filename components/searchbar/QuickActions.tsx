@@ -2,11 +2,12 @@ import CircularView from "@/components/CircularView";
 import useFetchFoodList from "@/hooks/useFetchFoodList";
 import useFetchReceiptList from "@/hooks/useFetchReceiptList";
 import useGetElse from "@/hooks/useGetElse";
-import useListCart from "@/hooks/useListCart";
 import useSubcategory from "@/hooks/useSubcategory";
+import { AddMessage, NewMessage } from "@/store/messageListSlice";
 import { colors, GlobalStyle } from "@/styles/global";
 import { Dice6, History, ShoppingCart } from "lucide-react-native";
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
+import { useDispatch } from "react-redux";
 
 interface propType{
     showButtons:boolean;
@@ -20,9 +21,23 @@ export default function QuickActions(props:propType) {
     const {showButtons,setShowOptions,setOptions,setLoading,loading} = props
     const {getCategory} = useSubcategory(setOptions,setShowOptions)
     const getSomethingElseMessage = useGetElse(setShowOptions,setOptions,getCategory)
-    const CartList = useListCart(setShowOptions,setLoading,setOptions,getSomethingElseMessage)
     const fetchFoodList = useFetchFoodList(loading,setLoading,setShowOptions,setOptions,getSomethingElseMessage)
     const fetchReceiptList =  useFetchReceiptList()
+    const dispatch = useDispatch()
+    const delay = (ms:number)=>new Promise(resolve=>setTimeout(resolve,ms))
+
+    const addToCartCleanup = async()=>{
+        setLoading(false)
+        setOptions([{name:'Checkout tab', onClick:CartList},{name:'Continue shopping', onClick:()=>getSomethingElseMessage("Let's continue")}])
+        setShowOptions(true)
+    }
+
+    const CartList=async()=>{
+        const newMessage:NewMessage = {type:"message",next:()=>{}, sender:"user",content:["Let's Checkout"]}
+        dispatch(AddMessage(newMessage))
+        const newFeedBack:NewMessage = {type:"checkoutList",next:addToCartCleanup}
+        dispatch(AddMessage(newFeedBack))
+    }
 
 
   return (

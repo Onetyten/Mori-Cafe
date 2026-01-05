@@ -1,7 +1,7 @@
-import { cartFeedback, chatMessage, checkoutList, confirmToCartTrigger, editListType, foodCarouselMessage, messageListType, numberCountTrigger, numberInputMessage, subCarouselMessage, userInputType } from "@/types/messageTypes";
+import { cartFeedback, chatMessage, checkoutList, confirmToCartTrigger, editListType, foodCarouselMessage, messageListType, numberCountTrigger, numberInputMessage, orderFeedbackType, subCarouselMessage, userInputType } from "@/types/messageTypes";
 import { tweakType } from "@/types/type";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
+import { countryCodes } from '../utils/data';
 
 
 const initialState:{ messageList:messageListType[],initialized:boolean} = {
@@ -16,10 +16,11 @@ type NewFoodInput = Omit<numberInputMessage, "id"|"confirmed"|"isTyping"|"value"
 type NewFoodInputTrigger = Omit<numberCountTrigger,"id">
 type NewConfirmToCart = Omit<confirmToCartTrigger,"id">
 type NewCartFeedback = Omit<cartFeedback,"id">
-type NewUserInputType = Omit<userInputType,"id" | "location" | "address" | "confirmed" | "goBack" | "selectLocation">
+type NewOrderFeedback = Omit<orderFeedbackType,"id">
+type NewUserInputType = Omit<userInputType,"id" | "location" | "address" | "confirmed" | "goBack" | "name" | "email" | "phone_number" >
 type NewCartListFeedback = Omit<checkoutList,"id"|"fetched">
 type NewEditListType = Omit<editListType,"id"|"fetched"|"customisations"|"confirmed"|"tweaks">
-export type NewMessage = NewChatMessage | NewSubCarouselMessage | NewFoodListMessage | NewFoodInput | NewFoodInputTrigger | NewConfirmToCart | NewCartFeedback | NewEditListType | NewCartListFeedback | NewUserInputType
+export type NewMessage = NewChatMessage | NewSubCarouselMessage | NewFoodListMessage | NewFoodInput | NewFoodInputTrigger | NewConfirmToCart | NewCartFeedback | NewEditListType | NewCartListFeedback | NewUserInputType | NewOrderFeedback
 
 const messageDefaults =  {
   message: {
@@ -54,7 +55,12 @@ const messageDefaults =  {
     confirmed:false,
     address:"",
     goBack:()=>{},
-    selectLocation:()=>Promise.resolve()
+    name:"",
+    email: "",
+    phone_number: {
+        code:countryCodes[0],
+        number: ""
+    }
   }
 }
 
@@ -82,6 +88,8 @@ const messageListSlice = createSlice({
                     case "confirmToCart":
                         return {payload : { id, ...message }}
                     case "cartFeedback":
+                        return {payload : { id, ...message }}
+                    case "orderFeedback":
                         return {payload : { id, ...message }}
                     case "checkoutList":
                         return {payload : { id,...messageDefaults.checkoutList, ...message }}

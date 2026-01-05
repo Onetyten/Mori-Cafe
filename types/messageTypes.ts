@@ -1,5 +1,5 @@
-import { LatLng, MapPressEvent } from 'react-native-maps';
-import { customisationType, FoodType, subCategoryType, tweakType } from "./type";
+import { LatLng } from 'react-native-maps';
+import { countryCodeType, customisationType, FoodType, subCategoryType, tweakType } from "./type";
 
 export interface baseMessage{
     id:string,
@@ -52,6 +52,10 @@ export interface cartFeedback extends baseMessage{
   type:"cartFeedback";
   next?:()=>void;
 }
+export interface orderFeedbackType extends baseMessage{
+  type:"orderFeedback";
+  next?:()=>void;
+}
 export interface checkoutList extends baseMessage{
   type:"checkoutList";
   next?:()=>void;
@@ -64,7 +68,12 @@ export interface userInputType extends baseMessage{
   address:string;
   confirmed:boolean;
   goBack(): void;
-  selectLocation(e: MapPressEvent): Promise<void>
+  name: string;
+  email: string;
+  phone_number: {
+      code: countryCodeType;
+      number: string;
+  };
 }
 export interface editListType extends baseMessage{
   type:"editList";
@@ -75,4 +84,4 @@ export interface editListType extends baseMessage{
   confirmed:boolean;
 }
 
-export type messageListType = chatMessage | subCarouselMessage | foodCarouselMessage | numberInputMessage | numberCountTrigger | confirmToCartTrigger | cartFeedback | editListType | checkoutList | userInputType
+export type messageListType = chatMessage | subCarouselMessage | foodCarouselMessage | numberInputMessage | numberCountTrigger | confirmToCartTrigger | cartFeedback | editListType | checkoutList | userInputType | orderFeedbackType

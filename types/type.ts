@@ -110,3 +110,14 @@ export interface FetchedOrderType {
   paidAt?: string;
   __v: number;
 }
+
+export interface userDetailsType {
+    name:string;
+    address:string;
+    email:string;
+    phone_number:{
+        code:string;
+        number:string
+    };
+}
+

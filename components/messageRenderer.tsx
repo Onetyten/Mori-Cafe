@@ -8,6 +8,7 @@ import CustomisationList from './message/CustomisationList';
 import FoodCarousel from './message/FoodCarousel/FoodCarousel';
 import NumberInput from './message/NumberInput/NumberInput';
 import SubCarousel from './message/SubCarousel/SubCarousel';
+import UserInfoInput from './message/UserInfoInput';
 
 interface propType{
     chatItem:messageListType;
@@ -45,14 +46,14 @@ interface propType{
                 return <NumberInput message={chatItem} />;
             case "cartFeedback":
                 return <CartFeedBack/>
-            // case "order-feedback":
-            //     return <OrderFeedback setShowOptions={setShowOptions} setOptions={setOptions}  getSomethingElseMessage = {getSomethingElseMessage}/>
+            // case "orderFeedback":
+            //     return <CartFeedBack/>
             case "checkoutList":
                 return <CheckoutList message={chatItem}/>;
             case "editList":
                 return <CustomisationList message={chatItem} addToCart = {addToCart} />;
-            // case "enterInfo":
-            //     return <UserInfoInput isLast={isLast} setOptions={setOptions} setShowOptions={setShowOptions} getSomethingElseMessage={getSomethingElseMessage} />;
+            case "enterInfo":
+                return <UserInfoInput setShowOptions={context.setShowOptions} message={chatItem} />;
             case "foodCarousel":
                 return <FoodCarousel message={chatItem}/>;
             // case "receipt-list":

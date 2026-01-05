@@ -19,11 +19,16 @@ const newOrderSlice = createSlice({
         setOrder:(state,action:PayloadAction<orderType>)=>{
             state.newOrder = action.payload
         },
+        updateOrderInfo:(state,action:PayloadAction<Partial<orderType>>)=>{
+            if (state.newOrder){
+                Object.assign(state.newOrder,action.payload)
+            } 
+        },
         clearOrder:(state)=>{
             state.newOrder = null
         }
     }
 })
 
-export const {setOrder,clearOrder} = newOrderSlice.actions
+export const {setOrder,clearOrder,updateOrderInfo} = newOrderSlice.actions
 export default newOrderSlice.reducer

@@ -1,15 +1,7 @@
+import { userDetailsType } from "@/types/type";
 import { createSlice } from "@reduxjs/toolkit";
 
 
-interface userDetailsType {
-    name:string;
-    address:string;
-    email:string;
-    phone_number:{
-        code:string;
-        number:string
-    };
-}
 
 const initialState:{userInfo:userDetailsType} = {
     userInfo:{

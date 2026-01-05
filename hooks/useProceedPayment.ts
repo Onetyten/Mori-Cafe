@@ -20,7 +20,7 @@ export default function useProceedPayment(setShowOptions:React.Dispatch<React.Se
         timers.current.push(setTimeout(()=>{
             const newResponse = {type:"message",next:()=>{}, sender:"bot",content:[`Creating your order`]}
             dispatch(AddMessage(newResponse))
-            const orderMessage = {type:"order-feedback",next:()=>{}, sender:"bot",content:[]}
+            const orderMessage = {type:"orderFeedback",next:()=>{}, sender:"bot",content:[]}
             dispatch(AddMessage(orderMessage))
         },1000))
     },[dispatch, setShowOptions])

@@ -10,6 +10,7 @@ import useConfirmToCart from "@/hooks/useConfirmToCart"
 import useFetchFoodList from "@/hooks/useFetchFoodList"
 import useGetElse from "@/hooks/useGetElse"
 import useListCart from "@/hooks/useListCart"
+import useProcessOrder from "@/hooks/useProcessOrder"
 import { messageListType } from "@/types/messageTypes"
 import { RootState } from "@/utils/store"
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
@@ -39,6 +40,7 @@ export default function ChatBox() {
     const CartList = useListCart(setShowOptions,setLoading,setOptions,getSomethingElseMessage)
     const {addToCart,isAdding} = useAddToCart(setShowOptions,CartList,getSomethingElseMessage,setLoading,setOptions)
     const {comfirmToCart,cartFeedback} = useConfirmToCart(setLoading,setShowOptions,addToCart,setOptions,isAdding)
+    const {processOrder} = useProcessOrder(setLoading,setShowOptions,addToCart,setOptions,isAdding)
     const fetchFoodList = useFetchFoodList(loading,setLoading,setShowOptions,setOptions,getSomethingElseMessage)
 
     const chatContext  = useMemo(()=>({
@@ -50,20 +52,20 @@ export default function ChatBox() {
     const {renderFoodCarousel} =useRenderFoodCarousel(setLoading,setShowOptions,loading);
     const {renderNumberInput,triggerNumberInput} =useRenderNumberInput(setShowOptions,setLoading,loading);
     const {renderCustomisationList} = useRenderCustomisatonList()
-    const {renderUserInput} = useRenderUserInput()
+    const {renderUserInput} = useRenderUserInput(setShowOptions,getSomethingElseMessage,setOptions)
     const {renderCheckoutList} = useRenderCheckoutList(setShowOptions,getSomethingElseMessage,setOptions,loading,setLoading)
 
     const renderItem = useCallback(({item,index}:{item:messageListType,index:number})=>(
         <MessageRenderer chatItem={item}  isLast = {index === messageList.length-1} context={chatContext}/>
     ),[chatContext, messageList.length])
 
+    useEffect(()=>{
+        scrollRef.current?.scrollToEnd({animated:true})
+    },[messageList.length])
+
 
     const ItemSeparator = useCallback(() => <View style={{ height: 16 }} />, []);
     const listFooter = useCallback(()=>showoptions?<OptionsInput options = {options}/>:null ,[options, showoptions])
-    
-    const scrollDown = useCallback(()=>{
-        requestAnimationFrame(()=>{ scrollRef.current?.scrollToEnd({animated:true})})
-    },[])
 
     const lastProcessedId = useRef<string|null>(null)
     const timers = useRef<ReturnType<typeof setTimeout>[]>([])
@@ -94,10 +96,8 @@ export default function ChatBox() {
                     comfirmToCart(message)
                 case "cartFeedback":
                     cartFeedback(message)
-                // case "cartFeedback":
-                //     console.log("new message");
-                // case "order-feedback":
-                //     console.log("new order feedback message");
+                case "orderFeedback":
+                    processOrder(message)
                 case "checkoutList":
                     renderCheckoutList(message)
                 case "editList":
@@ -134,7 +134,6 @@ export default function ChatBox() {
                 windowSize={15}
                 updateCellsBatchingPeriod={30}
                 ListFooterComponentStyle={{marginBottom:128}}
-                onContentSizeChange= {scrollDown}
                 ItemSeparatorComponent= {ItemSeparator}
                 ListFooterComponent={listFooter}
                 renderItem={renderItem}
