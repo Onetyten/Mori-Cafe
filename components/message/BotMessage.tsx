@@ -1,5 +1,5 @@
 import { chatStyles } from '@/styles/chatStyle'
-import { messageListType } from '@/types/type'
+import { messageListType } from '@/types/messageTypes'
 import { memo } from 'react'
 import { View } from 'react-native'
 import BotChatBubble from "./chat Bubble/BotChatBubble"
@@ -13,6 +13,7 @@ interface propType{
 const BotMessage = memo(
     function BotMessage(props:propType) {
     const {message} = props;
+    console.log(message)
 
     if (message.type !== "message" || message.displayedText === undefined) return
     
@@ -23,7 +24,7 @@ const BotMessage = memo(
                 
                 <View style={chatStyles.botMessageView}>
                         {message.displayedText.length>0 && (
-                        message.displayedText.map((item,index)=>{
+                        message.displayedText.map((item:string,index:number)=>{
                             return(
                                 <View key={index} style={chatStyles.botBubbleContainer}>
                                     <BotChatBubble sender = {message.sender} message={item} index ={index}/>

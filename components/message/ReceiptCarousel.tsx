@@ -1,4 +1,4 @@
-import { AddMessage } from "@/store/messageListSlice";
+import { AddMessage, NewMessage } from "@/store/messageListSlice";
 import { colors } from "@/styles/global";
 import { isAxiosError } from "axios";
 import React, { useEffect, useRef, useState } from "react";
@@ -31,7 +31,7 @@ export default function ReceiptCarousel(props:propType) {
                 setShowOptions(false)
                 const response = await api.post('/order/fetch/?limit=10')
                 if (response.data.success===false){
-                    const newMessage = {type:"message",next:()=>{}, sender:"bot",content:["No history found"]}
+                    const newMessage:NewMessage = {type:"message",next:()=>{}, sender:"bot",content:["No history found"]}
                     dispatch(AddMessage(newMessage))
                     return
                 }
@@ -43,7 +43,7 @@ export default function ReceiptCarousel(props:propType) {
                 if (!isAxiosError(error)) return
                 setLoaded(true)
                 await delay(400)
-                const newMessage = {type:"message",next:()=>{}, sender:"bot",content:[error.response?.data.message||"No history found"]}
+                const newMessage:NewMessage = {type:"message",next:()=>{}, sender:"bot",content:[error.response?.data.message||"No history found"]}
                 dispatch(AddMessage(newMessage))
            }
            finally {

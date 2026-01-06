@@ -24,7 +24,6 @@ export default function QuickActions(props:propType) {
     const fetchFoodList = useFetchFoodList(loading,setLoading,setShowOptions,setOptions,getSomethingElseMessage)
     const fetchReceiptList =  useFetchReceiptList()
     const dispatch = useDispatch()
-    const delay = (ms:number)=>new Promise(resolve=>setTimeout(resolve,ms))
 
     const addToCartCleanup = async()=>{
         setLoading(false)

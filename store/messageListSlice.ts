@@ -1,6 +1,6 @@
 import { cartFeedback, chatMessage, checkoutList, confirmToCartTrigger, editListType, foodCarouselMessage, messageListType, numberCountTrigger, numberInputMessage, orderFeedbackType, subCarouselMessage, userInputType } from "@/types/messageTypes";
 import { tweakType } from "@/types/type";
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, nanoid, PayloadAction } from "@reduxjs/toolkit";
 import { countryCodes } from '../utils/data';
 
 
@@ -73,7 +73,7 @@ const messageListSlice = createSlice({
                 state.messageList.push(action.payload)
             },
             prepare :(message:NewMessage) => {
-                const id = `${Date.now()}-${Math.random()}`
+                const id = nanoid()
                 switch (message.type) {
                     case "message":
                         return {payload : { id, ...messageDefaults.message, ...message }}

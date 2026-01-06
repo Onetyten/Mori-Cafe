@@ -1,6 +1,6 @@
 import { AppendTextMessage, updateMessage } from "@/store/messageListSlice";
 import { messageListType } from "@/types/messageTypes";
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import { useDispatch } from "react-redux";
 
 
@@ -9,19 +9,14 @@ export function useRenderTextMessage(){
     const dispatch = useDispatch()
     const timers = useRef<ReturnType<typeof setTimeout>[]>([])
     
-    useEffect(() => {
-        return () => {
-            timers.current.forEach(clearTimeout)
-            timers.current = []
-        }
-    }, [])
+    
 
     function renderTextMessage(message:messageListType){
         let index = 0;
 
         function loadNextMessage(){
-            if (!message || message.type !=="message" || message.displayedText.length === message.content.length) return
-            if ( index < message.content.length) {
+            if (!message || message.type !=="message") return
+            if ( message.displayedText.length < message.content.length) {
                 dispatch(updateMessage({id:message.id,update:{isTyping:true}}))
 
                 timers.current.push(setTimeout(()=>{

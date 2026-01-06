@@ -22,7 +22,6 @@ export default function useCalculatePrice(
             await delay(300)
             const newInput:NewMessage = {type:"enterInfo",next:()=>{}};
             dispatch(AddMessage(newInput));
-
         },[dispatch, getSomethingElseMessage, setOptions, setShowOptions]);
 
 

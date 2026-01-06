@@ -46,8 +46,6 @@ interface propType{
                 return <NumberInput message={chatItem} />;
             case "cartFeedback":
                 return <CartFeedBack/>
-            // case "orderFeedback":
-            //     return <CartFeedBack/>
             case "checkoutList":
                 return <CheckoutList message={chatItem}/>;
             case "editList":

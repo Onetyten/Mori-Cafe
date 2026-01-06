@@ -63,58 +63,65 @@ export default function ChatBox() {
         scrollRef.current?.scrollToEnd({animated:true})
     },[messageList.length])
 
-
+    
     const ItemSeparator = useCallback(() => <View style={{ height: 16 }} />, []);
     const listFooter = useCallback(()=>showoptions?<OptionsInput options = {options}/>:null ,[options, showoptions])
 
-    const lastProcessedId = useRef<string|null>(null)
-    const timers = useRef<ReturnType<typeof setTimeout>[]>([])
-
-    useEffect(() => {
-        return () => {
-            timers.current.forEach(clearTimeout)
-            timers.current = []
-        }
-    }, [])
+    const processedIds = useRef<Set<string>>(new Set())
 
     useEffect(()=>{
-        const chatManager=()=>{
-            const message = messageList.at(-1)
-            if (!message || message.id === lastProcessedId.current) return
-            lastProcessedId.current = message.id
-            
+        const ids = new Set(messageList.map(m=>m.id))
+        processedIds.current.forEach(id=>{
+            if (!ids.has(id)) processedIds.current.delete(id)
+        })
+    },[messageList])
+
+
+    useEffect(()=>{
+        for (const message of messageList){
+            if (processedIds.current.has(message.id)) continue
+            processedIds.current.add(message.id)
             switch (message.type){
                 case "message":
                     renderTextMessage(message)
+                    break
                 case "subcarousel":
-                    renderSubcarousel(message) 
+                    renderSubcarousel(message)
+                    break 
                 case "numberCountTrigger":
-                    triggerNumberInput(message)   
+                    triggerNumberInput(message)
+                    break   
                 case "numberInput":
                     renderNumberInput(message)
+                    break
                 case "confirmToCart":
                     comfirmToCart(message)
+                    break
                 case "cartFeedback":
                     cartFeedback(message)
+                    break
                 case "orderFeedback":
                     processOrder(message)
+                    break
                 case "checkoutList":
                     renderCheckoutList(message)
+                    break
                 case "editList":
                     renderCustomisationList(message)
+                    break
                 case "enterInfo":
                     renderUserInput(message)
+                    break
                 case "foodCarousel":
                     renderFoodCarousel(message)
+                    break
                 // case "receipt-list":
                 //     console.log("new order feedback message");
                 default:
                     return
             }
-
         }
 
-        chatManager()
     // eslint-disable-next-line react-hooks/exhaustive-deps
     },[messageList])
 
