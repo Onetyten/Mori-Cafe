@@ -13,7 +13,6 @@ interface propType{
 const BotMessage = memo(
     function BotMessage(props:propType) {
     const {message} = props;
-    console.log(message)
 
     if (message.type !== "message" || message.displayedText === undefined) return
     

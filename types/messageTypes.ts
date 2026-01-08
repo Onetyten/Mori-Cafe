@@ -60,6 +60,7 @@ export interface checkoutList extends baseMessage{
   type:"checkoutList";
   next?:()=>void;
   fetched:boolean;
+  final:()=>void;
 }
 export interface userInputType extends baseMessage{
   type:"enterInfo";

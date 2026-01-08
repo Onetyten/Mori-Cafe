@@ -8,7 +8,7 @@ import { useDispatch } from "react-redux"
 import useCalculatePrice from "../useCalculatePrice"
 
 
-export function useRenderCheckoutList(setShowOptions:React.Dispatch<React.SetStateAction<boolean>>,getSomethingElseMessage: (message: string) => void,setOptions: React.Dispatch<React.SetStateAction<{ name: string; onClick: () => void }[]>>,loading: boolean,setLoading: React.Dispatch<React.SetStateAction<boolean>>) {
+export function useRenderCheckoutList(setShowOptions:React.Dispatch<React.SetStateAction<boolean>>,getSomethingElseMessage: (message: string, item?: messageListType | undefined) => void,setOptions: React.Dispatch<React.SetStateAction<{ name: string; onClick: () => void }[]>>,loading: boolean,setLoading: React.Dispatch<React.SetStateAction<boolean>>) {
 
     const dispatch = useDispatch()
     const delay = (ms:number)=> new Promise(resolve=>setTimeout(resolve,ms))
@@ -19,14 +19,14 @@ export function useRenderCheckoutList(setShowOptions:React.Dispatch<React.SetSta
         await delay(200)
         setOptions([...[
             { name: 'Checkout', onClick: ()=>calculateSelectedPrice(message) },
-            { name: 'Continue shopping', onClick: () => getSomethingElseMessage("Let's continue") }
+            { name: 'Continue shopping', onClick: () => getSomethingElseMessage("Let's continue",message) }
         ]]);
         setShowOptions(true)
     }
     
     
-    function checkOutListCleared(){
-        setOptions([{name:'Continue shopping', onClick:()=>getSomethingElseMessage("Let's continue")}])
+    function checkOutListCleared(message:messageListType){
+        setOptions([{name:'Continue shopping', onClick:()=>getSomethingElseMessage("Let's continue",message)}])
     }
     
     async function renderCheckoutList(message:messageListType){
@@ -34,13 +34,24 @@ export function useRenderCheckoutList(setShowOptions:React.Dispatch<React.SetSta
         setLoading(true)
         setShowOptions(false)
         let feedBack = ""
+        function final (){
+            console.log("loggit")
+            const newMessage:NewMessage = {type:"message",next:()=>{}, sender:"bot",content:["Your tab is empty."]}
+            dispatch(AddMessage(newMessage))
+            setOptions([{name:'Continue shopping', onClick:()=>getSomethingElseMessage("Let's continue",message)}])
+        }
+
+        dispatch(updateMessage({id:message.id,update:{final}}))
+
         try {
             if (!message.next) return
+            
+
             const response = await api.get('/order/cart/fetch')
             const items = response.data?.data || []
             if (items.length===0){
                feedBack=  "Your tab is empty."
-               checkOutListCleared()
+               checkOutListCleared(message)
             }
             dispatch(setOrderList(items))
             checkOutListSuccess(message)

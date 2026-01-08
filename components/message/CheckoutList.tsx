@@ -18,18 +18,7 @@ const CheckoutList = memo(function CheckoutList(props:propType) {
     const cartList = useSelector((state:RootState)=>state.orderList.orderList)
     
     if (message.type !== "checkoutList") return
-    
     console.log(message)
-    // useEffect(() => {
-    //     if (added && cartList.length === 0 && !checkedOut) {
-    //         setCheckedOut(true)
-    //         const newMessage:NewMessage = {type:"message",next:()=>{}, sender:"bot",content:["Your tab is empty."]}
-    //         dispatch(AddMessage(newMessage))
-    //         setFeedback("Your tab is empty.")
-    //         checkOutListCleared()
-    //         hasRun.current = true
-    //     }
-    // }, [cartList, checkedOut, added])
     
 
   return (
@@ -39,7 +28,7 @@ const CheckoutList = memo(function CheckoutList(props:propType) {
                 <View className="w-full flex gap-2 items-start justify-end">     
                     <View className="flex w-full justify-end items-end text-sm text-secondary-100 flex-col gap-2 ">
                         {cartList.filter((item) => item && item.foodId).map((item, index) => (
-                            <CheckoutItem food={item} key={index} />
+                            <CheckoutItem message={message} food={item} key={index} />
                         ))}
                     </View>
                 </View>

@@ -1,5 +1,5 @@
-import { AddMessage, NewMessage } from '@/store/messageListSlice';
-import { subCategories } from '@/types/type';
+import { AddMessage, NewMessage, removeMessage } from '@/store/messageListSlice';
+import { messageListType, subCategories } from '@/types/messageTypes';
 import React, { useCallback, useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 
@@ -13,7 +13,11 @@ export default function useGetElse(setShowOptions:React.Dispatch<React.SetStateA
         };
     }, []);
 
-    const getSomethingElseMessage = useCallback((message:string)=>{
+
+    const getSomethingElseMessage = useCallback((message:string,item?:messageListType)=>{
+        if (item){
+            dispatch(removeMessage(item.id))
+        }
         setShowOptions(false)
         const  newMessage:NewMessage = {type:"message",next:()=>{}, sender:"user",content:[message]}
         dispatch(AddMessage(newMessage))

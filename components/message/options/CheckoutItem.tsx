@@ -1,37 +1,53 @@
+import { deleteOrder } from '@/store/OrderCartList';
 import { colors, GlobalStyle } from '@/styles/global';
+import { messageListType } from '@/types/messageTypes';
+import api from '@/utils/api';
+import { RootState } from '@/utils/store';
 import { Minus, Plus } from 'lucide-react-native';
-import { useEffect, useState } from 'react';
-import { Image, StyleSheet, Text, TouchableOpacity, useWindowDimensions, View } from 'react-native';
-import { useDispatch } from 'react-redux';
-import { setDeleteCartItem } from '../../../store/cartDeleteSlice';
+import { useState } from 'react';
+import { Alert, Image, StyleSheet, Text, TouchableOpacity, useWindowDimensions, View } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 import type { cartListType } from '../../../types/type';
 
 
 interface propType{
     food:cartListType,
+    message:messageListType
 }
 
 export default function CheckoutItem(props:propType) {
-    const {food} = props
+    const {food,message} = props
     const [quantity,setQuantity] = useState(food.quantity)
     const {width,height} = useWindowDimensions()
     const landscape = width>height
     const dynamicWidth = landscape ? "40%" : "70%";
     const [parentHeight,setParentHeight] = useState(80)
     const dispatch = useDispatch()
+    const cartList = useSelector((state:RootState)=>state.orderList.orderList)
 
-    useEffect(()=>{
-        if (quantity>10) return setQuantity(10)
-        if (quantity<1){
-            setQuantity(1)
-            dispatch(setDeleteCartItem(food))
+    async function handleDelete() {
+        const itemId = food._id
+        if (!itemId || message.type !== "checkoutList") return
+        const isLast = cartList.filter((item) => item && item.foodId).length <= 1
+        dispatch(deleteOrder(itemId))
+        await api.delete(`/order/cart/delete/${itemId}`)
+        if (isLast){
+          message.final()
         }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[quantity])
+    }
 
     function handleChange(delta:number){
-        setQuantity(quantity+delta)
+        const value = quantity+delta
+        if (value>=10) setQuantity(10)
+        else if (value<1){
+            setQuantity(1)
+            Alert.alert("Confirmation",`Are you sure you want to remove ${food.foodId.name} from your tab`,
+              [{text:"Yes",onPress:handleDelete},
+              {text:"No",style:'cancel'}])
+        }
+        else setQuantity(q=>q+delta)
     }
+
 
   return (
     <View style={[styles.parent,{width: dynamicWidth}]} onLayout={(e)=>setParentHeight(e.nativeEvent.layout.height)}>

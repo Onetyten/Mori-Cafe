@@ -1,37 +1,31 @@
 import { colors, GlobalStyle } from '@/styles/global'
-import api from '@/utils/api'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { clearDeleteCartItem } from '../store/cartDeleteSlice'
-import { deleteOrder } from '../store/OrderCartList'
 import type { RootState } from '../utils/store'
 
 export default function Comfirmation() {
     const deletedItem = useSelector((state:RootState)=>state.cartDel.cartDel)
     const dispatch = useDispatch()
+    const cartList = useSelector((state:RootState)=>state.orderList.orderList)
 
-    async function handleDelete() {
-        if (!deletedItem) return
-        const itemId = deletedItem._id
-        dispatch(deleteOrder(deletedItem._id))
-        dispatch(clearDeleteCartItem())
-        await api.delete(`/order/cart/delete/${itemId}`)
-        return
-    }
+    if (deletedItem.message?.type !== "checkoutList") return
+
+
 
   return (
-    deletedItem&&
+    deletedItem.item&&
     <View style={styles.overlay}>
         <View style={styles.modal}>
             <Text style={[styles.text,GlobalStyle.Outfit_Regular_body]}>
-                Are you sure you want to remove {deletedItem.foodId.name} from your tab
+                Are you sure you want to remove {deletedItem.item.foodId.name} from your tab
             </Text>
             
             <View style={{flexDirection:"row",gap:4,width:"100%"}}>
                 <TouchableOpacity style={[styles.button,styles.noButton]} onPress={()=>{dispatch(clearDeleteCartItem())}}>
                     <Text style={[styles.noText,GlobalStyle.Outfit_Regular_body]} >No</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={[styles.button,styles.yesButton]} onPress={handleDelete}>
+                <TouchableOpacity style={[styles.button,styles.yesButton]}>
                     <Text style={[styles.yesText,GlobalStyle.Outfit_Regular_body]}>Yes</Text>
                 </TouchableOpacity>
             </View>

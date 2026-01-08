@@ -18,7 +18,7 @@ type NewConfirmToCart = Omit<confirmToCartTrigger,"id">
 type NewCartFeedback = Omit<cartFeedback,"id">
 type NewOrderFeedback = Omit<orderFeedbackType,"id">
 type NewUserInputType = Omit<userInputType,"id" | "location" | "address" | "confirmed" | "goBack" | "name" | "email" | "phone_number" >
-type NewCartListFeedback = Omit<checkoutList,"id"|"fetched">
+type NewCartListFeedback = Omit<checkoutList,"id"|"fetched"|"final">
 type NewEditListType = Omit<editListType,"id"|"fetched"|"customisations"|"confirmed"|"tweaks">
 export type NewMessage = NewChatMessage | NewSubCarouselMessage | NewFoodListMessage | NewFoodInput | NewFoodInputTrigger | NewConfirmToCart | NewCartFeedback | NewEditListType | NewCartListFeedback | NewUserInputType | NewOrderFeedback
 
@@ -49,6 +49,7 @@ const messageDefaults =  {
   },
   checkoutList:{
     fetched:false,
+    final:()=>{},
   },
   enterInfo:{
     location:null,

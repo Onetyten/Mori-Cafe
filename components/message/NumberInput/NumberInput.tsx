@@ -28,10 +28,7 @@ const NumberInput = memo( function NumberInput(props:propType) {
     if (message.value > 10) {
       dispatch(updateMessage({id:message.id,update:{error:"Maximum 10 items allowed."}}))
     }
-    dispatch(updateMessage({id:message.id,update:{error:"",confirmed:true,isTyping:true}})) 
-
-    await delay(300)
-    dispatch(updateMessage({id:message.id,update:{isTyping:false}}))
+    dispatch(updateMessage({id:message.id,update:{error:"",confirmed:true,isTyping:false}})) 
     const confirmToCart:NewMessage = {type:"confirmToCart", value: message.value}
     dispatch(AddMessage(confirmToCart))
   }
