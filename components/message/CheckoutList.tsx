@@ -18,8 +18,6 @@ const CheckoutList = memo(function CheckoutList(props:propType) {
     const cartList = useSelector((state:RootState)=>state.orderList.orderList)
     
     if (message.type !== "checkoutList") return
-    console.log(message)
-    
 
   return (
     <View style={{width:"100%"}}>

@@ -14,7 +14,8 @@ const orderCartList = createSlice({
   initialState,
   reducers: {
     setOrderList: (state, action: PayloadAction<cartListType[]>) => {
-        state.orderList = action.payload
+        const validOrders = action.payload.filter((item) => item && item.foodId)
+        state.orderList = validOrders
     },
     deleteOrder: (state, action: PayloadAction<string>) => {
         state.orderList = state.orderList.filter((item)=>item._id !== action.payload)

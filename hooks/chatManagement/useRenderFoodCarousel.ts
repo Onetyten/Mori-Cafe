@@ -21,7 +21,6 @@ export default function useRenderFoodCarousel (setLoading:React.Dispatch<React.S
         }
 
         catch (error) {
-            console.log(error)
             let message = ""
             if (isAxiosError(error)){
                 message = error.response?.data.message || "Couldn't get get this category"

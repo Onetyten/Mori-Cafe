@@ -53,7 +53,6 @@ export default function useConfirmToCart(setLoading:React.Dispatch<React.SetStat
         finally{
             if (message.next) message.next()
             isAdding.current = false
-            console.log(feedBack)
             const newMessage:NewMessage = {type:"message",next:()=>{}, sender:"bot",content:[feedBack]}
             dispatch(AddMessage(newMessage))
             dispatch(removeMessage(message.id))

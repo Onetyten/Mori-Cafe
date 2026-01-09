@@ -1,35 +1,29 @@
-import { AddMessage } from '@/store/messageListSlice'
-import { useCallback, useEffect, useRef } from 'react'
+import { AddMessage, NewMessage } from '@/store/messageListSlice'
+import { useCallback } from 'react'
 import { useDispatch } from 'react-redux'
 
-export default function useFetchReceiptList()
+export default function useFetchReceiptList(loading:boolean)
 {
     const dispatch =useDispatch()
-    const timers = useRef<ReturnType<typeof setTimeout>[]>([])
-    useEffect(() => {
-        return () => {
-            timers.current.forEach(clearTimeout);
-            timers.current = [];
-        };
-    }, []);
-    const fetchReceiptList = useCallback(()=>{
+    const delay = (ms:number)=> new Promise(resolve=>setTimeout(resolve,ms))
+
+    const fetchReceiptList = useCallback(async()=>{
+        if (loading) return
         try
         {   
-            const newCommand = {type:"message",next:()=>{}, sender:"user",content:['show my order history']}
+            const newCommand:NewMessage = {type:"message",next:()=>{}, sender:"user",content:['show my order history']}
             dispatch(AddMessage(newCommand))            
-            timers.current.push(setTimeout(()=>{
-                const newMessage = {type:"message",next:()=>{}, sender:"bot",content:['Getting order history...']}
-                dispatch(AddMessage(newMessage))
-            },1000))
+            await delay(500)
+            const newMessage:NewMessage = {type:"message",next:()=>{}, sender:"bot",content:['Getting order history...']}
+            dispatch(AddMessage(newMessage))
             
-            timers.current.push(setTimeout(()=>{
-                const newReceipt = {type:"receipt-list",next:()=>{}, sender:"bot",content:[]}
-                dispatch(AddMessage(newReceipt))
-            },1500))
+            await delay(200)
+            const newReceipt:NewMessage = {type:"receiptList"}
+            dispatch(AddMessage(newReceipt))
         }
         catch (error) {
             console.error(error)
         }
-    },[dispatch])
+    },[dispatch, loading])
     return fetchReceiptList
 }

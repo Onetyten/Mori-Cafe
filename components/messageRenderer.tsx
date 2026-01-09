@@ -1,4 +1,4 @@
-import { messageListType, subCategories } from '@/types/messageTypes';
+import { messageListType } from '@/types/messageTypes';
 import React, { memo } from 'react';
 import BotMessage from './message/BotMessage';
 import CartFeedBack from './message/CartFeedBack';
@@ -7,6 +7,7 @@ import CheckoutList from './message/CheckoutList';
 import CustomisationList from './message/CustomisationList';
 import FoodCarousel from './message/FoodCarousel/FoodCarousel';
 import NumberInput from './message/NumberInput/NumberInput';
+import ReceiptCarousel from './message/ReceiptCarousel';
 import SubCarousel from './message/SubCarousel/SubCarousel';
 import UserInfoInput from './message/UserInfoInput';
 
@@ -14,26 +15,16 @@ interface propType{
     chatItem:messageListType;
     isLast:boolean;
     context:{
-        getCategory: (food: subCategories) => void;
-        getSomethingElseMessage: (message: string) => void;
-        CartList: () => void;
         addToCart: () => void;
-        isAdding: React.RefObject<boolean>;
         fetchFoodList: (endpoint: string, expression: string) => Promise<void>;
-        setOptions: React.Dispatch<React.SetStateAction<{
-            name: string;
-            onClick: () => void;
-        }[]>>;
         setShowOptions: React.Dispatch<React.SetStateAction<boolean>>;
-        setLoading: React.Dispatch<React.SetStateAction<boolean>>;
-        loading: boolean;
     }
 }
 
  const MessageRenderer = memo(
     function MessageRenderer(props:propType) {
         const {chatItem,context} = props
-        const {addToCart,fetchFoodList} = context
+        const {addToCart,fetchFoodList,setShowOptions} = context
 
         switch (chatItem.type){
             case "message":
@@ -51,11 +42,11 @@ interface propType{
             case "editList":
                 return <CustomisationList message={chatItem} addToCart = {addToCart} />;
             case "enterInfo":
-                return <UserInfoInput setShowOptions={context.setShowOptions} message={chatItem} />;
+                return <UserInfoInput setShowOptions={setShowOptions} message={chatItem} />;
             case "foodCarousel":
                 return <FoodCarousel message={chatItem}/>;
-            // case "receipt-list":
-            //     return <ReceiptCarousel isLast={isLast} setLoading={setLoading} setShowOptions={setShowOptions} />
+            case "receiptList":
+                return <ReceiptCarousel message={chatItem} />
             default:
                 return null   
         } 

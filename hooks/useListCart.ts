@@ -11,21 +11,14 @@ export default function useListCart(setShowOptions:React.Dispatch<React.SetState
     const dispatch = useDispatch()
     
 
-    const addToCartCleanup = async()=>{
-        setLoading(false)
-        setOptions([{name:'Checkout tab', onClick:CartList},{name:'Continue shopping', onClick:()=>getSomethingElseMessage("Let's continue")}])
-        await delay (500)
-        setShowOptions(true)
-    }
-
     const CartList=async()=>{
         const newMessage:NewMessage = {type:"message",next:()=>{}, sender:"user",content:["Let's Checkout"]}
         dispatch(AddMessage(newMessage))
         await delay (20)
-        const newFeedBack:NewMessage = {type:"checkoutList",next:addToCartCleanup}
+        const newFeedBack:NewMessage = {type:"checkoutList"}
         dispatch(AddMessage(newFeedBack))
         await delay (200)
-        console.log("add message",messageList)
+
     }
 
     return CartList

@@ -1,18 +1,20 @@
 import { AddMessage, NewMessage } from "@/store/messageListSlice";
 import { useCallback, useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
+import useListCart from "./useListCart";
 
 
 
 export default function useAddToCart(
     setShowOptions:React.Dispatch<React.SetStateAction<boolean>>,
-    CartList: () => void,
     getSomethingElseMessage:(message: string) => void,
     setLoading:React.Dispatch<React.SetStateAction<boolean>>,
     setOptions: React.Dispatch<React.SetStateAction<{name: string; onClick: () => void}[]>>,
     ) {
 
     const timers = useRef<ReturnType<typeof setTimeout>[]>([])
+    const CartList = useListCart(setShowOptions,setLoading,setOptions,getSomethingElseMessage)
+
     useEffect(() => {
         return () => {
             timers.current.forEach(clearTimeout);

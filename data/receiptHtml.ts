@@ -120,7 +120,7 @@ export const receiptHtml = (order:FetchedOrderType)=>{
                             <div class="info-container">
                                 <div class="info-view">
                                     <div class="info-title">Name:</div>
-                                    <div class="info-details">${order.name}</div>
+                                    <div class="info-details">${order.name || "Name"}</div>
                                 </div>
 
                                 <div class="info-view">
@@ -135,7 +135,7 @@ export const receiptHtml = (order:FetchedOrderType)=>{
                             </div>
 
                             <div class="item-scroll">
-                                ${order.items.map(item => `
+                                ${order.items.filter(item=>item && item.foodId).map(item => `
                                     <div class="item-row">
                                         <div class="info-details">${item.foodId.name}${item.quantity > 1 ? ` x${item.quantity}` : ""}</div>
                                         <div class="info-details">₦${item.priceAtPurchase}</div>

@@ -39,7 +39,6 @@ export default function useProcessOrder(setLoading:React.Dispatch<React.SetState
         }
 
         try {
-            console.log("Order to be sent: ",JSON.stringify(order,null,2))
             const response = await api.post('/order/create?isMobile=true',order)
             const data = response.data.data
             const payNow = () => popup.checkout({

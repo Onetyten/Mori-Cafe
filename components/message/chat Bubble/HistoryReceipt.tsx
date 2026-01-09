@@ -39,13 +39,13 @@ export default function HistoryReceipt ({order}:ReceiptProps){
                     encoding: FileSystem.EncodingType.Base64,
                 })
                 await FileSystem.writeAsStringAsync(fileUri,base64,{encoding:FileSystem.EncodingType.Base64})
-                Alert.alert("Saved as PDF");
+                Alert.alert("Saved","Receipt saved as PDF");
             }
             
             else {
                 const destination = FileSystem.documentDirectory + filename;
                 await FileSystem.moveAsync({from:pdf.uri,to:destination})
-                Alert.alert("Saved as PDF");
+                Alert.alert("Saved","Receipt saved as PDF");
             }
         }
         catch (error:any) {
@@ -54,7 +54,7 @@ export default function HistoryReceipt ({order}:ReceiptProps){
                 return
             }
             
-            Alert.alert("Error", "Failed to save PDF");
+            Alert.alert("Error", "Failed to save receipt");
         }
         finally{
             setLoading(false)
@@ -117,7 +117,7 @@ export default function HistoryReceipt ({order}:ReceiptProps){
                 </View>
 
                 <ScrollView scrollEnabled={true} contentContainerStyle={{gap:8}} overScrollMode="auto" showsVerticalScrollIndicator={false} style={style.itemScroll}>
-                    {order.items.map((item,index) => (
+                    {order.items.filter(item=>item && item.foodId).map((item,index) => (
                         <View key={index} style={style.itemRow} >
                             <Text style={style.infoDetails}>
                                 {item.foodId.name}  {item.quantity>1?`x${item.quantity}`:""}

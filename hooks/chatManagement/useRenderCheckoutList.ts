@@ -24,10 +24,10 @@ export function useRenderCheckoutList(setShowOptions:React.Dispatch<React.SetSta
         setShowOptions(true)
     }
     
-    
     function checkOutListCleared(message:messageListType){
         setOptions([{name:'Continue shopping', onClick:()=>getSomethingElseMessage("Let's continue",message)}])
     }
+
     
     async function renderCheckoutList(message:messageListType){
         if (message.type !== "checkoutList" || loading) return
@@ -35,7 +35,6 @@ export function useRenderCheckoutList(setShowOptions:React.Dispatch<React.SetSta
         setShowOptions(false)
         let feedBack = ""
         function final (){
-            console.log("loggit")
             const newMessage:NewMessage = {type:"message",next:()=>{}, sender:"bot",content:["Your tab is empty."]}
             dispatch(AddMessage(newMessage))
             setOptions([{name:'Continue shopping', onClick:()=>getSomethingElseMessage("Let's continue",message)}])
@@ -43,10 +42,7 @@ export function useRenderCheckoutList(setShowOptions:React.Dispatch<React.SetSta
 
         dispatch(updateMessage({id:message.id,update:{final}}))
 
-        try {
-            if (!message.next) return
-            
-
+        try {            
             const response = await api.get('/order/cart/fetch')
             const items = response.data?.data || []
             if (items.length===0){
@@ -66,7 +62,7 @@ export function useRenderCheckoutList(setShowOptions:React.Dispatch<React.SetSta
         }
         finally{
             if (message.type !== "checkoutList") return
-            if (message.next) message.next()
+            // if (message.next) message.next()
             if (feedBack.length>0){
                 const newMessage:NewMessage = {type:"message",next:()=>{}, sender:"user",content:[feedBack]}
                 dispatch(AddMessage(newMessage))

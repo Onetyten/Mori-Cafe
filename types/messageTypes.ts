@@ -1,5 +1,5 @@
 import { LatLng } from 'react-native-maps';
-import { countryCodeType, customisationType, FoodType, subCategoryType, tweakType } from "./type";
+import { countryCodeType, customisationType, FetchedOrderType, FoodType, subCategoryType, tweakType } from "./type";
 
 export interface baseMessage{
     id:string,
@@ -56,6 +56,14 @@ export interface orderFeedbackType extends baseMessage{
   type:"orderFeedback";
   next?:()=>void;
 }
+
+export interface receiptListType extends baseMessage{
+  type:"receiptList";
+  content:FetchedOrderType[];
+  fetched:boolean;
+  next?:()=>void;
+}
+
 export interface checkoutList extends baseMessage{
   type:"checkoutList";
   next?:()=>void;
@@ -85,4 +93,4 @@ export interface editListType extends baseMessage{
   confirmed:boolean;
 }
 
-export type messageListType = chatMessage | subCarouselMessage | foodCarouselMessage | numberInputMessage | numberCountTrigger | confirmToCartTrigger | cartFeedback | editListType | checkoutList | userInputType | orderFeedbackType
+export type messageListType = chatMessage | subCarouselMessage | foodCarouselMessage | numberInputMessage | numberCountTrigger | confirmToCartTrigger | cartFeedback | editListType | checkoutList | userInputType | orderFeedbackType | receiptListType

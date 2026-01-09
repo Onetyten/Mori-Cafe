@@ -22,19 +22,12 @@ export default function QuickActions(props:propType) {
     const {getCategory} = useSubcategory(setOptions,setShowOptions)
     const getSomethingElseMessage = useGetElse(setShowOptions,setOptions,getCategory)
     const fetchFoodList = useFetchFoodList(loading,setLoading,setShowOptions,setOptions,getSomethingElseMessage)
-    const fetchReceiptList =  useFetchReceiptList()
+    const fetchReceiptList =  useFetchReceiptList(loading)
     const dispatch = useDispatch()
 
-    const addToCartCleanup = async()=>{
-        setLoading(false)
-        setOptions([{name:'Checkout tab', onClick:CartList},{name:'Continue shopping', onClick:()=>getSomethingElseMessage("Let's continue")}])
-        setShowOptions(true)
-    }
-
     const CartList=async()=>{
-        const newMessage:NewMessage = {type:"message",next:()=>{}, sender:"user",content:["Let's Checkout"]}
-        dispatch(AddMessage(newMessage))
-        const newFeedBack:NewMessage = {type:"checkoutList",next:addToCartCleanup}
+        if (loading) return
+        const newFeedBack:NewMessage = {type:"checkoutList"}
         dispatch(AddMessage(newFeedBack))
     }
 
@@ -42,7 +35,10 @@ export default function QuickActions(props:propType) {
   return (
     showButtons&&
     <CircularView size={350}>
-        <TouchableOpacity style={[styles.button]} onPress={()=>{fetchFoodList(`/food/list?random=true`,"Close your eyes...")}}>
+        <TouchableOpacity style={[styles.button]} onPress={()=>{
+                if (loading) return
+                fetchFoodList(`/food/list?random=true`,"Close your eyes...")
+            }}>
             <Dice6 size={20} color={"#e9d5ca"}  />
             <Text style={[GlobalStyle.Outfit_Light_small,styles.iconText]}>Random</Text>
         </TouchableOpacity>

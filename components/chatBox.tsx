@@ -2,6 +2,7 @@ import { useRenderCheckoutList } from "@/hooks/chatManagement/useRenderCheckoutL
 import { useRenderCustomisatonList } from "@/hooks/chatManagement/useRenderCustomisatonList"
 import useRenderFoodCarousel from "@/hooks/chatManagement/useRenderFoodCarousel"
 import useRenderNumberInput from "@/hooks/chatManagement/useRenderNumberInput"
+import { useRenderReceiptCarousel } from "@/hooks/chatManagement/useRenderReceiptCarousel"
 import useRenderSubcarousel from "@/hooks/chatManagement/useRenderSubCarousel"
 import { useRenderTextMessage } from "@/hooks/chatManagement/useRenderTextMessage"
 import useRenderUserInput from "@/hooks/chatManagement/useRenderUserInput"
@@ -9,7 +10,6 @@ import useAddToCart from "@/hooks/useAddToCart"
 import useConfirmToCart from "@/hooks/useConfirmToCart"
 import useFetchFoodList from "@/hooks/useFetchFoodList"
 import useGetElse from "@/hooks/useGetElse"
-import useListCart from "@/hooks/useListCart"
 import useProcessOrder from "@/hooks/useProcessOrder"
 import { messageListType } from "@/types/messageTypes"
 import { RootState } from "@/utils/store"
@@ -37,15 +37,14 @@ export default function ChatBox() {
     const {getCategory} = useSubcategory(setOptions,setShowOptions)
     useChatInit({setShowOptions,setOptions,options,getCategory})
     const getSomethingElseMessage = useGetElse(setShowOptions,setOptions,getCategory)
-    const CartList = useListCart(setShowOptions,setLoading,setOptions,getSomethingElseMessage)
-    const {addToCart,isAdding} = useAddToCart(setShowOptions,CartList,getSomethingElseMessage,setLoading,setOptions)
+    const {addToCart,isAdding} = useAddToCart(setShowOptions,getSomethingElseMessage,setLoading,setOptions)
     const {comfirmToCart,cartFeedback} = useConfirmToCart(setLoading,setShowOptions,addToCart,setOptions,isAdding)
     const {processOrder} = useProcessOrder(setLoading,setShowOptions,addToCart,setOptions,isAdding)
     const fetchFoodList = useFetchFoodList(loading,setLoading,setShowOptions,setOptions,getSomethingElseMessage)
 
     const chatContext  = useMemo(()=>({
-        getCategory,getSomethingElseMessage,CartList,addToCart,isAdding,fetchFoodList,setOptions,setShowOptions, setLoading, loading
-    }),[CartList, addToCart, fetchFoodList, getCategory, getSomethingElseMessage, isAdding,setOptions,setShowOptions, setLoading, loading])
+        addToCart,fetchFoodList,setShowOptions
+    }),[addToCart, fetchFoodList, setShowOptions])
 
     const {renderTextMessage} = useRenderTextMessage();
     const {renderSubcarousel} =useRenderSubcarousel();
@@ -54,6 +53,7 @@ export default function ChatBox() {
     const {renderCustomisationList} = useRenderCustomisatonList()
     const {renderUserInput} = useRenderUserInput(setShowOptions,getSomethingElseMessage,setOptions)
     const {renderCheckoutList} = useRenderCheckoutList(setShowOptions,getSomethingElseMessage,setOptions,loading,setLoading)
+    const {renderReceiptCarousel} = useRenderReceiptCarousel(setShowOptions)
 
     const renderItem = useCallback(({item,index}:{item:messageListType,index:number})=>(
         <MessageRenderer chatItem={item}  isLast = {index === messageList.length-1} context={chatContext}/>
@@ -115,8 +115,9 @@ export default function ChatBox() {
                 case "foodCarousel":
                     renderFoodCarousel(message)
                     break
-                // case "receipt-list":
-                //     console.log("new order feedback message");
+                case "receiptList":
+                    renderReceiptCarousel(message)
+                    break
                 default:
                     return
             }

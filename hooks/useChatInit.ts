@@ -23,9 +23,17 @@ export function useChatInit({setShowOptions,setOptions,options,getCategory}: Use
     const initializeState = useSelector((state:RootState)=>state.messageList.initialized)
 
     const introMessage = useCallback(()=>{
-        const newMessage:NewMessage = {type:"message", sender:"bot", next:()=>{setShowOptions(true)}, content:['Hey there! I’m Mori','your digital barista','What are you craving today?']}
+        const newMessage:NewMessage = {type:"message", sender:"bot", next:()=>{
+            setOptions([
+                    { name: 'Coffee', onClick: () => getCategory('coffee') },
+                    { name: 'Drink', onClick: () => getCategory('drink') },
+                    { name: 'Snacks', onClick: () => getCategory('snack') }
+            ]);
+            setShowOptions(true)},
+            content:['Hey there! I’m Mori','your digital barista','What are you craving today?']}
         dispatch(AddMessage(newMessage))
-    },[dispatch, setShowOptions])
+        
+    },[dispatch, getCategory, setOptions, setShowOptions])
     
     useEffect(() => {
         if (options.length === 0 && getCategory) {

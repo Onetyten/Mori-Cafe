@@ -1,4 +1,4 @@
-import { cartFeedback, chatMessage, checkoutList, confirmToCartTrigger, editListType, foodCarouselMessage, messageListType, numberCountTrigger, numberInputMessage, orderFeedbackType, subCarouselMessage, userInputType } from "@/types/messageTypes";
+import { cartFeedback, chatMessage, checkoutList, confirmToCartTrigger, editListType, foodCarouselMessage, messageListType, numberCountTrigger, numberInputMessage, orderFeedbackType, receiptListType, subCarouselMessage, userInputType } from "@/types/messageTypes";
 import { tweakType } from "@/types/type";
 import { createSlice, nanoid, PayloadAction } from "@reduxjs/toolkit";
 import { countryCodes } from '../utils/data';
@@ -17,10 +17,11 @@ type NewFoodInputTrigger = Omit<numberCountTrigger,"id">
 type NewConfirmToCart = Omit<confirmToCartTrigger,"id">
 type NewCartFeedback = Omit<cartFeedback,"id">
 type NewOrderFeedback = Omit<orderFeedbackType,"id">
+type NewReceiptCarousel = Omit<receiptListType,"id" | "content" | "fetched">
 type NewUserInputType = Omit<userInputType,"id" | "location" | "address" | "confirmed" | "goBack" | "name" | "email" | "phone_number" >
 type NewCartListFeedback = Omit<checkoutList,"id"|"fetched"|"final">
 type NewEditListType = Omit<editListType,"id"|"fetched"|"customisations"|"confirmed"|"tweaks">
-export type NewMessage = NewChatMessage | NewSubCarouselMessage | NewFoodListMessage | NewFoodInput | NewFoodInputTrigger | NewConfirmToCart | NewCartFeedback | NewEditListType | NewCartListFeedback | NewUserInputType | NewOrderFeedback
+export type NewMessage = NewChatMessage | NewSubCarouselMessage | NewFoodListMessage | NewFoodInput | NewFoodInputTrigger | NewConfirmToCart | NewCartFeedback | NewEditListType | NewCartListFeedback | NewUserInputType | NewOrderFeedback | NewReceiptCarousel
 
 const messageDefaults =  {
   message: {
@@ -51,6 +52,10 @@ const messageDefaults =  {
     fetched:false,
     final:()=>{},
   },
+  receiptList:{
+    content:[],
+    fetched:false,
+  },
   enterInfo:{
     location:null,
     confirmed:false,
@@ -71,6 +76,9 @@ const messageListSlice = createSlice({
     reducers:{
         AddMessage:{
             reducer:(state,action:PayloadAction<messageListType>)=>{
+                if (action.payload.type === "receiptList"){
+                    state.messageList = state.messageList.filter(message=> message.type !== "receiptList")
+                }
                 state.messageList.push(action.payload)
             },
             prepare :(message:NewMessage) => {
@@ -98,6 +106,8 @@ const messageListSlice = createSlice({
                         return {payload : { id, ...messageDefaults.editList, ...message }}
                     case "enterInfo":
                         return {payload : { id,...messageDefaults.enterInfo ,...message }}
+                    case "receiptList":
+                        return {payload : { id,...messageDefaults.receiptList ,...message }}
                 }
             }
         },
@@ -124,7 +134,6 @@ const messageListSlice = createSlice({
         deleteTweak:(state,action:PayloadAction<{id:string,name:string}>)=>{
             const message = state.messageList.find(m => m.id === action.payload.id)
             if (!message || message.type !== "editList") return
-            console.log(`deleting ${action.payload.name}}`)
             message.tweaks = message.tweaks.filter(tweak=>tweak.name !== action.payload.name )
         },
 

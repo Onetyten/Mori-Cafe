@@ -1,6 +1,5 @@
 // import ChatBox from "@/components/chatBox";
 import ChatBox from "@/components/chatBox";
-import Comfirmation from "@/components/confirmation";
 import UserCheck from "@/components/script/userCheck";
 import { colors, GlobalStyle } from "@/styles/global";
 import Fontisto from '@expo/vector-icons/Fontisto';
@@ -26,8 +25,7 @@ export default function Index() {
               <Text style={[GlobalStyle.squada_h1,Styles.headerText]}>Mori cafe</Text>
             </View>
 
-            <ChatBox/>      
-            <Comfirmation/>          
+            <ChatBox/>              
 
             <Image source={require('../assets/images/floral/flora.webp')} contentFit="contain" style={{position: 'absolute',right: '-10%',bottom: 0,opacity: 0.4,width: '60%',height: '30%',zIndex: -10}} />
             
