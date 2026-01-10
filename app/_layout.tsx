@@ -1,17 +1,19 @@
 import { colors } from "@/styles/global";
 import store, { persistor } from "@/utils/store";
 import { useFonts } from "expo-font";
+import { Image } from "expo-image";
 import { SplashScreen, Stack } from "expo-router";
-import { useEffect } from "react";
+import { View } from "moti";
+import { useEffect, useState } from "react";
 import { ActivityIndicator } from "react-native";
+import { PaystackProvider } from "react-native-paystack-webview";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
-import {PaystackProvider} from "react-native-paystack-webview";
 import "../global.css";
 
 export default function RootLayout() {
-    SplashScreen.preventAutoHideAsync();
+  SplashScreen.preventAutoHideAsync();
   const [fontsLoaded,error] = useFonts({
     "Squada_One": require("../assets/font/Squada_One/SquadaOne-Regular.ttf"),
     "Outfit": require("../assets/font/Outfit/Outfit-VariableFont_wght.ttf"),
@@ -27,13 +29,26 @@ export default function RootLayout() {
     "Mono" : require("../assets/font/IBM_Plex_Mono/IBMPlexMono-Regular.ttf"),
     "Mono_Bold" : require("../assets/font/IBM_Plex_Mono/IBMPlexMono-Bold.ttf")
   });
+
+  const [gifLoaded, setGifLoaded] = useState(false);
   
+  const [showIntro,setShowIntro] = useState(true)
+    
+    useEffect(()=>{
+      if (gifLoaded){
+        const timer = setTimeout(()=>{setShowIntro(false)},2800)
+        return () => clearTimeout(timer);
+      }
+    },[gifLoaded])
+  
+
   useEffect(()=>{
     if (error) throw error;
-    if (fontsLoaded){
+    if (fontsLoaded && gifLoaded){
       SplashScreen.hideAsync();
     }
-  },[error, fontsLoaded]);
+  },[error, fontsLoaded,gifLoaded]);
+
   if (!fontsLoaded && !error) return null;
   
   return (
@@ -41,10 +56,15 @@ export default function RootLayout() {
       <PersistGate loading={<ActivityIndicator size="large" color="#588159"/>} persistor={persistor}>
         <PaystackProvider debug publicKey="sk_test_6f0d2b7509f6c563144110055836c4833760114b">
           <SafeAreaProvider>
-            <Stack screenOptions={{
-              headerShown:false,
-              contentStyle:{backgroundColor:colors.background}
-              }} />
+            <View style={{flex:1,backgroundColor:colors.secondary}}>
+              {showIntro && <Image source={require("../assets/videos/Animation.gif")} contentFit="cover" style={{ position: "absolute", width: "100%", height: "100%", zIndex: 100 }} onLoadEnd={()=>setGifLoaded(true)} />}
+
+              {gifLoaded &&
+              <Stack screenOptions={{
+                headerShown:false,
+                contentStyle:{backgroundColor:'transparent'}
+                }} />}
+            </View>
           </SafeAreaProvider>  
         </PaystackProvider>
       </PersistGate>

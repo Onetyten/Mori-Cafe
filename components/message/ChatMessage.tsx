@@ -1,6 +1,6 @@
 import { chatStyles } from "@/styles/chatStyle"
 import { GlobalStyle } from "@/styles/global"
-import { messageListType } from "@/types/type"
+import { messageListType } from "@/types/messageTypes"
 import { memo } from "react"
 import { ActivityIndicator, Text, View } from "react-native"
 
@@ -19,7 +19,7 @@ const ChatMessage = memo(
                 {message.displayedText.map((item,index)=>{
                     return (
                         <View key={index} style={chatStyles.chatBubbleContainer}>
-                            <Text style={[GlobalStyle.Outfit_Regular_body,chatStyles.chatBubble,index === 0&&chatStyles.firstChatBubble]} >
+                            <Text style={[GlobalStyle.Outfit_Regular_body,chatStyles.chatBubble,index === 0&&chatStyles.firstChatBubble,item.length<4&&{width:90,textAlign:"center"}]} >
                                 {item}
                             </Text>
                         </View>

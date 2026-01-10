@@ -13,13 +13,18 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Index() {
   const key = process.env.EXPO_PUBLIC_PAYSTACK_KEY
+
   if (!key) return console.error(`no "PAYSTACK_PUBLIC_KEY" found in the .env`)
     
   return (
     <PaystackProvider publicKey={key} currency="NGN" defaultChannels={["card","mobile_money"]}>
       <SafeAreaView style={Styles.container}>
-        <GestureHandlerRootView>
+        
+          <GestureHandlerRootView>
+            
+            
             <UserCheck/>
+
             <View style={Styles.headerView}>
               <Fontisto name="coffeescript" size={25} color={colors.primary} />
               <Text style={[GlobalStyle.squada_h1,Styles.headerText]}>Mori cafe</Text>
@@ -28,9 +33,12 @@ export default function Index() {
             <ChatBox/>              
 
             <Image source={require('../assets/images/floral/flora.webp')} contentFit="contain" style={{position: 'absolute',right: '-10%',bottom: 0,opacity: 0.4,width: '60%',height: '30%',zIndex: -10}} />
-            
+
             <StatusBar hidden={true}/>
+   
         </GestureHandlerRootView>
+        
+        
       </SafeAreaView>
     </PaystackProvider>
   );
@@ -42,7 +50,8 @@ const Styles = StyleSheet.create({
     position:"absolute",
     height:"100%",
     justifyContent:"flex-start",
-    alignContent:"center"
+    alignContent:"center",
+    backgroundColor:colors.background
   },
   headerView:{
     width:"100%",
