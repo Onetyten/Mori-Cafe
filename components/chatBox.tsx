@@ -136,10 +136,10 @@ export default function ChatBox() {
                 data={messageList}
                 showsVerticalScrollIndicator={false}
                 keyExtractor={(item)=>item.id}
-                initialNumToRender={4}
-                removeClippedSubviews={true}
-                maxToRenderPerBatch={5}
-                windowSize={15}
+                initialNumToRender={12}
+                removeClippedSubviews={false}
+                maxToRenderPerBatch={16}
+                windowSize={7}
                 updateCellsBatchingPeriod={30}
                 ListFooterComponentStyle={{marginBottom:128}}
                 ItemSeparatorComponent= {ItemSeparator}

@@ -35,11 +35,14 @@ const CustomisationList = memo(function CustomisationList(props:propType) {
         const updatedCart = { ...currentCartFood, customisation: message.tweaks }
         dispatch(setCurrentCart(updatedCart))
         addToCart()
-        const orderContent = `I want my ${foodRedux?.name || "food"} to be made with:${message.tweaks.map((item)=>
-                item.type==="option"? `\n${item.name} : ${item.value} ` 
-                : item.type === "quantity" ? `\n${toWords(parseInt(item.value))} ${ parseInt(item.value) === 1 && item.name.endsWith("s") ? item.name.slice(0, -1) : item.name}` :
-                `\n${item.name}`
+        let orderContent = "Made the usual way"
+        if (message.tweaks.length>0){
+            orderContent = `I want my ${foodRedux?.name || "food"} to be made with:${message.tweaks.map((item)=>
+                    item.type==="option"? `\n${item.name} : ${item.value} ` 
+                    : item.type === "quantity" ? `\n${toWords(parseInt(item.value))} ${ parseInt(item.value) === 1 && item.name.endsWith("s") ? item.name.slice(0, -1) : item.name}` :
+                    `\n${item.name}`
             )} `
+        }
         const newMessage:NewMessage = {type:"message",next:()=>{}, sender:"user",content:[orderContent]}
         dispatch(AddMessage(newMessage))
         dispatch(removeMessage(message.id))
