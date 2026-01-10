@@ -41,8 +41,8 @@ export default function useRenderUserInput (setShowOptions:React.Dispatch<React.
                 const loc = await Location.getCurrentPositionAsync({})
                 
                 const address = await Location.reverseGeocodeAsync({
-                longitude:loc.coords.longitude,
-                latitude:loc.coords.latitude
+                    longitude:loc.coords.longitude,
+                    latitude:loc.coords.latitude
                 })
                 dispatch(updateMessage({id:message.id,update:{location:{longitude:loc.coords.longitude, latitude:loc.coords.latitude}}}))
                 return address

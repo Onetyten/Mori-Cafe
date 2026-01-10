@@ -10,21 +10,32 @@ const UserCheck = () => {
     const hasFetched = useRef(false)
     useEffect(()=>{
         async function createUser() {
-            if (user) return
             if (hasFetched.current) return
             hasFetched.current = true
-            try {
-              const response = await api.get('/user/create')
-              if (!response.data.success) return
-              dispatch(setUser(response.data.data))
+            if (user){
+              try {
+                const response = await api.post('/user/validate',{user})
+                if (!response.data.success) return
+                dispatch(setUser(response.data.data))
+              }
+              catch (error) {
+                console.error(error)
+              }
             }
-            catch (error) {
-              console.error(error)
+            else{
+              try {
+                const response = await api.get('/user/create')
+                if (!response.data.success) return
+                dispatch(setUser(response.data.data))
+              }
+              catch (error) {
+                console.error(error)
+              }
             }
+            
         }
         createUser()
     },[dispatch, user])
-    
   return null
 }
 

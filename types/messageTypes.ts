@@ -61,6 +61,7 @@ export interface receiptListType extends baseMessage{
   type:"receiptList";
   content:FetchedOrderType[];
   fetched:boolean;
+  showReceipt:boolean;
   next?:()=>void;
 }
 

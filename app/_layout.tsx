@@ -36,7 +36,7 @@ export default function RootLayout() {
     
     useEffect(()=>{
       if (gifLoaded){
-        const timer = setTimeout(()=>{setShowIntro(false)},2800)
+        const timer = setTimeout(()=>{setShowIntro(false)},2600)
         return () => clearTimeout(timer);
       }
     },[gifLoaded])

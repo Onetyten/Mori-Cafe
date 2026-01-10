@@ -37,16 +37,16 @@ export default function useConfirmToCart(setLoading:React.Dispatch<React.SetStat
         if (!currentFood || !cart) return
         try {
             await api.post('/order/cart/add',cart)
-            feedBack = `${currentFood.name} added to your basket`
+            feedBack = `${currentFood.name} added to your tab`
         }
 
         catch (error) {
             console.error(error)
             if (isAxiosError(error)){
-                feedBack = error.response?.data.message || `Couldn't add ${currentFood.name} to basket, please try again`
+                feedBack = error.response?.data.message || `Couldn't add ${currentFood.name} to your tab, please try again`
             }
             else{
-                feedBack = `Couldn't add ${currentFood.name} to basket, please try again`
+                feedBack = `Couldn't add ${currentFood.name} to your tab, please try again`
             }
         }
 

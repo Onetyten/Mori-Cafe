@@ -31,10 +31,9 @@ export default function UserInfoInput(props:propType) {
 
   
   function SubmitInfo(){
-    if (!message || message.type !== "enterInfo") return
+    if (!message || message.type !== "enterInfo" || !message.address || message.address.length===0) return
 
     if (!neworder) return
-
     const payload = {
       name:message.name,
       address:message.address,

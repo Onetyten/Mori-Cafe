@@ -17,7 +17,7 @@ type NewFoodInputTrigger = Omit<numberCountTrigger,"id">
 type NewConfirmToCart = Omit<confirmToCartTrigger,"id">
 type NewCartFeedback = Omit<cartFeedback,"id">
 type NewOrderFeedback = Omit<orderFeedbackType,"id">
-type NewReceiptCarousel = Omit<receiptListType,"id" | "content" | "fetched">
+type NewReceiptCarousel = Omit<receiptListType,"id" | "content" | "fetched" | "showReceipt">
 type NewUserInputType = Omit<userInputType,"id" | "location" | "address" | "confirmed" | "goBack" | "name" | "email" | "phone_number" >
 type NewCartListFeedback = Omit<checkoutList,"id"|"fetched"|"final">
 type NewEditListType = Omit<editListType,"id"|"fetched"|"customisations"|"confirmed"|"tweaks">
@@ -55,6 +55,7 @@ const messageDefaults =  {
   receiptList:{
     content:[],
     fetched:false,
+    showReceipt:false
   },
   enterInfo:{
     location:null,
@@ -76,9 +77,6 @@ const messageListSlice = createSlice({
     reducers:{
         AddMessage:{
             reducer:(state,action:PayloadAction<messageListType>)=>{
-                if (action.payload.type === "receiptList"){
-                    state.messageList = state.messageList.filter(message=> message.type !== "receiptList")
-                }
                 state.messageList.push(action.payload)
             },
             prepare :(message:NewMessage) => {

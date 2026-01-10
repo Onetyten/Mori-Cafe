@@ -12,21 +12,15 @@ interface propType{
 
 export default function ReceiptCarousel(props:propType) {
     const {message} = props
+
     if (message.type !== "receiptList") return
 
-
-    if (message.content.length===0){
-        if (!message.fetched){
+    if (!message.showReceipt){
             return(
                 <ReceiptSkeleton loaded={message.fetched}/>
-            )
-        }
-        else{
-            return null
-        }        
+            )      
     }
-
-
+    if (message.showReceipt && message.fetched&&message.content.length===0) return null
 
   return (
     <View className="flex flex-col justify-center items-center gap-2">

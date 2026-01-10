@@ -18,7 +18,7 @@ const NumberInput = memo( function NumberInput(props:propType) {
   const {message} = props
   const dispatch = useDispatch()
   if (message.type !== "numberInput") return null
-  const delay = (ms:number) => new Promise(resolve=>setTimeout(resolve,ms))
+  
 
 
   const handleConfirm = async ()=> {
