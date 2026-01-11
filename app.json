@@ -19,8 +19,8 @@
         "monochromeImage": "./assets/images/appIcon-monochrome.png"
       },
       "edgeToEdgeEnabled": true,
-      "bundler": "metro",
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "package": "com.onetyten.MoriCafe"
     },
     "web": {
       "output": "static",
@@ -50,6 +50,12 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "bf1ca019-d99a-4255-af27-96db95ddb86c"
+      }
     }
   }
 }

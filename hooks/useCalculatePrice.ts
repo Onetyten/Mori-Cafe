@@ -52,7 +52,7 @@ export default function useCalculatePrice(
                 dispatch(AddMessage(newMessage))
                 
                 await delay(500)
-                setOptions([{name:'Select address', onClick:selectInfo},{name:'Continue shopping', onClick:()=>getSomethingElseMessage("Let's continue")}])
+                setOptions([{name:'Enter address', onClick:selectInfo},{name:'Continue shopping', onClick:()=>getSomethingElseMessage("Let's continue")}])
                 
                 setShowOptions(true)
 

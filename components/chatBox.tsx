@@ -140,7 +140,7 @@ export default function ChatBox() {
                 removeClippedSubviews={false}
                 maxToRenderPerBatch={16}
                 windowSize={7}
-                updateCellsBatchingPeriod={30}
+                updateCellsBatchingPeriod={16}
                 ListFooterComponentStyle={{marginBottom:128}}
                 ItemSeparatorComponent= {ItemSeparator}
                 ListFooterComponent={listFooter}

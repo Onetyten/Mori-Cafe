@@ -2,7 +2,7 @@ import axios from 'axios';
 import store from './store';
 
 // @ts-ignore
-const baseURL = "http://192.168.43.241:4500";
+const baseURL = "https://m-foodie-chatbot.onrender.com";
 const api = axios.create({
     baseURL
 })
