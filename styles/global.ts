@@ -38,8 +38,6 @@ const font = {
   small: { fontSize: wp('3.4%'),lineHeight: wp('4.8%') },
 };
 
-
-
 export const GlobalStyle = StyleSheet.create({
   squada_h1: { fontFamily: fontFamily.Squada, ...font.h1 },
   squada_h2: { fontFamily: fontFamily.Squada, ...font.h2 },
