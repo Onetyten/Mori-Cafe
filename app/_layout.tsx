@@ -1,5 +1,6 @@
 import { colors } from "@/styles/global";
 import store, { persistor } from "@/utils/store";
+import Constants from "expo-constants";
 import { useFonts } from "expo-font";
 import { Image } from "expo-image";
 import { SplashScreen, Stack } from "expo-router";
@@ -13,6 +14,7 @@ import { PersistGate } from "redux-persist/integration/react";
 import "../global.css";
 
 export default function RootLayout() {
+  const key = Constants.expoConfig?.extra?.PUBLIC_PAYSTACK_KEY
   SplashScreen.preventAutoHideAsync();
   const [fontsLoaded,error] = useFonts({
     "Squada_One": require("../assets/font/Squada_One/SquadaOne-Regular.ttf"),
@@ -49,12 +51,12 @@ export default function RootLayout() {
     }
   },[error, fontsLoaded,gifLoaded]);
 
-  if (!fontsLoaded && !error) return null;
+  if ((!fontsLoaded && !error) || !key  ) return null;
   
   return (
     <Provider store={store}>
       <PersistGate loading={<ActivityIndicator size="large" color="#588159"/>} persistor={persistor}>
-        <PaystackProvider debug publicKey="sk_test_6f0d2b7509f6c563144110055836c4833760114b">
+        <PaystackProvider debug publicKey={key}>
           <SafeAreaProvider>
             <View style={{flex:1,backgroundColor:colors.secondary}}>
               {showIntro && <Image source={require("../assets/videos/Animation.gif")} contentFit="cover" style={{ position: "absolute", width: "100%", height: "100%", zIndex: 100 }} onLoadEnd={()=>setGifLoaded(true)} />}

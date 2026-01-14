@@ -3,6 +3,7 @@ import ChatBox from "@/components/chatBox";
 import UserCheck from "@/components/script/userCheck";
 import { colors, GlobalStyle } from "@/styles/global";
 import Fontisto from '@expo/vector-icons/Fontisto';
+import Constants from "expo-constants";
 import { Image } from "expo-image";
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
@@ -12,9 +13,9 @@ import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Index() {
-  const key = process.env.EXPO_PUBLIC_PAYSTACK_KEY
 
-  if (!key) return console.error(`no "PAYSTACK_PUBLIC_KEY" found in the .env`)
+  const key = Constants.expoConfig?.extra?.PUBLIC_PAYSTACK_KEY
+  if (!key) return null
     
   return (
     <PaystackProvider publicKey={key} currency="NGN" defaultChannels={["card","mobile_money"]}>

@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "Mori-Cafe",
+    "name": "Mori Cafe",
     "slug": "Mori-Cafe",
     "version": "1.0.0",
     "orientation": "default",
@@ -51,6 +51,7 @@
       "reactCompiler": true
     },
     "extra": {
+      "PUBLIC_PAYSTACK_KEY":"pk_test_606a31dc41369950d131891fdaf330027032d615",
       "router": {},
       "eas": {
         "projectId": "bf1ca019-d99a-4255-af27-96db95ddb86c"

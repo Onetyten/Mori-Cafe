@@ -24,7 +24,7 @@ export default function UserInfoInput(props:propType) {
   const {setShowOptions,message} = props
   const dispatch = useDispatch()
 
-  const neworder = useSelector((state:RootState)=>state.newOrder.newOrder)
+  const newOrder = useSelector((state:RootState)=>state.newOrder.newOrder)
   const {width,height} = useWindowDimensions()
   const isLandscape = width>height
   if (!message || message.type !== "enterInfo") return
@@ -33,7 +33,7 @@ export default function UserInfoInput(props:propType) {
   function SubmitInfo(){
     if (!message || message.type !== "enterInfo" || !message.address || message.address.length===0) return
 
-    if (!neworder) return
+    if (!newOrder) return
     const payload = {
       name:message.name,
       address:message.address,
@@ -77,7 +77,6 @@ export default function UserInfoInput(props:propType) {
     <View style={styles.container}>
       <View style={{maxWidth:isLandscape?"45%":"85%",width:"100%",gap:8}}>
         <TextInput keyboardType="default" placeholder='Full name' placeholderTextColor={colors.light} value={message.name} onChangeText={(name)=>{dispatch(updateMessage({id:message.id,update:{name}}))}} style={[GlobalStyle.Outfit_Regular_body,styles.textInput]} />
-        
         <TextInput keyboardType="email-address" placeholder='Email' value={message.email} onChangeText={(email)=>{dispatch(updateMessage({id:message.id,update:{email}}))}} placeholderTextColor={colors.light} style={[GlobalStyle.Outfit_Regular_body,styles.textInput]} />
         
         <View style={{flexDirection:"row",width:"100%",gap:4}}>
@@ -137,7 +136,7 @@ const styles = StyleSheet.create({
     marginTop:16
   },
   dropdown: {
-    width:100,
+    width:110,
     borderWidth: 1,
     borderColor: colors.primary,
     borderRadius: 6,
