@@ -31,8 +31,8 @@ export default function UserInfoInput(props:propType) {
 
   
   function SubmitInfo(){
-    if (!message || message.type !== "enterInfo" || !message.address || message.address.length===0) return
-
+    if (!message || message.type !== "enterInfo") return
+    
     if (!newOrder) return
     const payload = {
       name:message.name,
@@ -93,12 +93,15 @@ export default function UserInfoInput(props:propType) {
           <TextInput keyboardType="number-pad" value={message.phone_number.number} onChangeText={(number)=>{dispatch(updateMessage({id:message.id,update:{phone_number:{code:message.phone_number.code,number}}}))}} placeholder='Phone number' placeholderTextColor={colors.light} style={[GlobalStyle.Outfit_Regular_body,styles.textInput]} />
 
         </View>
+        {message.location && 
         <View style={{width:"100%",height:400,overflow:"hidden",borderRadius:6}}>
           <MapView region={{latitude: message.location?.latitude || 37.78825, longitude:message.location?.longitude || -122.4324, latitudeDelta: 0.01, longitudeDelta: 0.01,}} style={{height:"100%",width:"100%",borderRadius:6}} onPress={selectLocation}>
                 {message.location&& <Marker coordinate={message.location} />}
           </MapView>
         </View>
+        }
 
+        <TextInput keyboardType="default" placeholder='Email' value={message.address} onChangeText={(address)=>{dispatch(updateMessage({id:message.id,update:{address}}))}} placeholderTextColor={colors.light} style={[GlobalStyle.Outfit_Regular_body,styles.textInput]} />
         
         <View style={styles.optionRow}>
            <TouchableOpacity onPress={SubmitInfo} style={styles.button} >

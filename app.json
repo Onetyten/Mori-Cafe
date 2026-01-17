@@ -18,6 +18,10 @@
         "backgroundImage": "./assets/images/appIcon-background.png",
         "monochromeImage": "./assets/images/appIcon-monochrome.png"
       },
+      "permissions": [
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION"
+      ],
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
       "package": "com.onetyten.MoriCafe"
