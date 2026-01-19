@@ -48,6 +48,19 @@
             "backgroundColor": "#395a3f"
           }
         }
+      ],
+      [
+        "@rnmapbox/maps",
+        {
+          "RNMapboxMapsVersion": "11.13.4",
+          "RNMapboxMapsImpl": "mapbox",        
+        }
+      ],
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "Show current location on map."
+        }
       ]
     ],
     "experiments": {
@@ -55,7 +68,7 @@
       "reactCompiler": true
     },
     "extra": {
-      "PUBLIC_PAYSTACK_KEY":"pk_test_606a31dc41369950d131891fdaf330027032d615",
+      "PUBLIC_PAYSTACK_KEY": "pk_test_606a31dc41369950d131891fdaf330027032d615",
       "router": {},
       "eas": {
         "projectId": "bf1ca019-d99a-4255-af27-96db95ddb86c"

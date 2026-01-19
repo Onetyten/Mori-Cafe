@@ -4,10 +4,10 @@ import { setInfo } from '@/store/userInfoSlice'
 import { colors, GlobalStyle } from '@/styles/global'
 import { messageListType } from '@/types/messageTypes'
 import { normalize } from "@/utils/scaling"
-import * as Location from 'expo-location'
 import { StyleSheet, Text, TextInput, TouchableOpacity, useWindowDimensions, View } from 'react-native'
 import { Dropdown } from 'react-native-element-dropdown'
-import MapView, { MapPressEvent, Marker } from 'react-native-maps'
+// import MapView, { MapPressEvent, Marker } from 'react-native-maps'
+import MapboxGL from "@rnmapbox/maps"
 import { useDispatch, useSelector } from 'react-redux'
 
 import { userDetailsType } from '@/types/type'
@@ -19,6 +19,8 @@ interface propType{
     message:messageListType
     setShowOptions: React.Dispatch<React.SetStateAction<boolean>>,
 }
+
+MapboxGL.setAccessToken("pk.eyJ1Ijoib25ldHl0ZW4iLCJhIjoiY21raWdkY2tvMDk1djNmc2Q0ajlzbjhpZyJ9.sGPE65pMwJh4kYS1VoM3wQ")
 
 export default function UserInfoInput(props:propType) {
   const {setShowOptions,message} = props
@@ -65,12 +67,12 @@ export default function UserInfoInput(props:propType) {
     if (message.next) message.next()
   }
 
-  async function selectLocation(e:MapPressEvent){
-        dispatch(updateMessage({id:message.id,update:{location:e.nativeEvent.coordinate}}))
-        const newAddress = await Location.reverseGeocodeAsync(e.nativeEvent.coordinate)
-        if (!newAddress || newAddress?.length===0 || !newAddress[0].formattedAddress) return
-        dispatch(updateMessage({id:message.id,update:{address:newAddress[0].formattedAddress}}))
-  }
+  // async function selectLocation(e:MapPressEvent){
+  //       dispatch(updateMessage({id:message.id,update:{location:e.nativeEvent.coordinate}}))
+  //       const newAddress = await Location.reverseGeocodeAsync(e.nativeEvent.coordinate)
+  //       if (!newAddress || newAddress?.length===0 || !newAddress[0].formattedAddress) return
+  //       dispatch(updateMessage({id:message.id,update:{address:newAddress[0].formattedAddress}}))
+  // }
 
 
   return (
@@ -92,12 +94,13 @@ export default function UserInfoInput(props:propType) {
             />
           <TextInput keyboardType="number-pad" value={message.phone_number.number} onChangeText={(number)=>{dispatch(updateMessage({id:message.id,update:{phone_number:{code:message.phone_number.code,number}}}))}} placeholder='Phone number' placeholderTextColor={colors.light} style={[GlobalStyle.Outfit_Regular_body,styles.textInput]} />
 
-        </View>
+        </View> 
         {message.location && 
         <View style={{width:"100%",height:400,overflow:"hidden",borderRadius:6}}>
-          <MapView region={{latitude: message.location?.latitude || 37.78825, longitude:message.location?.longitude || -122.4324, latitudeDelta: 0.01, longitudeDelta: 0.01,}} style={{height:"100%",width:"100%",borderRadius:6}} onPress={selectLocation}>
+          <MapboxGL.MapView style={{height:"100%",width:"100%",borderRadius:6}}/>
+          {/* <MapView  region={{latitude: message.location?.latitude || 37.78825, longitude:message.location?.longitude || -122.4324, latitudeDelta: 0.01, longitudeDelta: 0.01,}} style={{height:"100%",width:"100%",borderRadius:6}} onPress={selectLocation}>
                 {message.location&& <Marker coordinate={message.location} />}
-          </MapView>
+          </MapView> */}
         </View>
         }
 

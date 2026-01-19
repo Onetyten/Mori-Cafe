@@ -80,16 +80,27 @@ export default function useRenderUserInput(
 
         const granted = await grantPermission();
         if (!granted) return null;
-        const loc = await Location.getCurrentPositionAsync({});
-
-        if (!loc?.coords?.latitude || !loc?.coords?.longitude) {
+        let loc;
+        try {
+          loc = await Location.getCurrentPositionAsync({});
+        } catch (error) {
+          console.log("getCurrentPositionAsync error:", error);
           return null;
         }
 
-        const address = await Location.reverseGeocodeAsync({
-          longitude: loc.coords.longitude,
-          latitude: loc.coords.latitude,
-        });
+        if (!loc?.coords?.latitude || !loc?.coords?.longitude) return null;
+
+        let address;
+        try {
+          address = await Location.reverseGeocodeAsync({
+            longitude: loc.coords.longitude,
+            latitude: loc.coords.latitude,
+          });
+        } catch (error) {
+          console.log("reverseGeocodeAsync error:", error);
+          return null;
+        }
+
         dispatch(
           updateMessage({
             id: message.id,
@@ -101,19 +112,22 @@ export default function useRenderUserInput(
             },
           }),
         );
+
         return address;
       }
 
-      getLocation(message).then((address) => {
-        if (!address || address?.length === 0 || !address[0].formattedAddress)
-          return;
-        dispatch(
-          updateMessage({
-            id: message.id,
-            update: { address: address[0].formattedAddress },
-          }),
-        );
-      });
+      getLocation(message)
+        .then((address) => {
+          if (!address || address?.length === 0 || !address[0].formattedAddress)
+            return;
+          dispatch(
+            updateMessage({
+              id: message.id,
+              update: { address: address[0].formattedAddress },
+            }),
+          );
+        })
+        .catch((error) => console.log("location error", error));
     },
     [
       ProceedToPayment,
