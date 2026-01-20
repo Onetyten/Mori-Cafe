@@ -40,6 +40,14 @@ export default function useCalculatePrice(
                 
                 dispatch(removeMessage(message.id))
 
+                if (cart.filter((item) => item && item.foodId).length===0){
+                    const newMessage:NewMessage = {type:"message",next:()=>{}, sender:"bot",content:[`Your tab is empty`]}
+                    dispatch(AddMessage(newMessage))
+                    setOptions([{name:'Continue shopping', onClick:()=>getSomethingElseMessage("Let's continue")}])
+                    setShowOptions(true)
+                    return
+                }
+
                 const orderMessage:NewMessage = {type:"message",next:()=>{}, sender:"user",content:[`Ordering ${cart.filter((item) => item && item.foodId).map(item => `${item.quantity} ${item.foodId.name}`).join(", ")}.`]}
                 dispatch(AddMessage(orderMessage))
 

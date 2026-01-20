@@ -39,6 +39,13 @@ export default function useProcessOrder(setLoading:React.Dispatch<React.SetState
         }
 
         try {
+            if (order?.items.length===0){
+                const newMessage:NewMessage = {type:"message",next:()=>{}, sender:"bot",content:[`Your order is empty, please order something to continue`]}
+                dispatch(AddMessage(newMessage))
+                setOptions([{name:'Continue shopping', onClick:()=>getSomethingElseMessage("Let's continue")}])
+                setShowOptions(true)
+                return
+            }
             const response = await api.post('/order/create?isMobile=true',order)
             const data = response.data.data
             const reference = `ref_moricafe_${Date.now()}_${Math.floor(Math.random() * 1000)}`;
