@@ -17,7 +17,7 @@ export default function useProcessOrder(setLoading:React.Dispatch<React.SetState
     const order = useSelector((state:RootState)=>state.newOrder.newOrder)
     const {popup} = usePaystack()
     const {getCategory} = useSubcategory(setOptions,setShowOptions)
-    const getSomethingElseMessage = useGetElse(setShowOptions,setOptions,getCategory)
+    const getSomethingElseMessage = useGetElse(setLoading,setShowOptions,setOptions,getCategory)
 
 
 
@@ -41,9 +41,11 @@ export default function useProcessOrder(setLoading:React.Dispatch<React.SetState
         try {
             const response = await api.post('/order/create?isMobile=true',order)
             const data = response.data.data
+            const reference = `ref_moricafe_${Date.now()}_${Math.floor(Math.random() * 1000)}`;
             const payNow = () => popup.checkout({
                 email: data.email,
                 amount: data.amount,
+                reference,
                 onSuccess:async (res)=>{
                     const reference = res.reference
                     if (!reference) {

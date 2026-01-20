@@ -24,7 +24,7 @@ export default function SearchBar(props:propType) {
   const messsageList = useSelector((state:RootState)=>state.messageList.messageList)
   const [query,setQuery] = useState("")
   const {getCategory} = useSubcategory(setOptions,setShowOptions)
-  const getSomethingElseMessage = useGetElse(setShowOptions,setOptions,getCategory)
+  const getSomethingElseMessage = useGetElse(setLoading,setShowOptions,setOptions,getCategory)
   const fetchFoodList = useFetchFoodList(loading,setLoading,setShowOptions,setOptions,getSomethingElseMessage)
 
   useEffect(()=>{

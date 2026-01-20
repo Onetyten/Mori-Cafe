@@ -77,6 +77,7 @@ const messageListSlice = createSlice({
     reducers:{
         AddMessage:{
             reducer:(state,action:PayloadAction<messageListType>)=>{
+                state.messageList = state.messageList.filter(item=>item.type !=="checkoutList")
                 state.messageList.push(action.payload)
             },
             prepare :(message:NewMessage) => {

@@ -3,7 +3,7 @@ import { messageListType, subCategories } from '@/types/messageTypes';
 import React, { useCallback, useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 
-export default function useGetElse(setShowOptions:React.Dispatch<React.SetStateAction<boolean>>,setOptions: React.Dispatch<React.SetStateAction<{name: string; onClick: () => void}[]>>,getCategory: (food: subCategories) => void) {
+export default function useGetElse(setLoading: React.Dispatch<React.SetStateAction<boolean>>,setShowOptions:React.Dispatch<React.SetStateAction<boolean>>,setOptions: React.Dispatch<React.SetStateAction<{name: string; onClick: () => void}[]>>,getCategory: (food: subCategories) => void) {
     const dispatch = useDispatch()
     const timers = useRef<ReturnType<typeof setTimeout>[]>([])
     useEffect(() => {
@@ -18,6 +18,7 @@ export default function useGetElse(setShowOptions:React.Dispatch<React.SetStateA
         if (item){
             dispatch(removeMessage(item.id))
         }
+        setLoading(false)
         setShowOptions(false)
         const  newMessage:NewMessage = {type:"message",next:()=>{}, sender:"user",content:[message]}
         dispatch(AddMessage(newMessage))
@@ -29,7 +30,7 @@ export default function useGetElse(setShowOptions:React.Dispatch<React.SetStateA
         timers.current.push(setTimeout(()=>{
             setShowOptions(true)
         },1000))
-    },[dispatch, getCategory, setOptions, setShowOptions])
+    },[dispatch, getCategory, setLoading, setOptions, setShowOptions])
     return getSomethingElseMessage
     
 }

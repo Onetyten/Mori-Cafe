@@ -20,7 +20,7 @@ interface propType{
 export default function QuickActions(props:propType) {
     const {showButtons,setShowOptions,setOptions,setLoading,loading} = props
     const {getCategory} = useSubcategory(setOptions,setShowOptions)
-    const getSomethingElseMessage = useGetElse(setShowOptions,setOptions,getCategory)
+    const getSomethingElseMessage = useGetElse(setLoading,setShowOptions,setOptions,getCategory)
     const fetchFoodList = useFetchFoodList(loading,setLoading,setShowOptions,setOptions,getSomethingElseMessage)
     const fetchReceiptList =  useFetchReceiptList(loading)
     const dispatch = useDispatch()

@@ -68,6 +68,7 @@ export default function useRenderUserInput(
             update: {
               name: userInfo.name,
               email: userInfo.email,
+              address:userInfo.address,
               phone_number: {
                 code: countryCodes[0],
                 number: userInfo.phone_number.number,

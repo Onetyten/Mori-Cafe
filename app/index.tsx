@@ -23,7 +23,6 @@ export default function Index() {
         
           <GestureHandlerRootView>
             
-            
             <UserCheck/>
 
             <View style={Styles.headerView}>

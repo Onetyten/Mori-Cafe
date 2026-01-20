@@ -10,8 +10,8 @@ const ReceiptSkeleton = ({loaded}:propType) => {
   return (
     <View style={style.parent}>        
         <View style={style.container}>
-            <MotiView from={{width:80,height:80,opacity:0.5,scale:1}} animate={loaded?{width: 500, height: 500, opacity: 0.15, scale: 1,}: {width: 80, height: 80, opacity: 0.8, scale: 1.2}} transition={{type:"timing",duration:800, loop:!loaded,repeatReverse:true}}>
-                <Image source={require("@/assets/images/logo.png")} style={[style.backgroundImage]}/>   
+            <MotiView from={{width:80,height:80,opacity:0.3,scale:1}} animate={loaded?{width: 500, height: 500, opacity: 0.1, scale: 1,}: {width: 80, height: 80, opacity: 0.8, scale: 1.2}} transition={{type:"timing",duration:800, loop:!loaded,repeatReverse:true}}>
+                <Image source={require("@/assets/images/appIcon-monochrome.png")} style={[style.backgroundImage]}/>   
             </MotiView>
         </View>
     </View>

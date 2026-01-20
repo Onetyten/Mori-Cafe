@@ -1,11 +1,10 @@
 
+import { colors } from "@/styles/global"
 import { messageListType } from "@/types/messageTypes"
 import { memo } from "react"
-import { View } from "react-native"
+import { ActivityIndicator, View } from "react-native"
 import { useSelector } from "react-redux"
 import type { RootState } from "../../utils/store"
-import BotImage from "./chat Bubble/BotImage"
-import BotLoader from "./chat Bubble/BotLoader"
 import CheckoutItem from "./options/CheckoutItem"
 
 
@@ -33,9 +32,12 @@ const CheckoutList = memo(function CheckoutList(props:propType) {
             </View>
         ):
         (
-            <View style={{gap:4, alignItems:"flex-start",maxWidth:"75%",flexDirection:"row"}}>
-                <BotImage sender="bot"/>
-                <BotLoader/>
+            <View style={{gap:4, alignItems:"flex-end",width:"100%"}}>
+                <View style={{ justifyContent: "flex-end",maxWidth:"75%",alignItems: "center"}}>
+                    <View style={{backgroundColor: colors.light, height: 36, padding: 10, paddingHorizontal: 24, borderRadius: 8}} >
+                        <ActivityIndicator size="small" color='#fff'/>
+                    </View>
+                </View>
             </View>
         )}   
     </View>

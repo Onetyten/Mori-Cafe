@@ -14,11 +14,13 @@ export function useRenderCheckoutList(setShowOptions:React.Dispatch<React.SetSta
     const delay = (ms:number)=> new Promise(resolve=>setTimeout(resolve,ms))
     const calculateSelectedPrice = useCalculatePrice(getSomethingElseMessage,setShowOptions,setOptions)
 
-
     const checkOutListSuccess=async(message:messageListType) => {
         await delay(200)
         setOptions([...[
-            { name: 'Checkout', onClick: ()=>calculateSelectedPrice(message) },
+            { name: 'Checkout', onClick: ()=>{
+                setLoading((false))
+                calculateSelectedPrice(message)}
+             },
             { name: 'Continue shopping', onClick: () => getSomethingElseMessage("Let's continue",message) }
         ]]);
         setShowOptions(true)
@@ -26,11 +28,12 @@ export function useRenderCheckoutList(setShowOptions:React.Dispatch<React.SetSta
     
     function checkOutListCleared(message:messageListType){
         setOptions([{name:'Continue shopping', onClick:()=>getSomethingElseMessage("Let's continue",message)}])
+        setShowOptions(true)
     }
 
     
     async function renderCheckoutList(message:messageListType){
-        if (message.type !== "checkoutList" || loading) return
+        if (message.type !== "checkoutList" || loading===true) return
         setLoading(true)
         setShowOptions(false)
         let feedBack = ""
@@ -48,6 +51,7 @@ export function useRenderCheckoutList(setShowOptions:React.Dispatch<React.SetSta
             if (items.length===0){
                feedBack=  "Your tab is empty."
                checkOutListCleared(message)
+               return
             }
             dispatch(setOrderList(items))
             checkOutListSuccess(message)
@@ -59,6 +63,7 @@ export function useRenderCheckoutList(setShowOptions:React.Dispatch<React.SetSta
                 feedBack = error.response?.data.message
             }
             feedBack = `Error getting your tab, please try again`
+            setLoading(false)
         }
         finally{
             if (message.type !== "checkoutList") return
@@ -68,7 +73,6 @@ export function useRenderCheckoutList(setShowOptions:React.Dispatch<React.SetSta
                 dispatch(AddMessage(newMessage))
             }
             dispatch(updateMessage({id:message.id,update:{fetched:true}}))
-            setLoading(false)
         }
     }
 

@@ -36,7 +36,7 @@ export default function ChatBox() {
     
     const {getCategory} = useSubcategory(setOptions,setShowOptions)
     useChatInit({setShowOptions,setOptions,options,getCategory})
-    const getSomethingElseMessage = useGetElse(setShowOptions,setOptions,getCategory)
+    const getSomethingElseMessage = useGetElse(setLoading,setShowOptions,setOptions,getCategory)
     const {addToCart,isAdding} = useAddToCart(setShowOptions,getSomethingElseMessage,setLoading,setOptions)
     const {comfirmToCart,cartFeedback} = useConfirmToCart(setLoading,setShowOptions,addToCart,setOptions,isAdding)
     const {processOrder} = useProcessOrder(setLoading,setShowOptions,addToCart,setOptions,isAdding)

@@ -94,7 +94,7 @@ export default function HistoryReceipt ({order}:ReceiptProps){
   return (  
     <View style={style.parent}>        
         <View style={style.container}>
-            <Image source={require("@/assets/images/logo.png")} style={[StyleSheet.absoluteFill,style.backgroundImage]}/>
+            <Image source={require("@/assets/images/appIcon-monochrome.png")} style={[StyleSheet.absoluteFill,style.backgroundImage]}/>
             <View style={style.bodyContainer}>     
                 <Text style={style.titleText}>Order {order._id}</Text> 
 
@@ -180,7 +180,7 @@ const style = StyleSheet.create({
     backgroundImage:{
         width:"100%",
         height:"100%",
-        opacity:0.15
+        opacity:0.05
     },
     bodyContainer:{
         padding:20,
