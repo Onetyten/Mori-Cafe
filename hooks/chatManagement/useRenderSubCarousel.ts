@@ -15,9 +15,8 @@ export default function useRenderSubcarousel(){
         if (!category) return;
         
         try {
-            const response = await api.get(`/food/subcategory/${message.subcategory}`)
+            const response = await api.get(`/food/subcategory78/${message.subcategory}`)
             dispatch(updateMessage({id:message.id, update:{content:response.data.data}}))
-            // dispatch(hydrateSubcategories({id:message.id, value:response.data.data}))
             if (message.next) message.next()
         }
      
@@ -30,6 +29,7 @@ export default function useRenderSubcarousel(){
                 message = "Couldn't get get this category"
             }
             const newMessage:NewMessage = {type:"message", sender:"bot", next:()=>{}, content:[message]}
+            
             dispatch(AddMessage(newMessage))
         }
         finally {

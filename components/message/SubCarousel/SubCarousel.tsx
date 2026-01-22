@@ -1,8 +1,8 @@
-import { MotiImage } from "moti"
 import { memo } from "react"
-import { ActivityIndicator, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native"
+import { ActivityIndicator, View } from "react-native"
 import type { messageListType } from '../../../types/messageTypes'
 import { styles } from "./style"
+import SubCarouselItem from "./SubCarouselItem"
 
 interface propType{
     message:messageListType,
@@ -34,15 +34,7 @@ interface propType{
     <View style={styles.parent}>
         {message.content.map((item,index)=>{
             return(
-                <TouchableOpacity onPress={()=>{fetchFoodList(`/food/list?sub_id=${item._id}`,`Select your ${item.name}`)}} key={item._id} style={styles.Button}>
-                        <Image source={require("../../../assets/images/patterns/hex.webp")} style={[StyleSheet.absoluteFill,styles.backgroundImage]}/>
-                        <View style={styles.imageContainer}>
-                            <MotiImage from={{translateY:-15}} transition={{delay:(index+1)*100}} animate={{translateY:0}}  source={{uri:item.imageUrl}} style={styles.foodImage}/>
-                        </View>
-                        
-                        <Text style={styles.nameText}>{item.name}</Text>
-                    
-                </TouchableOpacity>
+                <SubCarouselItem index={index} key={index} fetchFoodList={fetchFoodList} item={item}/>
             )
         })}
     </View>

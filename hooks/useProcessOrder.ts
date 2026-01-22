@@ -19,9 +19,6 @@ export default function useProcessOrder(setLoading:React.Dispatch<React.SetState
     const {getCategory} = useSubcategory(setOptions,setShowOptions)
     const getSomethingElseMessage = useGetElse(setLoading,setShowOptions,setOptions,getCategory)
 
-
-
-
     const processOrder = useCallback(async(message:messageListType)=>{
         if (!message || message.type !== "orderFeedback") return
 

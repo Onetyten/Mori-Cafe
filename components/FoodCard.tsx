@@ -1,6 +1,7 @@
 import { AddMessage, NewMessage } from "@/store/messageListSlice"
 import { colors, GlobalStyle } from "@/styles/global"
 import { MotiImage } from "moti"
+import { useState } from "react"
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native"
 import { useDispatch } from "react-redux"
 import type { FoodType } from "../types/type"
@@ -11,6 +12,8 @@ interface propType{
 
 export default function FoodCard(props:propType) {
     const dispatch = useDispatch()
+    const [loaded,setLoaded] = useState(false)
+    const [error, setError] = useState(false)
     const {food} = props
     const optimisedUrl =(w:number,h:number)=>{
         return food.imageUrl.replace('/upload',`/upload/w_${w},h_${h},c_fill,f_auto,q_auto`)
@@ -31,8 +34,16 @@ export default function FoodCard(props:propType) {
                 <Text style={[Styles.priceText,GlobalStyle.Outfit_Bold_body]}>&#8358;{food.price}</Text>
             </View>
             <View style={{width:"100%", height:"100%",padding:16,justifyContent:"space-between",alignItems:"center"}}>
-                <View style={Styles.foodImageView}>
-                    <MotiImage from={{translateY:-15}} animate={{translateY:0}} transition={{delay:200}}  source={{uri:optimisedUrl(300,300)}} style={{objectFit:"contain",borderRadius:9999,width:160,height:160}} />
+                <View style={[Styles.foodImageView,{position:"relative"}]}>
+
+                    {!error && (
+                        <MotiImage from={{translateY:-15}} animate={{translateY:0}} transition={{delay:200}}  source={{uri:optimisedUrl(300,300)}} style={{objectFit:"contain",borderRadius:9999,width:160,height:160}}  onLoadEnd={()=>setLoaded(true)} onError={() => setError(true)} />
+                    )}
+
+                    {!loaded || error ? (
+                        <MotiImage  from={{opacity:0}} animate={{opacity:1}} transition={{delay:200}}  source={require("@/assets/images/floral/coffee cup.png")} style={{objectFit:"contain",borderRadius:9999,width:160,height:160,position:"absolute"}}/>
+                        ):null
+                    }
                 </View>
                 <View style={{gap:2,width:"100%"}}>
                     <View>
