@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 
 
 
-export default function useRenderSubcarousel(){
+export default function useRenderSubcarousel(setShowOptions: React.Dispatch<React.SetStateAction<boolean>>,setOptions: React.Dispatch<React.SetStateAction<{name: string;onClick: () => void }[]>>,getSomethingElseMessage: (message: string, item?: messageListType | undefined) => void){
     const dispatch = useDispatch()
     
     async function renderSubcarousel(message:messageListType){
@@ -15,9 +15,9 @@ export default function useRenderSubcarousel(){
         if (!category) return;
         
         try {
-            const response = await api.get(`/food/subcategory78/${message.subcategory}`)
+            const response = await api.get(`/food/subcategory/${message.subcategory}`)
             dispatch(updateMessage({id:message.id, update:{content:response.data.data}}))
-            if (message.next) message.next()
+            if (message.next) message.next()   
         }
      
         catch (error) {
@@ -29,8 +29,11 @@ export default function useRenderSubcarousel(){
                 message = "Couldn't get get this category"
             }
             const newMessage:NewMessage = {type:"message", sender:"bot", next:()=>{}, content:[message]}
-            
             dispatch(AddMessage(newMessage))
+
+            setOptions([{name:'Get something else', onClick:()=>getSomethingElseMessage("Let's try something different")}]);
+            setShowOptions(true)
+
         }
         finally {
             dispatch(updateMessage({id:message.id, update:{fetched:true}}))

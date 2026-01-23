@@ -13,7 +13,7 @@ interface propType{
         const {message,fetchFoodList} = props
         if (message.type !== "subcarousel" ) return
 
-        if (message.content.length===0){
+        if (message.content && message.content.length===0){
             if (message.fetched === false){
                 return(
                     <View style={styles.loaderRow}>
@@ -28,6 +28,10 @@ interface propType{
             else {
                 return null
             }
+        }
+
+        if (!Array.isArray(message.content)) {
+            return null
         }
 
   return (

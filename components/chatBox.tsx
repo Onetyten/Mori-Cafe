@@ -47,8 +47,8 @@ export default function ChatBox() {
     }),[addToCart, fetchFoodList, setShowOptions])
 
     const {renderTextMessage} = useRenderTextMessage();
-    const {renderSubcarousel} =useRenderSubcarousel();
-    const {renderFoodCarousel} =useRenderFoodCarousel(setLoading,setShowOptions,loading);
+    const {renderSubcarousel} =useRenderSubcarousel(setShowOptions,setOptions,getSomethingElseMessage);
+    const {renderFoodCarousel} =useRenderFoodCarousel(setLoading,setShowOptions,loading,setOptions,getSomethingElseMessage);
     const {renderNumberInput,triggerNumberInput} =useRenderNumberInput(setShowOptions,setLoading,loading);
     const {renderCustomisationList} = useRenderCustomisatonList()
     const {renderUserInput} = useRenderUserInput(setShowOptions,getSomethingElseMessage,setOptions)
@@ -75,7 +75,6 @@ export default function ChatBox() {
             if (!ids.has(id)) processedIds.current.delete(id)
         })
     },[messageList])
-
 
     useEffect(()=>{
         for (const message of messageList){

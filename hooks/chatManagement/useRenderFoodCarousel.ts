@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 
 
 
-export default function useRenderFoodCarousel (setLoading:React.Dispatch<React.SetStateAction<boolean>>,setShowOptions:React.Dispatch<React.SetStateAction<boolean>>, loading:boolean) {
+export default function useRenderFoodCarousel (setLoading:React.Dispatch<React.SetStateAction<boolean>>,setShowOptions:React.Dispatch<React.SetStateAction<boolean>>, loading:boolean,setOptions: React.Dispatch<React.SetStateAction<{name: string;onClick: () => void }[]>>,getSomethingElseMessage: (message: string, item?: messageListType | undefined) => void) {
 
     const dispatch = useDispatch()
     
@@ -30,6 +30,9 @@ export default function useRenderFoodCarousel (setLoading:React.Dispatch<React.S
             }
             const newMessage:NewMessage = {type:"message", sender:"bot", next:()=>{}, content:[message]}
             dispatch(AddMessage(newMessage))
+
+            setOptions([{name:'Get something else', onClick:()=>getSomethingElseMessage("Let's try something different")}]);
+            setShowOptions(true)
         } 
 
         finally {

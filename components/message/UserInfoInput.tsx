@@ -77,7 +77,8 @@ export default function UserInfoInput(props:propType) {
     <View style={styles.container}>
       <View style={{maxWidth:isLandscape?"45%":"85%",width:"100%",gap:8}}>
         <TextInput keyboardType="default" placeholder='Full name' placeholderTextColor={colors.light} value={message.name} onChangeText={(name)=>{dispatch(updateMessage({id:message.id,update:{name}}))}} style={[GlobalStyle.Outfit_Regular_body,styles.textInput]} />
-        <TextInput keyboardType="email-address" placeholder='Email' value={message.email} onChangeText={(email)=>{dispatch(updateMessage({id:message.id,update:{email}}))}} placeholderTextColor={colors.light} style={[GlobalStyle.Outfit_Regular_body,styles.textInput]} />
+        <TextInput autoCapitalize="none" keyboardType="email-address" placeholder='Email' value={message.email} onChangeText={(email)=>dispatch(updateMessage({id:message.id,update:{email:email.trim().toLowerCase()}}))}
+          placeholderTextColor={colors.light} style={[GlobalStyle.Outfit_Regular_body,styles.textInput]} />
         
         <View style={{flexDirection:"row",width:"100%",gap:4}}>
             <Dropdown data={countryCodes.map((item) => ({label: `${item.flag}  ${item.val}`, value: item.val }))} labelField="label" valueField="value" placeholder={`${message.phone_number.code.flag} ${message.phone_number.code.val}`}
