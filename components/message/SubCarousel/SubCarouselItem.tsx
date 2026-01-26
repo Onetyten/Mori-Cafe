@@ -25,7 +25,7 @@ const SubCarouselItem = ({fetchFoodList,index,item}:propType) => {
             )}
 
              {!loaded || error ? (
-                <MotiImage from={{opacity:0}} animate={{opacity:1}} transition={{delay:200}}  source={require("@/assets/images/floral/coffee cup.png")} style={[styles.foodImage,{position:"absolute"}]}/>
+                <MotiImage from={{opacity:0}} animate={{opacity:1}} transition={{delay:200}}  source={require("@/assets/images/floral/coffee cup.png")} style={{position:"absolute",objectFit:"contain", width:"80%",height:"80%"}}/>
              ):null
             }
         </View>

@@ -4,7 +4,6 @@ import { messageListType } from "@/types/messageTypes"
 import { toWords } from "number-to-words"
 import { memo } from "react"
 import { ActivityIndicator, StyleSheet, Text, TouchableOpacity, View } from "react-native"
-import { widthPercentageToDP as wp } from "react-native-responsive-screen"
 import { useDispatch, useSelector } from "react-redux"
 import { setCurrentCart } from "../../store/currentCartItem"
 import type { RootState } from "../../utils/store"
@@ -102,7 +101,7 @@ const styles = StyleSheet.create({
         gap:8
     },
     button: {
-        padding: wp("1.5%"),
+        padding: 8,
         borderWidth: 1,
         borderColor: colors.primary,
         backgroundColor:colors.background,

@@ -1,6 +1,5 @@
 import { UpdateTweakList } from '@/store/messageListSlice';
-import { colors } from '@/styles/global';
-import { normalize } from "@/utils/scaling";
+import { colors, GlobalStyle } from '@/styles/global';
 import { ChevronDown } from 'lucide-react-native';
 import React, { memo } from 'react';
 import { StyleSheet, useWindowDimensions, View } from 'react-native';
@@ -59,16 +58,14 @@ const styles = StyleSheet.create({
     paddingVertical:0
   },
   input: {
-    fontSize: normalize(18),
+    ...GlobalStyle.Outfit_Regular_body,
     color: colors.primary,
-    fontFamily: 'Outfit_Regular',
     paddingHorizontal:8,
     textTransform: 'capitalize',
   },
   placeholder: {
-    fontSize: normalize(18),
+    ...GlobalStyle.Outfit_Regular_body,
     color: colors.light,
-    fontFamily: 'Outfit_Regular',
     paddingHorizontal:8,
     textTransform: 'capitalize',
   },

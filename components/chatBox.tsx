@@ -15,7 +15,6 @@ import { messageListType } from "@/types/messageTypes"
 import { RootState } from "@/utils/store"
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { FlatList, StyleSheet, TouchableWithoutFeedback, View } from "react-native"
-import { widthPercentageToDP as wp } from "react-native-responsive-screen"
 import { useSelector } from "react-redux"
 import { useChatInit } from "../hooks/useChatInit"
 import useSubcategory from "../hooks/useSubcategory"
@@ -164,7 +163,7 @@ const chatStyle = StyleSheet.create({
         width:"100%",
         height:"100%",
         gap:16,
-        paddingHorizontal:wp("3%"),
+        paddingHorizontal:15,
     },
     messageView:{
         width:"100%",

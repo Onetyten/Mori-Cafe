@@ -1,3 +1,4 @@
+import { clamp } from "@/styles/global";
 import { messageListType } from "@/types/messageTypes";
 import React, { memo } from "react";
 import { ActivityIndicator, View } from "react-native";
@@ -33,7 +34,7 @@ const FoodCarousel = memo(function FoodCarousel(props:propType) {
       }
 
     return (
-        <Swiper autoplay horizontal autoplayTimeout={5} activeDot={<View style={[Styles.dot,Styles.activeDot]} />} dot={<View style={[Styles.dot,Styles.passiveDot]} />} loop showsPagination={true} height={290}>
+        <Swiper autoplay horizontal autoplayTimeout={5} activeDot={<View style={[Styles.dot,Styles.activeDot]} />} dot={<View style={[Styles.dot,Styles.passiveDot]} />} loop showsPagination={true} height={clamp(290,290,400)}>
             {message.content.map((item) => (
                 <View key={item._id}>
                     <FoodCard food={item}/>

@@ -1,7 +1,10 @@
-import { colors, GlobalStyle } from "@/styles/global";
-import { StyleSheet } from "react-native";
+import { clamp, colors, GlobalStyle, isPhone, isSmall, isTablet } from "@/styles/global";
+import { DimensionValue, StyleSheet } from "react-native";
+
+const columns = isSmall ? 1 : isPhone ? 2 : isTablet ? 3 : 3;
 
 
+const buttonWidth:DimensionValue = `${(100 / columns)-1.05}%`;
 
 export const styles = StyleSheet.create({
     loaderRow:{
@@ -9,15 +12,15 @@ export const styles = StyleSheet.create({
         gap:8,
         flexWrap:"wrap",
         flexDirection:"row",
-        justifyContent:"center"
+        justifyContent:"flex-start",
     },
     loaderContainer:{
         backgroundColor:colors.light+"70",
         justifyContent:"center",
         alignItems:"center",
-        width:"48%",
-        height:208,
-        borderRadius:6
+        borderRadius:6,
+        height:clamp(180,180,250),
+        width:buttonWidth
     },
     backgroundImage:{
         width:"200%",
@@ -34,8 +37,8 @@ export const styles = StyleSheet.create({
     },
     foodImage:{
         objectFit:"contain",
-        width:128,
-        height:128,
+        width:"90%",
+        height:"90%",
         borderRadius:9999
     },
     nameText:{
@@ -48,17 +51,19 @@ export const styles = StyleSheet.create({
     parent:{
         width:"100%",
         flexDirection:"row",
-        justifyContent:"space-between",
+        justifyContent:"flex-start",
         gap:8,
         flexWrap:"wrap",
     },
     Button:{
         overflow:"hidden",
         borderRadius:10,
-        height:180,
+        height:clamp(180,180,250),
         backgroundColor:colors.background,
         justifyContent:"center",
         alignItems:"center",
-        width:"48.5%",
+        flexWrap:"wrap",
+        width:buttonWidth
+
     }
 })

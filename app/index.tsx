@@ -1,7 +1,7 @@
 // import ChatBox from "@/components/chatBox";
 import ChatBox from "@/components/chatBox";
 import UserCheck from "@/components/script/userCheck";
-import { colors, GlobalStyle } from "@/styles/global";
+import { clamp, colors, GlobalStyle } from "@/styles/global";
 import Fontisto from '@expo/vector-icons/Fontisto';
 import Constants from "expo-constants";
 import { Image } from "expo-image";
@@ -9,7 +9,6 @@ import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { PaystackProvider } from "react-native-paystack-webview";
-import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Index() {
@@ -26,7 +25,7 @@ export default function Index() {
             <UserCheck/>
 
             <View style={Styles.headerView}>
-              <Fontisto name="coffeescript" size={25} color={colors.primary} />
+              <Fontisto name="coffeescript" size={clamp(25,20,35)} color={colors.primary} />
               <Text style={[GlobalStyle.squada_h1,Styles.headerText]}>Mori cafe</Text>
             </View>
 
@@ -58,9 +57,9 @@ const Styles = StyleSheet.create({
     flexDirection:"row",
     justifyContent:"flex-start",
     alignItems:"center",
-    paddingVertical:wp("3.5%"),
+    paddingVertical:15,
     gap:8,
-    paddingHorizontal:wp("3%"),
+    paddingHorizontal:15,
     color:colors.primary
   },
   headerText:{

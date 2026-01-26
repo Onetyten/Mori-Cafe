@@ -1,23 +1,23 @@
 import { StyleSheet } from "react-native";
-import { colors } from "./global";
+import { clamp, colors } from "./global";
 
 export const chatStyles = StyleSheet.create({
   botchatBubble: {
     backgroundColor: colors.primary,
     color: "#fff",
-    padding: 8,
+    padding: 10,
     borderRadius: 8,
   },
   chatBubble: {
     color: "#fff",
-    padding: 8,
+    padding: 10,
     borderRadius: 8,
     textAlign: "left",
   },
   errorChatBubble: {
     backgroundColor: colors.danger,
     color: "#fff",
-    padding: 8,
+    padding: 10,
     borderRadius: 8,
   },
   chatBubbleText: {
@@ -46,15 +46,17 @@ export const chatStyles = StyleSheet.create({
   },
   botBubbleLoader: {
     backgroundColor: colors.primary,
-    height: 36,
+    height: clamp(48,48,56),
     padding: 10,
     paddingHorizontal: 24,
     borderRadius: 8,
   },
   chatBubbleLoader: {
     backgroundColor: colors.light,
-    height: 36,
-    padding: 10,
+    height: 44,
+    display:"flex",
+    justifyContent:"center",
+    alignItems:"center",
     paddingHorizontal: 24,
     borderRadius: 8,
   },

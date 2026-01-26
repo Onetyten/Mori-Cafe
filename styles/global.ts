@@ -1,5 +1,4 @@
-import { StyleSheet } from "react-native";
-import { widthPercentageToDP as wp } from "react-native-responsive-screen";
+import { Dimensions, StyleSheet } from "react-native";
 
 export const colors = {
   primary: "#588159",
@@ -29,12 +28,23 @@ export const fontFamily = {
   monoBold: "Mono_Bold",
 };
 
+
+
+const {width} = Dimensions.get("window")
+export const isSmall = width < 360;
+export const isPhone = width >= 360 && width < 600;
+export const isTablet = width >= 600 && width < 900;
+export const isLargeTablet = width >= 900;
+
+const scale = (size:number) => (width/412) * size
+export const clamp = (size:number,min:number,max:number)=>Math.min(Math.max(scale(size),min),max)
+
 const font = {
-  h1: { fontSize: wp("8.75%"), lineHeight: wp("10.7%") },
-  h2: { fontSize: wp("6.8%"), lineHeight: wp("8.75%") },
-  button: { fontSize: wp("5.8%"), lineHeight: wp("7.3%") },
-  body: { fontSize: wp("4.4%"), lineHeight: wp("7.3%") },
-  small: { fontSize: wp("3.4%"), lineHeight: wp("4.8%") },
+  h1: { fontSize: clamp(36,32,40), lineHeight: clamp(44,40,48) },
+  h2: { fontSize: clamp(28, 24, 32), lineHeight: clamp(36, 30, 40)},
+  button: { fontSize: clamp(24, 20, 26), lineHeight: clamp(30, 26, 34) },
+  body: { fontSize: clamp(18, 16, 20), lineHeight: clamp(28, 24, 32) },
+  small: { fontSize: clamp(14, 12, 16), lineHeight: clamp(20, 18, 22) },
 };
 
 export const GlobalStyle = StyleSheet.create({

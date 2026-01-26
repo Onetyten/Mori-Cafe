@@ -1,4 +1,4 @@
-import { colors } from "@/styles/global";
+import { clamp, colors } from "@/styles/global";
 import { StyleSheet } from "react-native";
 
 
@@ -13,10 +13,12 @@ export const Styles = StyleSheet.create({
         width:"100%",
         gap:8,
         flexDirection:"row",
-        flexWrap:"wrap"
+        flexWrap:"wrap",
+        height:clamp(240,240,350),
     },
+
     loaderBox:{
-        height:240,
+        height:"100%",
         backgroundColor:colors.light+"70",
         justifyContent:"center",
         alignItems:"center",
