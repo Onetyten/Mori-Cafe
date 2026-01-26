@@ -142,7 +142,7 @@ export default function HistoryReceipt ({order}:ReceiptProps){
                 {order.status==="completed"?(
                     <View style={{flexDirection:"row",justifyContent:"space-between", alignItems:"center",width:"100%",gap:8}}> 
                         <TouchableOpacity onPress={savePdf} style={{borderRadius:6,borderWidth:2,borderColor:colors.success,padding:4,flex:1}}>
-                            <Text style={[GlobalStyle.Mono_Bold_body,{textAlign:"center",width:"100%"}]} > Download Receipt</Text>
+                            <Text style={[GlobalStyle.Mono_Bold_body,{textAlign:"center",width:"100%"}]} > Save Receipt</Text>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={sharePdf}>
                             <SquareArrowOutUpRight/>

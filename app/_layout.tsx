@@ -6,7 +6,7 @@ import { Image } from "expo-image";
 import { SplashScreen, Stack } from "expo-router";
 import { View } from "moti";
 import { useEffect, useState } from "react";
-import { ActivityIndicator } from "react-native";
+import { ActivityIndicator, StatusBar } from "react-native";
 import { PaystackProvider } from "react-native-paystack-webview";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { Provider } from "react-redux";
@@ -68,6 +68,7 @@ export default function RootLayout() {
                 contentStyle:{backgroundColor:'transparent'}
                 }} />}
             </View>
+            <StatusBar hidden={true}/>
           </SafeAreaProvider>  
         </PaystackProvider>
       </PersistGate>
