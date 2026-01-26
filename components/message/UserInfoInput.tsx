@@ -3,7 +3,6 @@ import { updateOrderInfo } from '@/store/newOrderSlice'
 import { setInfo } from '@/store/userInfoSlice'
 import { colors, GlobalStyle } from '@/styles/global'
 import { messageListType } from '@/types/messageTypes'
-import { normalize } from "@/utils/scaling"
 import * as Location from 'expo-location'
 import { StyleSheet, Text, TextInput, TouchableOpacity, useWindowDimensions, View } from 'react-native'
 import { Dropdown } from 'react-native-element-dropdown'
@@ -140,7 +139,7 @@ const styles = StyleSheet.create({
     marginTop:16
   },
   dropdown: {
-    width:110,
+    width:120,
     borderWidth: 1,
     borderColor: colors.primary,
     borderRadius: 6,
@@ -155,14 +154,14 @@ const styles = StyleSheet.create({
     borderRadius: 6,
   },
   input: {
-    fontSize: normalize(18),
+    ...GlobalStyle.Outfit_Regular_body,
     color: colors.primary,
     fontFamily: 'Outfit_Regular',
     paddingHorizontal:8,
     textTransform: 'capitalize',
   },
   placeholder: {
-    fontSize: normalize(18),
+    ...GlobalStyle.Outfit_Regular_body,
     color: colors.light,
     fontFamily: 'Outfit_Regular',
     paddingHorizontal:8,

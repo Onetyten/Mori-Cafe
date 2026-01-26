@@ -23,10 +23,12 @@ const NumberInput = memo( function NumberInput(props:propType) {
 
   const handleConfirm = async ()=> {
     if (message.value < 1) {
-      dispatch(updateMessage({id:message.id,update:{error:"Minimum 1 item required."}}))
+      dispatch(updateMessage({id:message.id,update:{error:"Minimum of 1 item required."}}))
+      return
     }
     if (message.value > 10) {
-      dispatch(updateMessage({id:message.id,update:{error:"Maximum 10 items allowed."}}))
+      dispatch(updateMessage({id:message.id,update:{error:"Maximum of 10 items allowed."}}))
+      return
     }
     dispatch(updateMessage({id:message.id,update:{error:"",confirmed:true,isTyping:false}})) 
     const confirmToCart:NewMessage = {type:"confirmToCart", value: message.value}

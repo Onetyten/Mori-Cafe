@@ -24,7 +24,6 @@ export default function FoodCard(props:propType) {
         dispatch(AddMessage(newInput))
     }
     
-    
   return (
     <View style={{width:"100%",alignItems:"center"}}>
         <TouchableOpacity style={Styles.parent} onPress = {optionCount} >
@@ -36,14 +35,10 @@ export default function FoodCard(props:propType) {
             <View style={{width:"100%", height:"100%",padding:16,justifyContent:"space-between",alignItems:"center"}}>
                 <View style={[Styles.foodImageView,{position:"relative"}]}>
 
-                    {!error && (
-                        <MotiImage from={{translateY:-15}} animate={{translateY:0}} transition={{delay:200}}  source={{uri:optimisedUrl(300,300)}} style={Styles.foodImage}  onLoadEnd={()=>setLoaded(true)} onError={() => setError(true)} />
-                    )}
-
-                    {!loaded || error ? (
-                        <MotiImage  from={{opacity:0}} animate={{opacity:1}} transition={{delay:200}}  source={require("@/assets/images/floral/coffee cup.png")} style={{objectFit:"contain",width:"80%",height:"80%",position:"absolute"}}/>
-                        ):null
-                    }
+                    <MotiImage from={{translateY:-15}} animate={{opacity: loaded && !error ? 1 : 0,translateY: loaded && !error ? 0 : -15}} transition={{duration:300}}  source={{uri:optimisedUrl(300,300)}} style={Styles.foodImage}  onLoadEnd={()=>setLoaded(true)} onError={() => setError(true)} />
+            
+                    <MotiImage animate={{ opacity: loaded && !error ? 0 : 1 }} transition={{ duration: 200 }} source={require("@/assets/images/floral/coffee cup.png")} style={{objectFit:"contain",width:"80%",height:"80%",position:"absolute"}}/>
+                    
                 </View>
                 <View style={{gap:2,width:"100%"}}>
                     <View>
@@ -82,7 +77,8 @@ const Styles = StyleSheet.create({
         objectFit:"contain",
         borderRadius:9999,
         width:"100%",
-        height:"100%"
+        height:"100%",
+        zIndex:20
     },
     parent:{
         overflow:"hidden",

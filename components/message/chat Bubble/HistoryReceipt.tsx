@@ -1,5 +1,5 @@
 import { receiptHtml } from "@/data/receiptHtml";
-import { colors, GlobalStyle } from "@/styles/global";
+import { clamp, colors, GlobalStyle } from "@/styles/global";
 import type { FetchedOrderType } from "@/types/type";
 import api from "@/utils/api";
 import * as FileSystem from "expo-file-system/legacy";
@@ -171,7 +171,7 @@ const style = StyleSheet.create({
         position:"relative"
     },
     container:{
-        width:300,
+        width:clamp(300,300,350),
         maxWidth:"100%",
         backgroundColor:"#fff",
         position:"relative",

@@ -4,7 +4,7 @@ import { DimensionValue, StyleSheet } from "react-native";
 const columns = isSmall ? 1 : isPhone ? 2 : isTablet ? 3 : 3;
 
 
-const buttonWidth:DimensionValue = `${(100 / columns)-1.05}%`;
+const buttonWidth:DimensionValue = `${(100 / columns)-2}%`;
 
 export const styles = StyleSheet.create({
     loaderRow:{

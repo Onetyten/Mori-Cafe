@@ -1,4 +1,4 @@
-import { colors } from "@/styles/global";
+import { clamp, colors } from "@/styles/global";
 import { messageListType } from "@/types/messageTypes";
 import React from "react";
 import { StyleSheet, View } from "react-native";
@@ -24,7 +24,7 @@ export default function ReceiptCarousel(props:propType) {
 
   return (
     <View className="flex flex-col justify-center items-center gap-2">
-            <Swiper horizontal activeDot={<View style={[Styles.dot,Styles.activeDot]} />} dot={<View style={[Styles.dot,Styles.passiveDot]} />} loop showsPagination={true} height={490}>
+            <Swiper horizontal activeDot={<View style={[Styles.dot,Styles.activeDot]} />} dot={<View style={[Styles.dot,Styles.passiveDot]} />} loop showsPagination={true} height={clamp(490,460,540)}>
                 {message.content.map((item) => (
                     <View key={item._id}>
                          <HistoryReceipt order={item}/>

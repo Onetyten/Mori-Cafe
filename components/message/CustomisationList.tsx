@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
     loader:{
         width:"70%",
         backgroundColor:colors.light+"70",
-        height:40,
+        height:48,
         justifyContent:"center",
         alignItems:"center"
     }

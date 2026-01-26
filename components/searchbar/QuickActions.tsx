@@ -4,7 +4,7 @@ import useFetchReceiptList from "@/hooks/useFetchReceiptList";
 import useGetElse from "@/hooks/useGetElse";
 import useSubcategory from "@/hooks/useSubcategory";
 import { AddMessage, NewMessage } from "@/store/messageListSlice";
-import { colors, GlobalStyle } from "@/styles/global";
+import { clamp, colors, GlobalStyle } from "@/styles/global";
 import { Dice6, History, ShoppingCart } from "lucide-react-native";
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
 import { useDispatch } from "react-redux";
@@ -31,10 +31,9 @@ export default function QuickActions(props:propType) {
         dispatch(AddMessage(newFeedBack))
     }
 
-
   return (
     showButtons&&
-    <CircularView size={350}>
+    <CircularView size={clamp(350,300,400)}>
         <TouchableOpacity style={[styles.button]} onPress={()=>{
                 if (loading) return
                 fetchFoodList(`/food/list?random=true`,"Close your eyes...")
@@ -62,12 +61,12 @@ const styles = StyleSheet.create({
         backgroundColor:"rgb(162 177 138 / 0.8)",
         justifyContent:"center",
         alignItems:"center",
-        padding:6,
-        height:72,
-        width:72,
+        width:clamp(78,62,90),
+        aspectRatio:1,
         gap:1,
     },
     iconText:{
-        color:colors.background
+        color:colors.background,
+        textAlign:"center"
     },
 })

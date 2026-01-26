@@ -59,7 +59,8 @@ export default function RootLayout() {
         <PaystackProvider debug publicKey={key}>
           <SafeAreaProvider>
             <View style={{flex:1,backgroundColor:colors.secondary}}>
-              {showIntro && <Image source={require("../assets/videos/Animation.gif")} contentFit="cover" style={{ position: "absolute", width: "100%", height: "100%", zIndex: 100 }} onLoadEnd={()=>setGifLoaded(true)} />}
+              {showIntro && 
+              <Image source={require("../assets/videos/Animation.gif")} contentFit="cover" style={{ position: "absolute", width: "100%", height: "100%", zIndex: 100 }} onLoadEnd={()=>setGifLoaded(true)} />}
 
               {gifLoaded &&
               <Stack screenOptions={{
